@@ -12,6 +12,9 @@
 
 
     <artifactId>templates</artifactId>
+    <version>1.0.0</version>
+
+    <name>templates</name>
 
     <dependencies>
         <dependency>

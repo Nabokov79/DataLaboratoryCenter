@@ -11,6 +11,9 @@
     </parent>
 
     <artifactId>data</artifactId>
+    <version>1.0.0</version>
+
+    <name>data</name>
 
     <dependencies>
         <dependency>
