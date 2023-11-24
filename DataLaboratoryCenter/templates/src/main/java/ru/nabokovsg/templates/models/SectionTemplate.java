@@ -3,6 +3,7 @@ package ru.nabokovsg.templates.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -15,17 +16,26 @@ public class SectionTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "sequential_section_number")
-    private Integer sequentialSectionNumber;
+    @Column(name = "reporting_document_id")
+    private Long reportingDocumentId;
+    @Column(name = "sequential_number")
+    private Integer sequentialNumber;
     @Column(name = "section_name")
     private String sectionName;
 //    @ManyToMany(fetch = FetchType.LAZY)
 //    @JoinTable(
-//            name = "section_templates_subsection_templates",
-//            joinColumns = {@JoinColumn(name = "section_template_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "subsections_template_id")})
+//            name = "subsection_templates_passport_data_templates",
+//            joinColumns = {@JoinColumn(name = "subsection_template_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "passport_data_id")})
 //    @ToString.Exclude
-//    private List<SubsectionTemplate> subsections;
+//    private List<PassportDataTemplate> passportData;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "section_subsection_templates",
+            joinColumns = {@JoinColumn(name = "section_id")},
+            inverseJoinColumns = {@JoinColumn(name = "subsection_id")})
+    @ToString.Exclude
+    private Set<SubsectionTemplate> subsections;
 //    @ManyToMany(fetch = FetchType.LAZY)
 //    @JoinTable(
 //            name = "subsection_templates_passport_data_templates",
@@ -54,4 +64,15 @@ public class SectionTemplate {
 //            inverseJoinColumns = {@JoinColumn(name = "appendices_id")})
 //    @ToString.Exclude
 //    private List<AppendicesTemplates> appendices;
+
+
+    @Override
+    public String toString() {
+        return "SectionTemplate{" +
+                "id=" + id +
+                ", reportingDocumentId=" + reportingDocumentId +
+                ", sequentialNumber=" + sequentialNumber +
+                ", sectionName='" + sectionName + '\'' +
+                '}';
+    }
 }
