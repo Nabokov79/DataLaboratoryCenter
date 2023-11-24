@@ -62,8 +62,8 @@ public class StringFactoryImpl implements StringFactory {
         , String.join(" ", "E-mail:", contact.getEmail()));
     }
 
-    private String convertToShortRequisites(ContactDto contact) {
-        return String.join(", ", String.valueOf(contact.getIndex()),  convertAddress(contact.getAddress()));
+    private String convertToShortRequisites(ContactDto contact, AddressDto address) {
+        return String.join(", ", String.valueOf(contact.getIndex()),  convertAddress(address));
     }
 
     private String convertAddress(AddressDto address) {
@@ -91,7 +91,7 @@ public class StringFactoryImpl implements StringFactory {
 
     private String convertOrganization(OrganizationDto organization) {
         return String.join(". ", organization.getOrganization()
-                , convertToShortRequisites(organization.getContact())
+                , convertToShortRequisites(organization.getContact(), organization.getAddress())
                 , convertLicense(organization.getLicenses()));
     }
 
@@ -101,7 +101,7 @@ public class StringFactoryImpl implements StringFactory {
             name = divisionName;
         }
         return String.join(". ", name
-                , convertToShortRequisites(branch.getContact())
+                , convertToShortRequisites(branch.getContact(), branch.getAddress())
                 , convertLicense(branch.getLicenses()));
     }
 
@@ -111,7 +111,7 @@ public class StringFactoryImpl implements StringFactory {
             name = divisionName;
         }
         return String.join(". ", name
-                , convertToShortRequisites(department.getContact())
+                , convertToShortRequisites(department.getContact(), department.getAddress())
                 , convertLicense(department.getLicenses()));
     }
 }
