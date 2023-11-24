@@ -13,6 +13,9 @@ import ru.nabokovsg.templates.dto.header.UpdateHeaderTemplateDto;
 import ru.nabokovsg.templates.services.HeaderTemplateService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @RequestMapping(
@@ -29,7 +32,7 @@ public class HeaderTemplateController {
 
     @Operation(summary = "Новые данные заголовка")
     @PostMapping
-    public ResponseEntity<HeaderTemplateDto> save(@RequestBody @Valid NewHeaderTemplateDto headerDto) {
+    public ResponseEntity<List<HeaderTemplateDto>> save(@RequestBody @Valid NewHeaderTemplateDto headerDto) {
         return ResponseEntity.ok().body(service.save(headerDto));
     }
 
@@ -37,5 +40,11 @@ public class HeaderTemplateController {
     @PatchMapping
     public ResponseEntity<HeaderTemplateDto> update(@RequestBody @Valid UpdateHeaderTemplateDto headerDto) {
         return ResponseEntity.ok().body(service.update(headerDto));
+    }
+
+    @Operation(summary = "Получить заголовок по типу документа")
+    @GetMapping("/{reportingDocumentId}")
+    public ResponseEntity<HeaderTemplateDto> get(@PathVariable @NotNull @Positive Long reportingDocumentId) {
+        return ResponseEntity.ok().body(service.get(reportingDocumentId));
     }
 }
