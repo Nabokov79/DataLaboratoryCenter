@@ -7,8 +7,12 @@ import ru.nabokovsg.templates.dto.header.NewHeaderTemplateDto;
 import ru.nabokovsg.templates.dto.header.UpdateHeaderTemplateDto;
 import ru.nabokovsg.templates.models.HeaderTemplate;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface HeaderTemplateMapper {
+
+    HeaderTemplate mapToHeader(HeaderTemplate header);
 
     HeaderTemplateDto mapToHeaderTemplateDto(HeaderTemplate header);
 
