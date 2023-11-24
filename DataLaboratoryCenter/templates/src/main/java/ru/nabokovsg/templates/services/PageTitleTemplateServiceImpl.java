@@ -28,7 +28,7 @@ public class PageTitleTemplateServiceImpl implements PageTitleTemplateService {
 
     @Override
     public PageTitleTemplateDto save(NewPageTitleTemplateDto pageTitleDto) {
-        PageTitleTemplate pageTitle = repository.findByReportingDocumentId(pageTitleDto.getReportingDocumentId());
+        PageTitleTemplate pageTitle = getByReportingDocumentId(pageTitleDto.getReportingDocumentId());
         if (pageTitle == null) {
             String signature = factory.create(new TemplateData.Builder()
                                                              .type(DataType.SIGNATURE)
@@ -36,7 +36,8 @@ public class PageTitleTemplateServiceImpl implements PageTitleTemplateService {
                                                              .build());
             pageTitle = repository.save(mapper.mapToPageTitleTemplate(
                                           mapper.mapToNewPageTitleTemplate(pageTitleDto)
-                                        , service.getByReportingDocumentId(pageTitleDto.getReportingDocumentId())
+                                        , service.get(pageTitleDto.getReportingDocumentId())
+                                        , client.getReportingDocument(pageTitleDto.getReportingDocumentId())
                                         , signature
                                         , String.valueOf((LocalDate.now().getYear()))));
         }
@@ -45,17 +46,29 @@ public class PageTitleTemplateServiceImpl implements PageTitleTemplateService {
 
     @Override
     public PageTitleTemplateDto update(UpdatePageTitleTemplateDto pageTitleDto) {
-        if (repository.existsByReportingDocumentId(pageTitleDto.getReportingDocumentId())) {
+        if (!repository.existsByReportingDocumentId(pageTitleDto.getReportingDocumentId())) {
             String signature = factory.create(new TemplateData.Builder()
                                                              .type(DataType.SIGNATURE)
                                                              .employee(client.getEmployee(pageTitleDto.getEmployeeId()))
                                                              .build());
             return mapper.mapToPageTitleTemplateDto(repository.save(mapper.mapToPageTitleTemplate(
-                                                  mapper.mapToUpdatePageTitleTemplate(pageTitleDto)
-                                                , service.getByReportingDocumentId(pageTitleDto.getReportingDocumentId())
-                                                , signature
-                                                , String.valueOf((LocalDate.now().getYear())))));
+                    mapper.mapToUpdatePageTitleTemplate(pageTitleDto)
+                    , service.get(pageTitleDto.getReportingDocumentId())
+                    , client.getReportingDocument(pageTitleDto.getReportingDocumentId())
+                    , signature
+                    , String.valueOf((LocalDate.now().getYear())))));
         }
         throw new NotFoundException(String.format("PageTitleTemplate with id=%s not found", pageTitleDto.getId()));
+    }
+
+    @Override
+    public PageTitleTemplateDto get(Long reportingDocumentId) {
+        return mapper.mapToPageTitleTemplateDto(getByReportingDocumentId(reportingDocumentId));
+    }
+
+    public PageTitleTemplate getByReportingDocumentId(Long id) {
+        return repository.findByReportingDocumentId(id)
+                                   .orElseThrow(() -> new NotFoundException(
+                                           String.format("PageTitleTemplate by reportingDocumentId=%s not found", id)));
     }
 }
