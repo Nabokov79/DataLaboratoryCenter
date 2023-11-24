@@ -18,8 +18,9 @@ import ru.nabokovsg.templates.models.enums.DataType;
 import ru.nabokovsg.templates.repository.HeaderTemplateRepository;
 import ru.nabokovsg.templates.services.factory.StringFactory;
 
-import java.util.Collection;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -31,37 +32,42 @@ public class HeaderTemplateServiceImpl implements HeaderTemplateService {
     private final TemplateClient client;
 
     @Override
-    public HeaderTemplateDto save(NewHeaderTemplateDto headerDto) {
-        HeaderTemplate header = getByReportingDocumentId(headerDto.getReportingDocumentId());
-        if (header == null) {
-            header = new HeaderTemplate();
-            header.setReportingDocumentId(headerDto.getReportingDocumentId());
-            header = repository.save(set(header, mapper.mapToNewHeaderTemplateDataDto(headerDto)));
+    public List<HeaderTemplateDto> save(NewHeaderTemplateDto headerDto) {
+        Map<Long, HeaderTemplate> headersDb = repository.findAllByReportingDocumentIds(
+         headerDto.getReportingDocumentIds()).stream()
+                                             .collect(Collectors.toMap(HeaderTemplate::getReportingDocumentId, h -> h));
+        HeaderTemplate headerData = set(new HeaderTemplate(), mapper.mapToNewHeaderTemplateDataDto(headerDto));
+        List<HeaderTemplate> headers =  repository.saveAll(headerDto.getReportingDocumentIds().stream()
+                                                                        .map(id -> {
+                                                                            HeaderTemplate header = headersDb.get(id);
+                                                                            if (header == null) {
+                                                                                header = mapper.mapToHeader(headerData);
+                                                                                header.setReportingDocumentId(id);
+                                                                            }
+                                                                            return header;
+                                                                        })
+                                                                        .toList());
+        if (!headersDb.isEmpty()) {
+            headers = Stream.of(headersDb.values(), headers).flatMap(Collection::stream).toList();
         }
-        return mapper.mapToHeaderTemplateDto(header);
+        return headers.stream().map(mapper::mapToHeaderTemplateDto).toList();
     }
 
     @Override
     public HeaderTemplateDto update(UpdateHeaderTemplateDto headerDto) {
-        return mapper.mapToHeaderTemplateDto(
-                repository.save(
-                        set(get(headerDto.getId()), mapper.mapToUpdateHeaderTemplateDataDto(headerDto))
-                )
-        );
+        return mapper.mapToHeaderTemplateDto(repository.save(
+                set(repository.findById(headerDto.getId()).orElseThrow(() -> new NotFoundException(
+                                                String.format("HeaderTemplate with id=%s not found", headerDto.getId())))
+                  , mapper.mapToUpdateHeaderTemplateDataDto(headerDto))
+        ));
     }
 
     @Override
-    public HeaderTemplate getByReportingDocumentId(Long reportingDocumentId) {
-        HeaderTemplate header = repository.findByReportingDocumentId(reportingDocumentId);
-        if (header == null) {
-            throw new NotFoundException(String.format("HeaderTemplate with id=%s not found", reportingDocumentId));
-        }
-        return header;
-    }
-
-    private HeaderTemplate get(Long id) {
-        return repository.findById(id)
-                    .orElseThrow(() -> new NotFoundException(String.format("HeaderTemplate with id=%s not found", id)));
+    public HeaderTemplateDto get(Long reportingDocumentId) {
+        return mapper.mapToHeaderTemplateDto(repository.findByReportingDocumentId(reportingDocumentId)
+                .orElseThrow(() -> new NotFoundException(
+                        String.format("HeaderTemplate by reportingDocumentId=%s not found", reportingDocumentId)))
+        );
     }
 
     private HeaderTemplate set(HeaderTemplate header, HeaderTemplateDataDto data) {
