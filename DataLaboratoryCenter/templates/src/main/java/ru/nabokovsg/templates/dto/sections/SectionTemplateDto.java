@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.nabokovsg.templates.dto.subsection.SubsectionTemplateDto;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -16,11 +19,11 @@ public class SectionTemplateDto {
     @Schema(description = "Индентификатор")
     private Long id;
     @Schema(description = "Порядковый номер раздела")
-    private Integer sequentialSectionNumber;
+    private Integer sequentialNumber;
     @Schema(description = "Название раздела")
     private String sectionName;
-//    @Schema(description = "Подразделы")
-//    private List<SubsectionTemplateDto> subsections;
+    @Schema(description = "Подразделы")
+    private List<SubsectionTemplateDto> subsections;
 //    @Schema(description = "Протоколы раздела документа")
 //    private List<ReportProtocolTemplateDto> protocols;
 //    @Schema(description = "Рекомендации для объекта обследования")
