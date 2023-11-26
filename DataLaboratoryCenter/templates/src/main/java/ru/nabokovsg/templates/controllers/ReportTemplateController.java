@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.nabokovsg.templates.dto.pageTitle.PageTitleTemplateDto;
+import ru.nabokovsg.templates.dto.pageTitle.ShortPageTitleTemplateDto;
 import ru.nabokovsg.templates.dto.report.ReportTemplateDto;
 import ru.nabokovsg.templates.services.ReportTemplateService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(
@@ -30,8 +34,23 @@ public class ReportTemplateController {
     @Operation(summary = "Получить шаблон отчета")
     @GetMapping
     public ResponseEntity<ReportTemplateDto> get(
-            @RequestParam @Parameter(description = "Индентификатор типа объекта") Long objectsTypeId,
+            @RequestParam @Parameter(description = "Индентификатор типа объекта") Long objectTypeId,
             @RequestParam @Parameter(description = "Индентификатор отчетного документа") Long reportingDocumentId) {
-        return ResponseEntity.ok().body(service.get(objectsTypeId, reportingDocumentId));
+        return ResponseEntity.ok().body(service.get(objectTypeId, reportingDocumentId));
+    }
+
+    @Operation(summary = "Получить все шаблоны отчетов")
+    @GetMapping
+    public ResponseEntity<List<ShortPageTitleTemplateDto>> getAll() {
+        return ResponseEntity.ok().body(service.getAll());
+    }
+
+    @Operation(summary = "Получить все шаблоны отчетов")
+    @GetMapping
+    public ResponseEntity<ReportTemplateDto> create(
+            @RequestParam @Parameter(description = "Индентификатор типа объекта") Long objectTypeId,
+            @RequestParam @Parameter(description = "Индентификатор отчетного документа") Long reportingDocumentId
+    ) {
+        return ResponseEntity.ok().body(service.create(objectTypeId, reportingDocumentId));
     }
 }

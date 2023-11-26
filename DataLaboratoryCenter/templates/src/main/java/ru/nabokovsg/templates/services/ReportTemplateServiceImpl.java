@@ -3,11 +3,16 @@ package ru.nabokovsg.templates.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
+import ru.nabokovsg.templates.dto.pageTitle.ShortPageTitleTemplateDto;
 import ru.nabokovsg.templates.dto.report.ReportTemplateDto;
 import ru.nabokovsg.templates.mappers.ReportTemplateMapper;
 import ru.nabokovsg.templates.models.PageTitleTemplate;
 import ru.nabokovsg.templates.models.ReportTemplate;
+import ru.nabokovsg.templates.repository.PageTitleTemplateRepository;
 import ru.nabokovsg.templates.repository.ReportTemplateRepository;
+import ru.nabokovsg.templates.repository.SectionTemplateRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,10 +20,17 @@ public class ReportTemplateServiceImpl implements ReportTemplateService {
 
     private final ReportTemplateRepository repository;
     private final ReportTemplateMapper mapper;
+    private final PageTitleTemplateRepository titleRepository;
+    private final SectionTemplateRepository sectionRepository;
 
     @Override
-    public void create(PageTitleTemplate pageTitle, Long reportingDocumentId, Long objectsTypeId) {
-        repository.save(mapper.mapToNewReportTemplate(pageTitle, reportingDocumentId, objectsTypeId));
+    public ReportTemplateDto create(Long reportingDocumentId, Long objectsTypeId) {
+        return mapper.mapToReportTemplateDto(
+                repository.save(mapper.mapToNewReportTemplate(getPageTitleTemplate(reportingDocumentId)
+                              , sectionRepository.findAllByReportingDocumentId(reportingDocumentId)
+                              , objectsTypeId
+                              , reportingDocumentId))
+        );
     }
 
     @Override
@@ -39,17 +51,15 @@ public class ReportTemplateServiceImpl implements ReportTemplateService {
     }
 
     @Override
-    public ReportTemplate getById(Long id) {
-        return repository.findById(id)
-                    .orElseThrow(() -> new NotFoundException(String.format("ReportTemplate with id=%s not found", id)));
+    public List<ShortPageTitleTemplateDto> getAll() {
+        return repository.findAll().stream()
+                                   .map(r -> mapper.mapToShortPageTitleTemplateDto(r.getId(), r.getPageTitle()))
+                                   .toList();
     }
 
-    @Override
-    public ReportTemplate getByPageTitle(Long id) {
-        ReportTemplate report = repository.findByPageTitleId(id);
-        if (report == null) {
-            throw new NotFoundException(String.format("ReportTemplate by pageTitleId=%s not found", id));
-        }
-        return report;
+    private PageTitleTemplate getPageTitleTemplate(Long reportingDocumentId) {
+        return titleRepository.findByReportingDocumentId(reportingDocumentId)
+                .orElseThrow(() -> new NotFoundException(
+                        String.format("PageTitleTemplate by reportingDocumentId=%s not found for create ReportTemplate", reportingDocumentId)));
     }
 }
