@@ -3,7 +3,7 @@ package ru.nabokovsg.templates.models;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -29,5 +29,5 @@ public class ReportTemplate {
             joinColumns = {@JoinColumn(name = "report_id")},
             inverseJoinColumns = {@JoinColumn(name = "section_id")})
     @ToString.Exclude
-    private List<SectionTemplate> sections;
+    private Set<SectionTemplate> sections;
 }
