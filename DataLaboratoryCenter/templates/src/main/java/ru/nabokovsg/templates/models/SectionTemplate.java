@@ -3,6 +3,7 @@ package ru.nabokovsg.templates.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Setter
@@ -22,13 +23,13 @@ public class SectionTemplate {
     private Integer sequentialNumber;
     @Column(name = "section_name")
     private String sectionName;
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "subsection_templates_passport_data_templates",
-//            joinColumns = {@JoinColumn(name = "subsection_template_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "passport_data_id")})
-//    @ToString.Exclude
-//    private List<PassportDataTemplate> passportData;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "section_passport_data_templates",
+            joinColumns = {@JoinColumn(name = "section_id")},
+            inverseJoinColumns = {@JoinColumn(name = "passport_data_id")})
+    @ToString.Exclude
+    private List<PassportDataTemplate> passportData;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "section_subsection_templates",
@@ -36,13 +37,6 @@ public class SectionTemplate {
             inverseJoinColumns = {@JoinColumn(name = "subsection_id")})
     @ToString.Exclude
     private Set<SubsectionTemplate> subsections;
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "subsection_templates_passport_data_templates",
-//            joinColumns = {@JoinColumn(name = "subsection_template_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "passport_data_id")})
-//    @ToString.Exclude
-//    private List<SubsectionTemplate> passportData;
 //    @ManyToMany(fetch = FetchType.LAZY)
 //    @JoinTable(
 //            name = "section_templates_report_protocol_templates",
