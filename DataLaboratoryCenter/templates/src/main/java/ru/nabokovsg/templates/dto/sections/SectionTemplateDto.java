@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.nabokovsg.templates.dto.passportData.PassportDataTemplateDto;
 import ru.nabokovsg.templates.dto.subsection.SubsectionTemplateDto;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public class SectionTemplateDto {
     private String sectionName;
     @Schema(description = "Подразделы")
     private List<SubsectionTemplateDto> subsections;
+    @Schema(description = "Шаблоны паспортных данных типа объекта")
+    private List<PassportDataTemplateDto> passportData;
 //    @Schema(description = "Протоколы раздела документа")
 //    private List<ReportProtocolTemplateDto> protocols;
 //    @Schema(description = "Рекомендации для объекта обследования")
