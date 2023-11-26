@@ -66,7 +66,7 @@ public class PageTitleTemplateServiceImpl implements PageTitleTemplateService {
         return mapper.mapToPageTitleTemplateDto(getByReportingDocumentId(reportingDocumentId));
     }
 
-    public PageTitleTemplate getByReportingDocumentId(Long id) {
+    private PageTitleTemplate getByReportingDocumentId(Long id) {
         return repository.findByReportingDocumentId(id)
                                    .orElseThrow(() -> new NotFoundException(
                                            String.format("PageTitleTemplate by reportingDocumentId=%s not found", id)));
