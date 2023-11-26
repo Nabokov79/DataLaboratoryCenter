@@ -39,7 +39,5 @@ public class NewSubsectionTemplateDto {
     @NotNull(message = "subsection number should not be null")
     private boolean subsectionNumber;
     @Schema(description = "Данные подраздела")
-    @NotNull(message = " subsections data should not be null")
-    @NotEmpty(message = " subsections data should not be empty")
     private NewSubsectionTemplateDataDto subsectionsData;
 }
