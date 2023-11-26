@@ -3,9 +3,12 @@ package ru.nabokovsg.templates.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nabokovsg.templates.dto.subsection.*;
+import ru.nabokovsg.templates.dto.subsection.subsectionData.NewSubsectionTemplateDataDto;
 import ru.nabokovsg.templates.exceptions.NotFoundException;
+import ru.nabokovsg.templates.exceptions.BadRequestException;
 import ru.nabokovsg.templates.mappers.SubsectionTemplateMapper;
 import ru.nabokovsg.templates.models.SubsectionTemplateData;
+import ru.nabokovsg.templates.models.enums.SubsectionDataType;
 import ru.nabokovsg.templates.models.SubsectionTemplate;
 import ru.nabokovsg.templates.repository.SubsectionTemplateRepository;
 
@@ -29,7 +32,7 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
                                                   .distinct()
                                                   .toList()
                                   , subsectionsDto.stream()
-                                                    .map(NewSubsectionTemplateDto::getSubsectionDataType)
+                                .map(t -> convertSubsectionDataType(t.getSubsectionDataType()))
                                                     .toList());
         if (subsectionsDb.size() != subsectionsDto.size()) {
             if (!subsectionsDb.isEmpty()) {
@@ -39,7 +42,13 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
                                       , subsectionsDto);
             }
             List<SubsectionTemplateData> data = subsectionDataService.save(subsectionsDto.stream()
-                    .map(NewSubsectionTemplateDto::getSubsectionsData)
+                    .filter(n -> n.getSubsectionsData() != null)
+                    .map(n -> {
+                        NewSubsectionTemplateDataDto d = n.getSubsectionsData();
+                        d.setSubsectionDataType(n.getSubsectionDataType());
+                        return d;
+                    })
+
                     .toList());
             List<SubsectionTemplate> subsections = mapper.mapToNewSubsectionTemplate(
                             subsectionsDto).stream()
@@ -70,5 +79,12 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
 
     private List<NewSubsectionTemplateDto> filter(Set<String> subsectionDataType, List<NewSubsectionTemplateDto> subsectionsDto) {
         return subsectionsDto.stream().filter(s -> !subsectionDataType.contains(s.getSubsectionDataType())).toList();
+    }
+
+    private SubsectionDataType convertSubsectionDataType(String subsectionDataType) {
+        return SubsectionDataType.from(subsectionDataType)
+                .orElseThrow(() -> new BadRequestException(
+                        String.format("Unknown subsection data type=%s",subsectionDataType))
+                );
     }
 }
