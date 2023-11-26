@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public enum SubsectionDataType {
 
-    NO_DATA,
+    NULL,
     ALL_DOCUMENT,
     REGULATORY_DOCUMENT,
     METHODOLOGICAL_DOCUMENT,
