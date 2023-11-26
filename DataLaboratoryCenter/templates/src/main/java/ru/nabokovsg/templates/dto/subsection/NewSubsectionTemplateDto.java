@@ -8,7 +8,6 @@ import lombok.Setter;
 import ru.nabokovsg.templates.dto.subsection.subsectionData.NewSubsectionTemplateDataDto;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
