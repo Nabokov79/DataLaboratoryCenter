@@ -66,7 +66,6 @@ public class SubsectionTemplateDataServiceImpl implements SubsectionTemplateData
     private List<SubsectionTemplateData> getData(SubsectionDataDto subsectionData) {
         SubsectionDataType type = convertToSubsectionDataType(subsectionData.getSubsectionDataType());
         switch (type) {
-            case NO_DATA -> { return new ArrayList<>(); }
             case ALL_DOCUMENT, REGULATORY_DOCUMENT, METHODOLOGICAL_DOCUMENT ->
             { ObjectsTypeDto objectType = client.getObjectsType(subsectionData.getObjectTypeId());
                 return factory.createByDocumentationData(type, objectType.getDocumentations())
