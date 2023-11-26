@@ -28,8 +28,10 @@ public interface ReportTemplateMapper {
                                         , Long objectTypeId
                                         , Long reportingDocumentId);
 
-    @Mapping(source = "id" , target = "id")
-    @Mapping(source = "titleTemplate.documentName" , target = "documentName")
-    @Mapping(source = "titleTemplate" , target = "documentTitle")
+    @Mappings({
+            @Mapping(source = "id" , target = "id"),
+            @Mapping(source = "titleTemplate.documentName" , target = "documentName"),
+            @Mapping(source = "titleTemplate.documentTitle" , target = "documentTitle")
+    })
     ShortPageTitleTemplateDto mapToShortPageTitleTemplateDto(Long id, PageTitleTemplate titleTemplate);
 }
