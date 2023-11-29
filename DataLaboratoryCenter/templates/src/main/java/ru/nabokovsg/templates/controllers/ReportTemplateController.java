@@ -7,11 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import ru.nabokovsg.templates.dto.pageTitle.PageTitleTemplateDto;
+import org.springframework.web.bind.annotation.*;
 import ru.nabokovsg.templates.dto.pageTitle.ShortPageTitleTemplateDto;
 import ru.nabokovsg.templates.dto.report.ReportTemplateDto;
 import ru.nabokovsg.templates.services.ReportTemplateService;
@@ -40,13 +36,13 @@ public class ReportTemplateController {
     }
 
     @Operation(summary = "Получить все шаблоны отчетов")
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ShortPageTitleTemplateDto>> getAll() {
         return ResponseEntity.ok().body(service.getAll());
     }
 
     @Operation(summary = "Получить все шаблоны отчетов")
-    @GetMapping
+    @PostMapping
     public ResponseEntity<ReportTemplateDto> create(
             @RequestParam @Parameter(description = "Индентификатор типа объекта") Long objectTypeId,
             @RequestParam @Parameter(description = "Индентификатор отчетного документа") Long reportingDocumentId
