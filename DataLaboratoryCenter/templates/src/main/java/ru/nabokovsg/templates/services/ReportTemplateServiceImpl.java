@@ -6,7 +6,6 @@ import org.webjars.NotFoundException;
 import ru.nabokovsg.templates.dto.pageTitle.ShortPageTitleTemplateDto;
 import ru.nabokovsg.templates.dto.report.ReportTemplateDto;
 import ru.nabokovsg.templates.mappers.ReportTemplateMapper;
-import ru.nabokovsg.templates.models.PageTitleTemplate;
 import ru.nabokovsg.templates.models.ReportTemplate;
 import ru.nabokovsg.templates.repository.PageTitleTemplateRepository;
 import ru.nabokovsg.templates.repository.ReportTemplateRepository;
@@ -24,12 +23,13 @@ public class ReportTemplateServiceImpl implements ReportTemplateService {
     private final SectionTemplateRepository sectionRepository;
 
     @Override
-    public ReportTemplateDto create(Long reportingDocumentId, Long objectsTypeId) {
+    public ReportTemplateDto create(Long objectsTypeId, Long reportingDocumentId) {
         return mapper.mapToReportTemplateDto(
-                repository.save(mapper.mapToNewReportTemplate(getPageTitleTemplate(reportingDocumentId)
-                              , sectionRepository.findAllByReportingDocumentId(reportingDocumentId)
-                              , objectsTypeId
-                              , reportingDocumentId))
+                repository.save(mapper.mapToNewReportTemplate(
+                            titleRepository.findByObjectTypeIdAndReportingDocumentId(objectsTypeId, reportingDocumentId)
+                          , sectionRepository.findByObjectTypeIdAndReportingDocumentId(objectsTypeId, reportingDocumentId)
+                          , objectsTypeId
+                          , reportingDocumentId))
         );
     }
 
@@ -55,11 +55,5 @@ public class ReportTemplateServiceImpl implements ReportTemplateService {
         return repository.findAll().stream()
                                    .map(r -> mapper.mapToShortPageTitleTemplateDto(r.getId(), r.getPageTitle()))
                                    .toList();
-    }
-
-    private PageTitleTemplate getPageTitleTemplate(Long reportingDocumentId) {
-        return titleRepository.findByReportingDocumentId(reportingDocumentId)
-                .orElseThrow(() -> new NotFoundException(
-                        String.format("PageTitleTemplate by reportingDocumentId=%s not found for create ReportTemplate", reportingDocumentId)));
     }
 }
