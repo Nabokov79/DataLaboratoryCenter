@@ -6,6 +6,5 @@ import ru.nabokovsg.templates.models.SectionTemplate;
 import java.util.Set;
 
 public interface SectionTemplateRepository extends JpaRepository<SectionTemplate, Long> {
-
-    Set<SectionTemplate> findAllByReportingDocumentId(Long reportingDocumentId);
+    Set<SectionTemplate> findByObjectTypeIdAndReportingDocumentId(Long reportingDocumentId, Long objectTypeId);
 }

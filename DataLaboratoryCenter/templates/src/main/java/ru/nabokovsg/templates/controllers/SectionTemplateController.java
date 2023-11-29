@@ -45,13 +45,15 @@ public class SectionTemplateController {
     public ResponseEntity<List<SectionTemplateDto>> update(
             @RequestBody @Valid
             @Parameter(description = "Данные шаблона раздела")
-            UpdateSectionTemplateDto sectionsDto) {
+            List<UpdateSectionTemplateDto> sectionsDto) {
         return ResponseEntity.ok().body(service.update(sectionsDto));
     }
 
     @Operation(summary = "Получить заголовок по типу документа")
-    @GetMapping("/{reportingDocumentId}")
-    public ResponseEntity<List<SectionTemplateDto>> get(@PathVariable @NotNull @Positive Long reportingDocumentId) {
-        return ResponseEntity.ok().body(service.get(reportingDocumentId));
+    @GetMapping
+    public ResponseEntity<List<SectionTemplateDto>> getAll(
+            @RequestParam @NotNull @Positive Long objectTypeId,
+            @RequestParam @NotNull @Positive Long reportingDocumentId) {
+        return ResponseEntity.ok().body(service.getAll(objectTypeId, reportingDocumentId));
     }
 }

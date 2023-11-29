@@ -12,9 +12,9 @@ public interface SectionTemplateService {
 
     List<SectionTemplateDto> save(NewSectionTemplateDto sectionsDto);
 
-    List<SectionTemplateDto> update(UpdateSectionTemplateDto sectionsDto);
+    List<SectionTemplateDto> update(List<UpdateSectionTemplateDto> sectionsDto);
 
-    List<SectionTemplateDto> get(Long reportingDocumentId);
+    List<SectionTemplateDto> getAll(Long objectTypeId, Long reportingDocumentId);
 
-    Set<SectionTemplate> create(Long reportingDocumentId);
+    Set<SectionTemplate> create(Long objectTypeId, Long reportingDocumentId);
 }
