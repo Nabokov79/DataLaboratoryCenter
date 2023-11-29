@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -18,8 +18,13 @@ import java.util.List;
 @Schema(description = "Данные нового раздела документа")
 public class NewSectionTemplateDto {
 
+    @Schema(description = "Индентификаторы типа объекта")
+    @NotNull(message = "object type id should not be null")
+    @Positive(message = "reporting document id must be positive")
+    private Long objectTypeId;
     @Schema(description = "Индентификатор типа отчетного документа")
-    @NotEmpty(message = "reporting document id should not be null")
-    private List<@Positive Long> reportingDocumentIds;
+    @NotNull(message = "reporting document id should not be null")
+    @Positive(message = "reporting document id must be positive")
+    private Long reportingDocumentId;
     private List<@Valid NewSectionTemplateDataDto> sectionsData;
 }
