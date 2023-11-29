@@ -5,11 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @Setter
 @Getter
@@ -18,9 +16,15 @@ import java.util.List;
 @Schema(description = "Данные нового раздела документа")
 public class UpdateSectionTemplateDto {
 
-    @Schema(description = "Индентификатор типа отчетного документа")
-    @NotNull(message = "reporting document id should not be null")
-    @Positive(message = "reporting document id must be positive")
-    private Long reportingDocumentId;
-    private List<@Valid UpdateSectionTemplateDataDto> sectionsData;
+    @Schema(description = "Индентификатор")
+    @NotNull(message = "id should not be null")
+    @Positive(message = "id must be positive")
+    private Long id;
+    @Schema(description = "Порядковый номер раздела документа")
+    @NotNull(message = "sequential section number should not be null")
+    @Positive(message = "sequential section number must be positive")
+    private Integer sequentialNumber;
+    @Schema(description = "Название раздела документа")
+    @NotBlank(message = "section name should not be blank")
+    private String sectionName;
 }
