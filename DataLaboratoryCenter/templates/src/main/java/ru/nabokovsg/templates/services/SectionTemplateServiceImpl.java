@@ -2,13 +2,9 @@ package ru.nabokovsg.templates.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import ru.nabokovsg.templates.dto.sections.SectionTemplateDto;
-import ru.nabokovsg.templates.dto.sections.NewSectionTemplateDto;
-import ru.nabokovsg.templates.dto.sections.UpdateSectionTemplateDataDto;
-import ru.nabokovsg.templates.dto.sections.UpdateSectionTemplateDto;
-import ru.nabokovsg.templates.exceptions.BadRequestException;
+import ru.nabokovsg.templates.dto.sections.*;
+import ru.nabokovsg.templates.exceptions.NotFoundException;
 import ru.nabokovsg.templates.mappers.SectionTemplateMapper;
 import ru.nabokovsg.templates.models.SectionTemplate;
 import ru.nabokovsg.templates.repository.SectionTemplateRepository;
@@ -27,59 +23,62 @@ public class SectionTemplateServiceImpl implements SectionTemplateService {
 
     @Override
     public List<SectionTemplateDto> save(NewSectionTemplateDto sectionsDto) {
-        List<SectionTemplate> sections = new ArrayList<>();
-        for (Long id : sectionsDto.getReportingDocumentIds()) {
-            sections.addAll(mapper.mapToNewSectionTemplate(sectionsDto.getSectionsData()).stream()
-                    .peek(s -> s.setReportingDocumentId(id))
-                    .toList());
+        Map<String, SectionTemplate> sectionsDb =
+                repository.findByObjectTypeIdAndReportingDocumentId(sectionsDto.getReportingDocumentId()
+                                                          , sectionsDto.getObjectTypeId())
+                                                    .stream()
+                                                    .collect(Collectors.toMap(SectionTemplate::getSectionName, s -> s));
+        List<NewSectionTemplateDataDto> sectionsData = sectionsDto.getSectionsData()
+                                                               .stream()
+                                                               .filter(d -> !sectionsDb.containsKey(d.getSectionName()))
+                                                               .toList();
+        if (sectionsData.isEmpty()) {
+            return map(sectionsDb.values().stream().toList());
         }
-        try {
-            sections = repository.saveAll(sections);
-        } catch (DataIntegrityViolationException e) {
-            log.error(String.format("Duplicate section template massage=%s", e.getMessage()));
-        }
-        return map(new HashSet<>(sections));
+        return map(repository.saveAll(sectionsDto.getSectionsData()
+                .stream()
+                .map(d -> mapper.mapToNewSectionTemplate(sectionsDto.getObjectTypeId()
+                                                       , sectionsDto.getReportingDocumentId(), d))
+                .toList()));
+
     }
 
     @Override
-    public List<SectionTemplateDto> update(UpdateSectionTemplateDto sectionsDto) {
-        Map<Long, UpdateSectionTemplateDataDto> sectionsData = sectionsDto.getSectionsData()
-                                            .stream()
-                                            .collect(Collectors.toMap(UpdateSectionTemplateDataDto::getId, d -> d));
-        Set<SectionTemplate> sections = repository.findAllByReportingDocumentId(sectionsDto.getReportingDocumentId());
-        if (sections.isEmpty()) {
-            throw new BadRequestException(
-                    String.format("Section Template by reportingDocumentId=%s not found for update "
-                                                                               , sectionsDto.getReportingDocumentId()));
-        }
-        return map(new HashSet<>(repository.saveAll(sections.stream()
-                .map(s -> {
-                    UpdateSectionTemplateDataDto data = sectionsData.get(s.getId());
-                    if (data != null) {
-                        SectionTemplate template = mapper.mapToUpdateSectionTemplate(data);
-                        template.setReportingDocumentId(s.getReportingDocumentId());
-                        return template;
-                    }
-                    return s;
-                }).toList())));
+    public List<SectionTemplateDto> update(List<UpdateSectionTemplateDto> sectionsDto) {
+        List<Long> ids = sectionsDto.stream().map(UpdateSectionTemplateDto::getId).toList();
+        Map<Long, SectionTemplate> sectionDb = repository.findAllById((ids))
+                .stream().collect(Collectors.toMap(SectionTemplate::getId, m -> m));
+        validateIds(sectionDb, ids);
+        return map(repository.saveAll(sectionsDto.stream()
+                                               .map(s -> mapper.mapToUpdateSectionTemplate(sectionDb.get(s.getId()), s))
+                                               .toList()));
     }
 
     @Override
-    public List<SectionTemplateDto> get(Long reportingDocumentId) {
-        return map(repository.findAllByReportingDocumentId(reportingDocumentId));
+    public List<SectionTemplateDto> getAll(Long objectTypeId, Long reportingDocumentId) {
+        return map(repository.findByObjectTypeIdAndReportingDocumentId(objectTypeId, reportingDocumentId).stream()
+                                                                                                         .toList());
     }
 
     @Override
-    public Set<SectionTemplate> create(Long reportingDocumentId) {
-        return repository.findAllByReportingDocumentId(reportingDocumentId)
+    public Set<SectionTemplate> create(Long objectTypeId, Long reportingDocumentId) {
+        return repository.findByObjectTypeIdAndReportingDocumentId(objectTypeId, reportingDocumentId)
                 .stream()
                 .peek(s -> s.setSubsections(subsectionTemplateService.getAllForSectionTemplate(s.getId())))
                 .collect(Collectors.toSet());
     }
 
-    private List<SectionTemplateDto> map(Set<SectionTemplate> sections) {
+    private List<SectionTemplateDto> map(List<SectionTemplate> sections) {
         return sections.stream()
                         .map(mapper::mapToSectionTemplateDto)
                         .toList();
+    }
+
+    private void validateIds(Map<Long, SectionTemplate> sectionTemplates, List<Long> ids) {
+        if (sectionTemplates.size() != ids.size() || sectionTemplates.isEmpty()) {
+            List<Long> idsDb = new ArrayList<>(sectionTemplates.keySet());
+            ids = ids.stream().filter(e -> !idsDb.contains(e)).collect(Collectors.toList());
+            throw new NotFoundException(String.format("Section templates with ids= %s not found", ids));
+        }
     }
 }
