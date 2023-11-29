@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ReportTemplateService {
 
-    ReportTemplateDto create(Long reportingDocumentId, Long objectsTypeId);
+    ReportTemplateDto create(Long objectsTypeId, Long reportingDocumentId);
 
     ReportTemplateDto save(ReportTemplate report);
 
