@@ -15,6 +15,7 @@ import ru.nabokovsg.templates.services.PageTitleTemplateService;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @Validated
 @RestController
@@ -31,7 +32,7 @@ public class PageTitleTemplateController {
 
     @Operation(summary = "Данные титульного листа")
     @PostMapping
-    public ResponseEntity<PageTitleTemplateDto> save(@RequestBody @Valid NewPageTitleTemplateDto pageTitleDto) {
+    public ResponseEntity<List<PageTitleTemplateDto>> save(@RequestBody @Valid NewPageTitleTemplateDto pageTitleDto) {
         return ResponseEntity.ok().body(service.save(pageTitleDto));
     }
 
@@ -41,9 +42,15 @@ public class PageTitleTemplateController {
         return ResponseEntity.ok().body(service.update(pageTitleDto));
     }
 
-    @Operation(summary = "Получить шаблон титульного листа по типу документа")
+    @Operation(summary = "Получить шаблон титульного листа")
+    @GetMapping("/{id}")
+    public ResponseEntity<PageTitleTemplateDto> get(@PathVariable @NotNull @Positive Long id) {
+        return ResponseEntity.ok().body(service.get(id));
+    }
+
+    @Operation(summary = "Получить шаблоны титульных листов по типу документа")
     @GetMapping("/{reportingDocumentId}")
-    public ResponseEntity<PageTitleTemplateDto> get(@PathVariable @NotNull @Positive Long reportingDocumentId) {
-        return ResponseEntity.ok().body(service.get(reportingDocumentId));
+    public ResponseEntity<List<PageTitleTemplateDto>> getAll(@PathVariable @NotNull @Positive Long reportingDocumentId) {
+        return ResponseEntity.ok().body(service.getAll(reportingDocumentId));
     }
 }
