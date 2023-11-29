@@ -17,6 +17,8 @@ public class SectionTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "object_type_id")
+    private Long objectTypeId;
     @Column(name = "reporting_document_id")
     private Long reportingDocumentId;
     @Column(name = "sequential_number")
