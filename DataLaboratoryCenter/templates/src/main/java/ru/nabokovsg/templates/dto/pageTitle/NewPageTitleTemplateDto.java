@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @Setter
 @Getter
@@ -17,6 +18,9 @@ import javax.validation.constraints.Positive;
 @Schema(description = "Данные нового титульного листа")
 public class NewPageTitleTemplateDto {
 
+    @Schema(description = "Индентификатор типа объекта")
+    @NotNull(message = "object type id should not be null")
+    private List<Long> objectTypeIds;
     @Schema(description = "Индентификатор типа отчетного документа")
     @NotNull(message = "reporting document id should not be null")
     @Positive(message = "reporting document id must be positive")
