@@ -2,12 +2,13 @@ package ru.nabokovsg.templates.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.nabokovsg.templates.models.PageTitleTemplate;
-
-import java.util.Optional;
+import java.util.Set;
 
 public interface PageTitleTemplateRepository extends JpaRepository<PageTitleTemplate, Long> {
 
-   Optional<PageTitleTemplate> findByReportingDocumentId(Long reportingDocumentId);
+    boolean existsByReportingDocumentIdAndObjectTypeId(Long reportingDocumentId, Long objectTypeId);
 
-    boolean existsByReportingDocumentId(Long reportingDocumentId);
+    Set<PageTitleTemplate> findAllByReportingDocumentId(Long reportingDocumentId);
+
+    PageTitleTemplate findByObjectTypeIdAndReportingDocumentId(Long objectTypeId, Long reportingDocumentId);
 }
