@@ -1,14 +1,14 @@
 package ru.nabokovsg.templates.services;
 
 import ru.nabokovsg.templates.dto.subsection.subsectionData.NewSubsectionTemplateDataDto;
+import ru.nabokovsg.templates.dto.subsection.subsectionData.SubsectionTemplateDataDto;
 import ru.nabokovsg.templates.dto.subsection.subsectionData.UpdateSubsectionTemplateDataDto;
-import ru.nabokovsg.templates.models.SubsectionTemplateData;
 
 import java.util.List;
 
 public interface SubsectionTemplateDataService {
 
-    List<SubsectionTemplateData> save(List<NewSubsectionTemplateDataDto> subsectionsData);
+    List<SubsectionTemplateDataDto> save(NewSubsectionTemplateDataDto subsectionData);
 
-    List<SubsectionTemplateData> update(UpdateSubsectionTemplateDataDto subsectionData);
+    List<SubsectionTemplateDataDto> update(UpdateSubsectionTemplateDataDto subsectionData);
 }
