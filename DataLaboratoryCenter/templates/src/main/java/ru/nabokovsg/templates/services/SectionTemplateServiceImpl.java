@@ -19,7 +19,6 @@ public class SectionTemplateServiceImpl implements SectionTemplateService {
 
     private final SectionTemplateRepository repository;
     private final SectionTemplateMapper mapper;
-    private final SubsectionTemplateService subsectionTemplateService;
 
     @Override
     public List<SectionTemplateDto> save(NewSectionTemplateDto sectionsDto) {
@@ -64,7 +63,6 @@ public class SectionTemplateServiceImpl implements SectionTemplateService {
     public Set<SectionTemplate> create(Long objectTypeId, Long reportingDocumentId) {
         return repository.findByObjectTypeIdAndReportingDocumentId(objectTypeId, reportingDocumentId)
                 .stream()
-                .peek(s -> s.setSubsections(subsectionTemplateService.getAllForSectionTemplate(s.getId())))
                 .collect(Collectors.toSet());
     }
 
