@@ -36,13 +36,9 @@ public class SubsectionTemplate {
             inverseJoinColumns = {@JoinColumn(name = "subsection_data_id")})
     @ToString.Exclude
     private List<SubsectionTemplateData> subsectionData;
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "subsection_templates_table_templates",
-//            joinColumns = {@JoinColumn(name = "subsection_template_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "table_template_id")})
-//    @ToString.Exclude
-//    private List<TableTemplate> tables;
+    @ManyToOne
+    @JoinColumn(name = "table_id", referencedColumnName = "id")
+    private TableTemplate table;
 //    @ManyToMany(fetch = FetchType.LAZY)
 //    @JoinTable(
 //            name = "subsection_templates_recommendations",
