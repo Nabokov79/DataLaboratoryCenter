@@ -14,6 +14,8 @@ import ru.nabokovsg.templates.dto.subsection.UpdateSubsectionTemplateDto;
 import ru.nabokovsg.templates.services.SubsectionTemplateService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
@@ -33,7 +35,7 @@ public class SubsectionTemplateController {
     @PostMapping
     public ResponseEntity<List<SubsectionTemplateDto>> save(
             @RequestBody @Valid
-            @Parameter(description = "Данные шаблона подразделов") List<NewSubsectionTemplateDto> subsectionsDto) {
+            @Parameter(description = "Шаблон подраздела") List<NewSubsectionTemplateDto> subsectionsDto) {
         return ResponseEntity.ok().body(service.save(subsectionsDto));
     }
 
@@ -41,7 +43,15 @@ public class SubsectionTemplateController {
     @PatchMapping
     public ResponseEntity<List<SubsectionTemplateDto>> update(
             @RequestBody @Valid
-            @Parameter(description = "Данные шаблона подразделов") UpdateSubsectionTemplateDto subsectionsDto) {
+            @Parameter(description = "Шаблон подраздела") UpdateSubsectionTemplateDto subsectionsDto) {
         return ResponseEntity.ok().body(service.update(subsectionsDto));
+    }
+
+    @Operation(summary = "Получить подразделы")
+    @GetMapping("{sectionId}")
+    public ResponseEntity<List<SubsectionTemplateDto>> getAll(
+                                        @PathVariable @NotNull
+                                        @Positive @Parameter(description = "Индентификатор раздела") Long sectionId) {
+        return ResponseEntity.ok().body(service.getAll(sectionId));
     }
 }
