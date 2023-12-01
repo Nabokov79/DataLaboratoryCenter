@@ -7,8 +7,8 @@ public enum TableDataType {
     REFERENCE_POINT_MEASURING,
     CONTROL_POINT_MEASURING,
     VISUAL_MEASURING_CONTROL,
-    REPAIRS_DATA,
-    SURVEYS_DATA;
+    REPAIRS,
+    SURVEYS;
 
     public static Optional<TableDataType> from(String tableDataType) {
         for (TableDataType type : values()) {
