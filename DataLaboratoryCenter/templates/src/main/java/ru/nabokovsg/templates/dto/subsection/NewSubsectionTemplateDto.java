@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.nabokovsg.templates.dto.subsection.subsectionData.NewSubsectionTemplateDataDto;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -37,6 +35,4 @@ public class NewSubsectionTemplateDto {
     @Schema(description = "Показать номер подраздела в документе")
     @NotNull(message = "subsection number should not be null")
     private boolean subsectionNumber;
-    @Schema(description = "Данные подраздела")
-    private NewSubsectionTemplateDataDto subsectionsData;
 }
