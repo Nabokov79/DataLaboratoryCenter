@@ -3,18 +3,18 @@ package ru.nabokovsg.templates.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nabokovsg.templates.dto.subsection.*;
-import ru.nabokovsg.templates.dto.subsection.subsectionData.NewSubsectionTemplateDataDto;
 import ru.nabokovsg.templates.exceptions.NotFoundException;
-import ru.nabokovsg.templates.exceptions.BadRequestException;
 import ru.nabokovsg.templates.mappers.SubsectionTemplateMapper;
-import ru.nabokovsg.templates.models.SubsectionTemplateData;
-import ru.nabokovsg.templates.models.enums.SubsectionDataType;
 import ru.nabokovsg.templates.models.SubsectionTemplate;
+import ru.nabokovsg.templates.models.SubsectionTemplateData;
 import ru.nabokovsg.templates.repository.SubsectionTemplateRepository;
+import ru.nabokovsg.templates.services.converters.ConverterToEnum;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +22,8 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
 
     private final SubsectionTemplateRepository repository;
     private final SubsectionTemplateMapper mapper;
-    private final SubsectionTemplateDataService subsectionDataService;
+    private final ConverterToEnum converter;
+    private final TableTemplateService tableService;
 
     @Override
     public List<SubsectionTemplateDto> save(List<NewSubsectionTemplateDto> subsectionsDto) {
@@ -32,59 +33,51 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
                                                   .distinct()
                                                   .toList()
                                   , subsectionsDto.stream()
-                                .map(t -> convertSubsectionDataType(t.getSubsectionDataType()))
+                                .map(t -> converter.convertToSubsectionDataType(t.getSubsectionDataType()))
                                                     .toList());
-        if (subsectionsDb.size() != subsectionsDto.size()) {
-            if (!subsectionsDb.isEmpty()) {
-                subsectionsDto = filter(subsectionsDb.stream()
-                                                     .map(SubsectionTemplate::getSubsectionDataType)
-                                                     .map(String::valueOf).collect(Collectors.toSet())
-                                      , subsectionsDto);
-            }
-            List<SubsectionTemplateData> data = subsectionDataService.save(subsectionsDto.stream()
-                    .filter(n -> n.getSubsectionsData() != null)
-                    .map(n -> {
-                        NewSubsectionTemplateDataDto d = n.getSubsectionsData();
-                        d.setSubsectionDataType(n.getSubsectionDataType());
-                        return d;
-                    })
-
-                    .toList());
-            List<SubsectionTemplate> subsections = mapper.mapToNewSubsectionTemplate(
-                            subsectionsDto).stream()
-                    .peek(s -> s.setSubsectionData(
-                                    data.stream()
-                                        .filter(d -> d.getSubsectionDataType().equals(s.getSubsectionDataType().name()))
-                                        .toList()))
-                    .toList();
-            subsectionsDb.addAll(repository.saveAll(subsections));
+        if (subsectionsDb.isEmpty()) {
+            List<SubsectionTemplate> subsections = mapper.mapToNewSubsectionTemplate(subsectionsDto);
+            return mapper.mapToSubsectionTemplateDto(repository.saveAll(subsections));
         }
-        return mapper.mapToSubsectionTemplateDto(subsectionsDb.stream().toList());
+        List<SubsectionTemplate> subsections = repository.saveAll(mapper.mapToNewSubsectionTemplate(
+                filter(subsectionsDb.stream()
+                                .map(SubsectionTemplate::getSubsectionDataType)
+                                .map(String::valueOf)
+                                .collect(Collectors.toSet())
+                        , subsectionsDto)));
+        return mapper.mapToSubsectionTemplateDto(Stream.of(subsectionsDb, subsections)
+                                                       .flatMap(Collection::stream)
+                                                       .toList());
     }
 
     @Override
     public List<SubsectionTemplateDto> update(UpdateSubsectionTemplateDto subsectionsDto) {
        if (!repository.existsById(subsectionsDto.getId())) {
            SubsectionTemplate subsections = mapper.mapToUpdateSubsectionTemplate(subsectionsDto);
-           subsections.setSubsectionData(subsectionDataService.update(subsectionsDto.getSubsectionsData()));
            return mapper.mapToSubsectionTemplateDto(List.of(repository.save(subsections)));
        }
        throw new NotFoundException(String.format("SubsectionTemplate with id=%s not found for update", subsectionsDto.getId()));
     }
 
     @Override
-    public Set<SubsectionTemplate> getAllForSectionTemplate(Long sectionId) {
-        return repository.findAllBySectionId(sectionId);
+    public List<SubsectionTemplateDto> getAll(Long sectionId) {
+        return mapper.mapToSubsectionTemplateDto(repository.findAllBySectionId(sectionId).stream().toList());
     }
+
+    @Override
+    public void addSubsectionTemplateData(Long subsectionId, List<SubsectionTemplateData> subsectionTemplateData) {
+        SubsectionTemplate subsection = get(subsectionId);
+        subsection.setSubsectionData(subsectionTemplateData);
+        repository.save(subsection);
+    }
+
+    private SubsectionTemplate get(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Subsection template with id=%s not found", id)));
+    }
+
 
     private List<NewSubsectionTemplateDto> filter(Set<String> subsectionDataType, List<NewSubsectionTemplateDto> subsectionsDto) {
         return subsectionsDto.stream().filter(s -> !subsectionDataType.contains(s.getSubsectionDataType())).toList();
-    }
-
-    private SubsectionDataType convertSubsectionDataType(String subsectionDataType) {
-        return SubsectionDataType.from(subsectionDataType)
-                .orElseThrow(() -> new BadRequestException(
-                        String.format("Unknown subsection data type=%s",subsectionDataType))
-                );
     }
 }
