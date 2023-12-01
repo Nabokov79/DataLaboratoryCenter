@@ -14,10 +14,8 @@ import ru.nabokovsg.templates.exceptions.NotFoundException;
 import ru.nabokovsg.templates.mappers.PageTitleTemplateMapper;
 import ru.nabokovsg.templates.models.PageTitleTemplate;
 import ru.nabokovsg.templates.models.QPageTitleTemplate;
-import ru.nabokovsg.templates.models.builder.TemplateData;
-import ru.nabokovsg.templates.models.enums.DataType;
 import ru.nabokovsg.templates.repository.PageTitleTemplateRepository;
-import ru.nabokovsg.templates.services.factory.StringFactory;
+import ru.nabokovsg.templates.services.builders.StringBuilderService;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -32,9 +30,9 @@ public class PageTitleTemplateServiceImpl implements PageTitleTemplateService {
     private final PageTitleTemplateRepository repository;
     private final PageTitleTemplateMapper mapper;
     private final TemplateClient client;
-    private final StringFactory factory;
     private final HeaderTemplateService headerService;
     private final EntityManager entityManager;
+    private final StringBuilderService stringBuilder;
 
     @Override
     public List<PageTitleTemplateDto> save(NewPageTitleTemplateDto pageTitleDto) {
@@ -47,10 +45,7 @@ public class PageTitleTemplateServiceImpl implements PageTitleTemplateService {
         String year = String.valueOf((LocalDate.now().getYear()));
         HeaderTemplateDto header = headerService.get(pageTitleDto.getReportingDocumentId());
         ReportingDocumentDto reportingDocument = client.getReportingDocument(pageTitleDto.getReportingDocumentId());
-        String signature = factory.create(new TemplateData.Builder()
-                .type(DataType.SIGNATURE)
-                .employee(client.getEmployee(pageTitleDto.getEmployeeId()))
-                .build());
+        String signature = stringBuilder.convertEmployee(client.getEmployee(pageTitleDto.getEmployeeId()));
         List<PageTitleTemplate> pageTitles = objectTypeIds.stream()
                 .map(id -> {
                     PageTitleTemplate pageTitle = mapper.mapToPageTitleTemplate(
@@ -67,10 +62,7 @@ public class PageTitleTemplateServiceImpl implements PageTitleTemplateService {
     public PageTitleTemplateDto update(UpdatePageTitleTemplateDto pageTitleDto) {
         if (repository.existsByReportingDocumentIdAndObjectTypeId(pageTitleDto.getReportingDocumentId()
                                                                , pageTitleDto.getObjectTypeId())) {
-            String signature = factory.create(new TemplateData.Builder()
-                                                             .type(DataType.SIGNATURE)
-                                                             .employee(client.getEmployee(pageTitleDto.getEmployeeId()))
-                                                             .build());
+            String signature = stringBuilder.convertEmployee(client.getEmployee(pageTitleDto.getEmployeeId()));
             String year = String.valueOf((LocalDate.now().getYear()));
             PageTitleTemplate pageTitle = mapper.mapToUpdatePageTitleTemplate(pageTitleDto);
             HeaderTemplateDto header = headerService.get(pageTitleDto.getReportingDocumentId());
