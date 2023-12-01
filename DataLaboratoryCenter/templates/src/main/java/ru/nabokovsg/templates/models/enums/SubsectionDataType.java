@@ -8,6 +8,10 @@ public enum SubsectionDataType {
     ALL_DOCUMENT,
     REGULATORY_DOCUMENT,
     METHODOLOGICAL_DOCUMENT,
+    ORGANIZATION,
+    BRANCH,
+    DEPARTMENT,
+    DOCUMENTATION,
     LABORATORY_DATA;
 
     public static Optional<SubsectionDataType> from(String subsectionDataType) {
