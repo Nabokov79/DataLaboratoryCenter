@@ -18,8 +18,6 @@ public class SubsectionTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "section_id")
-    private Long sectionId;
     @Column(name = "subsection_data_type")
     @Enumerated(EnumType.STRING)
     private SubsectionDataType subsectionDataType;

@@ -33,15 +33,15 @@ public class SubsectionTemplateController {
 
     @Operation(summary = "Добавление нового шаблона подраздела раздела отчета")
     @PostMapping
-    public ResponseEntity<List<SubsectionTemplateDto>> save(
+    public ResponseEntity<SubsectionTemplateDto> save(
             @RequestBody @Valid
-            @Parameter(description = "Шаблон подраздела") List<NewSubsectionTemplateDto> subsectionsDto) {
+            @Parameter(description = "Шаблон подраздела") NewSubsectionTemplateDto subsectionsDto) {
         return ResponseEntity.ok().body(service.save(subsectionsDto));
     }
 
     @Operation(summary = "Добавление нового шаблона подраздела раздела отчета")
     @PatchMapping
-    public ResponseEntity<List<SubsectionTemplateDto>> update(
+    public ResponseEntity<SubsectionTemplateDto> update(
             @RequestBody @Valid
             @Parameter(description = "Шаблон подраздела") UpdateSubsectionTemplateDto subsectionsDto) {
         return ResponseEntity.ok().body(service.update(subsectionsDto));

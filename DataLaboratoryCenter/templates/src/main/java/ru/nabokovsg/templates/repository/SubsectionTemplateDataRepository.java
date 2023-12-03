@@ -10,8 +10,7 @@ import java.util.Set;
 
 public interface SubsectionTemplateDataRepository extends JpaRepository<SubsectionTemplateData, Long> {
 
-    Set<SubsectionTemplateData> findAllBySubsectionIdAndSubsectionDataType(Long subsectionId
-                                                                         , SubsectionDataType subsectionDataType);
+    Set<SubsectionTemplateData> findAllBySubsectionDataType(SubsectionDataType subsectionDataType);
 
     @Query("select s.id from SubsectionTemplateData s where s.subsectionDataType =?1")
     List<Long> findAllIdSubsectionDataType(SubsectionDataType subsectionsDataType);

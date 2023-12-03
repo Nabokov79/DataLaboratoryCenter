@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface SubsectionTemplateService {
 
-    List<SubsectionTemplateDto> save(List<NewSubsectionTemplateDto> subsectionsDto);
+    SubsectionTemplateDto save(NewSubsectionTemplateDto subsectionDto);
 
-    List<SubsectionTemplateDto> update(UpdateSubsectionTemplateDto subsectionsDto);
+    SubsectionTemplateDto update(UpdateSubsectionTemplateDto subsectionsDto);
 
     List<SubsectionTemplateDto> getAll(Long sectionId);
 

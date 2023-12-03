@@ -1,4 +1,4 @@
-package ru.nabokovsg.templates.dto.subsection.subsectionData;
+package ru.nabokovsg.templates.dto.subsectionData;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

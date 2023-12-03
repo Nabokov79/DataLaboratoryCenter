@@ -10,11 +10,8 @@ import ru.nabokovsg.templates.models.SubsectionTemplateData;
 import ru.nabokovsg.templates.repository.SubsectionTemplateRepository;
 import ru.nabokovsg.templates.services.converters.ConverterToEnum;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -26,42 +23,28 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
     private final TableTemplateService tableService;
 
     @Override
-    public List<SubsectionTemplateDto> save(List<NewSubsectionTemplateDto> subsectionsDto) {
-        Set<SubsectionTemplate> subsectionsDb = repository.findAllBySectionIdAndSubsectionDataType(
-                                    subsectionsDto.stream()
-                                                  .map(NewSubsectionTemplateDto::getSectionId)
-                                                  .distinct()
-                                                  .toList()
-                                  , subsectionsDto.stream()
-                                .map(t -> converter.convertToSubsectionDataType(t.getSubsectionDataType()))
-                                                    .toList());
-        if (subsectionsDb.isEmpty()) {
-            List<SubsectionTemplate> subsections = mapper.mapToNewSubsectionTemplate(subsectionsDto);
-            return mapper.mapToSubsectionTemplateDto(repository.saveAll(subsections));
+    public SubsectionTemplateDto save(NewSubsectionTemplateDto subsectionDto) {
+        SubsectionTemplate subsection = repository.findBySubsectionDataType(subsectionDto.getSubsectionDataType());
+        if (subsection == null) {
+             subsection = mapper.mapToNewSubsectionTemplate(subsectionDto);
+             subsection.setSubsectionData(dataService.save(subsectionDto.getSubsectionDataType(), subsectionDto.getSubsectionData()));
+            subsection = repository.save(subsection);
         }
-        List<SubsectionTemplate> subsections = repository.saveAll(mapper.mapToNewSubsectionTemplate(
-                filter(subsectionsDb.stream()
-                                .map(SubsectionTemplate::getSubsectionDataType)
-                                .map(String::valueOf)
-                                .collect(Collectors.toSet())
-                        , subsectionsDto)));
-        return mapper.mapToSubsectionTemplateDto(Stream.of(subsectionsDb, subsections)
-                                                       .flatMap(Collection::stream)
-                                                       .toList());
+        return mapper.mapToSubsectionTemplateDto(subsection);
     }
 
     @Override
-    public List<SubsectionTemplateDto> update(UpdateSubsectionTemplateDto subsectionsDto) {
+    public SubsectionTemplateDto update(UpdateSubsectionTemplateDto subsectionsDto) {
        if (!repository.existsById(subsectionsDto.getId())) {
            SubsectionTemplate subsections = mapper.mapToUpdateSubsectionTemplate(subsectionsDto);
-           return mapper.mapToSubsectionTemplateDto(List.of(repository.save(subsections)));
+           return mapper.mapToSubsectionTemplateDto(repository.save(subsections));
        }
        throw new NotFoundException(String.format("SubsectionTemplate with id=%s not found for update", subsectionsDto.getId()));
     }
 
     @Override
     public List<SubsectionTemplateDto> getAll(Long sectionId) {
-        return mapper.mapToSubsectionTemplateDto(repository.findAllBySectionId(sectionId).stream().toList());
+        return repository.findAllBySectionId(sectionId).stream().map(mapper::mapToSubsectionTemplateDto).toList();
     }
 
     @Override

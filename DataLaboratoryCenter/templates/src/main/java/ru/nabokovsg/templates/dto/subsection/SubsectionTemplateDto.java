@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.nabokovsg.templates.dto.subsection.subsectionData.SubsectionTemplateDataDto;
+import ru.nabokovsg.templates.dto.subsectionData.SubsectionTemplateDataDto;
 import ru.nabokovsg.templates.models.enums.SubsectionDataType;
 
 import java.util.List;

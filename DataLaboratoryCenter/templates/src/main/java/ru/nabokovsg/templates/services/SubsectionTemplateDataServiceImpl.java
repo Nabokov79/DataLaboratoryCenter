@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nabokovsg.templates.client.TemplateClient;
 import ru.nabokovsg.templates.client.dto.DocumentationDto;
-import ru.nabokovsg.templates.dto.subsection.subsectionData.*;
+import ru.nabokovsg.templates.dto.subsectionData.NewDivisionDataDto;
+import ru.nabokovsg.templates.dto.subsectionData.NewDocumentationDataDto;
+import ru.nabokovsg.templates.dto.subsectionData.SubsectionTemplateDataDto;
+import ru.nabokovsg.templates.dto.subsectionData.NewMeasuringToolDataDto;
 import ru.nabokovsg.templates.exceptions.BadRequestException;
 import ru.nabokovsg.templates.mappers.SubsectionDataTemplateMapper;
 import ru.nabokovsg.templates.models.SubsectionTemplateData;
@@ -13,7 +16,11 @@ import ru.nabokovsg.templates.repository.SubsectionTemplateDataRepository;
 import ru.nabokovsg.templates.services.builders.*;
 import ru.nabokovsg.templates.services.converters.ConverterToEnum;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 @Service
 @RequiredArgsConstructor
@@ -24,24 +31,46 @@ public class SubsectionTemplateDataServiceImpl implements SubsectionTemplateData
     private final TemplateClient client;
     private final ConverterToEnum converter;
     private final StringBuilderService stringBuilder;
-    private final SubsectionTemplateService subsectionService;
 
     @Override
-    public List<SubsectionTemplateDataDto> save(NewSubsectionTemplateDataDto subsectionData) {
-        SubsectionDataType type = converter.convertToSubsectionDataType(subsectionData.getSubsectionDataType());
-        Set<SubsectionTemplateData> subsectionDataDb =
-                          repository.findAllBySubsectionIdAndSubsectionDataType(subsectionData.getSubsectionId(), type);
-        if (subsectionDataDb.isEmpty()) {
-            List<SubsectionTemplateData> subsectionTemplateData = repository.saveAll(
-                    getDataByType(type, mapper.mapToNewSubsectionDataDto(subsectionData)));
-            subsectionService.addSubsectionTemplateData(subsectionData.getSubsectionId(), subsectionTemplateData);
-            return mapper.mapToSubsectionDataDto(subsectionTemplateData);
-        }
-        return mapper.mapToSubsectionDataDto(subsectionDataDb.stream().toList());
+    public SubsectionTemplateDataDto saveDivisionData(NewDivisionDataDto divisionDataDto) {
+        return null;
     }
 
     @Override
-    public List<SubsectionTemplateDataDto> update(UpdateSubsectionTemplateDataDto subsectionData) {
+    public SubsectionTemplateDataDto saveDocumentationData(NewDocumentationDataDto documentationDataDto) {
+        List<DocumentationDto> documentations = client.getObjectsType(documentationDataDto.getObjectTypeId()).getDocumentations();
+        if (documentationDataDto.getMethodologicalDocument()) {
+            return documentations.stream()
+                    .filter(d -> d.getMethodologicalDocument().equals(true))
+                    .toList();
+        }
+        if (documentationDataDto.getRegulatoryDocument()) {
+            return documentations.stream()
+                    .filter(d -> d.getRegulatoryDocument().equals(true))
+                    .toList();
+        }
+        return null;
+    }
+
+    @Override
+    public SubsectionTemplateDataDto saveMeasuringToolData(NewMeasuringToolDataDto measuringToolDataDto) {
+        return null;
+    }
+
+
+    public List<SubsectionTemplateData> save(String subsectionDataType, NewDivisionDataDto subsectionData) {
+        SubsectionDataType type = converter.convertToSubsectionDataType(subsectionDataType);
+        Set<SubsectionTemplateData> subsectionsData = repository.findAllBySubsectionDataType(type);
+        if (subsectionsData.isEmpty()) {
+            subsectionsData = new HashSet<>(repository.saveAll(
+                    getDataByType(type, mapper.mapToNewSubsectionDataDto(subsectionData))));
+        }
+        return subsectionsData.stream().toList();
+    }
+
+
+    public List<SubsectionTemplateDataDto> update(NewMeasuringToolDataDto subsectionData) {
         SubsectionDataType type = converter.convertToSubsectionDataType(subsectionData.getSubsectionDataType());
         List<Long> ids = repository.findAllIdSubsectionDataType(
                 converter.convertToSubsectionDataType(subsectionData.getSubsectionDataType())
@@ -57,7 +86,7 @@ public class SubsectionTemplateDataServiceImpl implements SubsectionTemplateData
          return mapper.mapToSubsectionDataDto(repository.saveAll(subsectionsDataDb));
     }
 
-    private List<SubsectionTemplateData> getDataByType(SubsectionDataType type, SubsectionDataDto subsectionData) {
+    private List<SubsectionTemplateData> getDataByType(SubsectionDataType type, NewDocumentationDataDto subsectionData) {
         switch (type) {
             case ORGANIZATION -> {
                 return List.of(mapper.mapForDivisionData(type

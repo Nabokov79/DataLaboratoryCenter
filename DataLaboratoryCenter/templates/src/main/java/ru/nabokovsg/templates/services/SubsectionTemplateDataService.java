@@ -1,14 +1,15 @@
 package ru.nabokovsg.templates.services;
 
-import ru.nabokovsg.templates.dto.subsection.subsectionData.NewSubsectionTemplateDataDto;
-import ru.nabokovsg.templates.dto.subsection.subsectionData.SubsectionTemplateDataDto;
-import ru.nabokovsg.templates.dto.subsection.subsectionData.UpdateSubsectionTemplateDataDto;
-
-import java.util.List;
+import ru.nabokovsg.templates.dto.subsectionData.NewDivisionDataDto;
+import ru.nabokovsg.templates.dto.subsectionData.NewDocumentationDataDto;
+import ru.nabokovsg.templates.dto.subsectionData.NewMeasuringToolDataDto;
+import ru.nabokovsg.templates.dto.subsectionData.SubsectionTemplateDataDto;
 
 public interface SubsectionTemplateDataService {
 
-    List<SubsectionTemplateDataDto> save(NewSubsectionTemplateDataDto subsectionData);
+    SubsectionTemplateDataDto saveDivisionData(NewDivisionDataDto divisionDataDto);
 
-    List<SubsectionTemplateDataDto> update(UpdateSubsectionTemplateDataDto subsectionData);
+    SubsectionTemplateDataDto saveDocumentationData(NewDocumentationDataDto documentationDataDto);
+
+    SubsectionTemplateDataDto saveMeasuringToolData(NewMeasuringToolDataDto measuringToolDataDto);
 }
