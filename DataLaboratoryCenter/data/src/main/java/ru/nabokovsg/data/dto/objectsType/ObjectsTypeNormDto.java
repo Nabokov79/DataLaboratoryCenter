@@ -20,8 +20,6 @@ public class ObjectsTypeNormDto {
     private String objectName;
     @Schema(description = "Модель объекта")
     private String model;
-    @Schema(description = "Объем объекта")
-    private Integer volume;
     @Schema(description = "Положение объекта")
     private String orientation;
     @Schema(description = "Нормы бюраковки объекта")

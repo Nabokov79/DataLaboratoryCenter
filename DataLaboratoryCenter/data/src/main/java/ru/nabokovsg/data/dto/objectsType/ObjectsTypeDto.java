@@ -22,8 +22,6 @@ public class ObjectsTypeDto {
     private Long id;
     @Schema(description = "Название объекта")
     private String objectName;
-    @Schema(description = "Объем объекта")
-    private Integer volume;
     @Schema(description = "Модель объекта")
     private String model;
     @Schema(description = "Положение объекта")
