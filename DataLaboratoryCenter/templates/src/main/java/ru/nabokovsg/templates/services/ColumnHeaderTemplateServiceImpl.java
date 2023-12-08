@@ -4,12 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nabokovsg.templates.dto.tables.columns.NewColumnHeaderTemplateDto;
 import ru.nabokovsg.templates.dto.tables.columns.UpdateColumnHeaderTemplateDto;
-import ru.nabokovsg.templates.exceptions.BadRequestException;
 import ru.nabokovsg.templates.exceptions.NotFoundException;
 import ru.nabokovsg.templates.mappers.ColumnHeaderTemplateMapper;
 import ru.nabokovsg.templates.models.ColumnHeaderTemplate;
-import ru.nabokovsg.templates.models.enums.ColumnDataType;
 import ru.nabokovsg.templates.repository.ColumnHeaderTemplateRepository;
+import ru.nabokovsg.templates.services.converter.ConverterStringToEnumService;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,6 +20,7 @@ public class ColumnHeaderTemplateServiceImpl implements ColumnHeaderTemplateServ
 
     private final ColumnHeaderTemplateRepository repository;
     private final ColumnHeaderTemplateMapper mapper;
+    private final ConverterStringToEnumService converter;
 
     @Override
     public List<ColumnHeaderTemplate> save(List<NewColumnHeaderTemplateDto> templatesDto) {
@@ -41,7 +41,7 @@ public class ColumnHeaderTemplateServiceImpl implements ColumnHeaderTemplateServ
                                 .stream()
                                 .map(t -> {
                                     ColumnHeaderTemplate template = mapper.mapToNewColumnHeaderTemplates(t);
-                                    template.setColumnDataType(covertColumnDataType(t.getColumnDataType()));
+                                    template.setColumnDataType(converter.covertToColumnDataType(t.getColumnDataType()));
                                     return template;
                                 })
                                 .toList()))
@@ -53,11 +53,6 @@ public class ColumnHeaderTemplateServiceImpl implements ColumnHeaderTemplateServ
     public List<ColumnHeaderTemplate> update(List<UpdateColumnHeaderTemplateDto> templatesDto) {
         validateIds(templatesDto.stream().map(UpdateColumnHeaderTemplateDto::getId).toList());
         return repository.saveAll(templatesDto.stream().map(mapper::mapToUpdateColumnHeaderTemplates).toList());
-    }
-
-    private ColumnDataType covertColumnDataType(String columnDataType) {
-        return ColumnDataType.from(columnDataType)
-                .orElseThrow(() -> new BadRequestException(String.format("Unknown column data type=%s", columnDataType)));
     }
 
     private void validateIds(List<Long> ids) {

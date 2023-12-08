@@ -12,7 +12,18 @@ public enum ColumnDataType {
     STRING_NUMBER,
     ELEMENT,
     DEFECT,
-    REPAIR_PLACE;
+    MEASURING_PLACE,
+    REPAIR_PLACE,
+    DESIGN_THICKNESS,
+    MEASURING_THICKNESS,
+    MAX_CORROSION,
+    RESIDUAL_THICKNESS,
+    ACCEPTABLE_THICKNESS,
+    HEIGHT,
+    PRECIPITATION,
+    AMOUNT_DEVIATION,
+    DIFFERENCE_NEIGHBORING_POINT,
+    DIFFERENCE_OPPOSITE_POINT;
 
     public static Optional<ColumnDataType> from(String columnDataType) {
         for (ColumnDataType type : values()) {

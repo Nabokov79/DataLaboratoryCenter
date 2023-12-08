@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import ru.nabokovsg.templates.client.enums.DocumentType;
-import ru.nabokovsg.templates.client.enums.ProtocolType;
+import ru.nabokovsg.templates.models.enums.DocumentType;
+import ru.nabokovsg.templates.models.enums.ProtocolType;
 
 @Setter
 @Getter

@@ -4,11 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ru.nabokovsg.templates.models.SubsectionTemplate;
 import ru.nabokovsg.templates.models.enums.SubsectionDataType;
 
-import java.util.Set;
-
 public interface SubsectionTemplateRepository extends JpaRepository<SubsectionTemplate, Long> {
 
-    SubsectionTemplate findBySubsectionDataType(String subsectionDataType);
-
-    Set<SubsectionTemplate> findAllBySectionId(Long sectionId);
+    SubsectionTemplate findBySubsectionDataType(SubsectionDataType subsectionDataType);
 }

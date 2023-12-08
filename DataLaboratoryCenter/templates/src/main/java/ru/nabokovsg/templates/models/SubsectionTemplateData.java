@@ -19,12 +19,13 @@ public class SubsectionTemplateData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Column(name = "object_type_id")
-    private Long objectTypeId;
     @Column(name = "subsection_data_type")
     @Enumerated(EnumType.STRING)
     private SubsectionDataType subsectionDataType;
+    @Column(name = "division_id")
+    private Long divisionId;
+    @Column(name = "object_type_id")
+    private Long objectTypeId;
     @Column(name = "subsection_data")
     private String subsectionData;
 

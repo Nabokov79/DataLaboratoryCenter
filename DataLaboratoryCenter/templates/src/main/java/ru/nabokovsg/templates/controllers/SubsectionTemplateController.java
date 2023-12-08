@@ -16,7 +16,6 @@ import ru.nabokovsg.templates.services.SubsectionTemplateService;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @RestController
 @RequestMapping(
@@ -47,11 +46,13 @@ public class SubsectionTemplateController {
         return ResponseEntity.ok().body(service.update(subsectionsDto));
     }
 
-    @Operation(summary = "Получить подразделы")
-    @GetMapping("{sectionId}")
-    public ResponseEntity<List<SubsectionTemplateDto>> getAll(
-                                        @PathVariable @NotNull
-                                        @Positive @Parameter(description = "Индентификатор раздела") Long sectionId) {
-        return ResponseEntity.ok().body(service.getAll(sectionId));
+    @Operation(summary = "Добавить таблицу")
+    @PostMapping("/table/{id}")
+    public ResponseEntity<SubsectionTemplateDto> addTableData(
+                                                @PathVariable @NotNull @Positive
+                                                @Parameter(description = "Индентификатор подраздела") Long id,
+                                                @RequestParam("tableId") @NotNull @Positive
+                                                @Parameter(description = "Индентификатор таблицы") Long tableId) {
+        return ResponseEntity.ok().body(service.addTableData(id, tableId));
     }
 }

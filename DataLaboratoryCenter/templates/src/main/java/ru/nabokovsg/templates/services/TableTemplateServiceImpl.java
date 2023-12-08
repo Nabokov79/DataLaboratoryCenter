@@ -2,16 +2,12 @@ package ru.nabokovsg.templates.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nabokovsg.templates.dto.tables.NewTableTemplateDto;
-import ru.nabokovsg.templates.dto.tables.ShortTableTemplateDto;
-import ru.nabokovsg.templates.dto.tables.TableTemplateDto;
-import ru.nabokovsg.templates.dto.tables.UpdateTableTemplateDto;
-import ru.nabokovsg.templates.exceptions.BadRequestException;
+import ru.nabokovsg.templates.dto.tables.*;
 import ru.nabokovsg.templates.exceptions.NotFoundException;
 import ru.nabokovsg.templates.mappers.TableTemplateMapper;
 import ru.nabokovsg.templates.models.TableTemplate;
-import ru.nabokovsg.templates.models.enums.TableDataType;
 import ru.nabokovsg.templates.repository.TableTemplateRepository;
+import ru.nabokovsg.templates.services.converter.ConverterStringToEnumService;
 
 import java.util.List;
 
@@ -22,12 +18,27 @@ public class TableTemplateServiceImpl implements TableTemplateService {
     private final TableTemplateRepository repository;
     private final TableTemplateMapper mapper;
     private final ColumnHeaderTemplateService columnHeaderService;
+    private final ConverterStringToEnumService converter;
 
     @Override
-    public TableTemplateDto save(NewTableTemplateDto tableDto) {
-        TableTemplate table = repository.findByTableDataType(convertTableDataType(tableDto.getTableDataType()));
+    public TableTemplateDto saveForProtocol(NewProtocolTableTemplateDto tableDto) {
+        TableTemplate table = repository.findByProtocolTypeAndTableDataType(
+                                                                     converter.convertToProtocolType(tableDto.getProtocolType())
+                                                                   , converter.convertToTableDataType(tableDto.getTableDataType()));
         if (table == null) {
-            table = mapper.mapToNewTableTemplate(tableDto);
+            table = mapper.mapToNewProtocolTableTemplate(tableDto);
+            table.setColumnHeaders(columnHeaderService.save(tableDto.getColumnHeaders()));
+        }
+        return mapper.mapToTableTemplateDto(repository.save(table));
+    }
+
+    @Override
+    public TableTemplateDto saveForSubsection(NewSubsectionTableTemplateDto tableDto) {
+        TableTemplate table = repository.findBySubsectionDataType(
+                                                 converter.convertToSubsectionDataType(tableDto.getSubsectionDataType())
+                                                 );
+        if (table == null) {
+            table = mapper.mapToNewSubsectionTableTemplate(tableDto);
             table.setColumnHeaders(columnHeaderService.save(tableDto.getColumnHeaders()));
         }
         return mapper.mapToTableTemplateDto(repository.save(table));
@@ -48,8 +59,17 @@ public class TableTemplateServiceImpl implements TableTemplateService {
         return repository.findAll().stream().map(mapper::mapToShortTableTemplateDto).toList();
     }
 
-    private TableDataType convertTableDataType(String tableDataType) {
-        return TableDataType.from(tableDataType)
-                .orElseThrow(() -> new BadRequestException(String.format("Unknown table data type=%s", tableDataType)));
+    @Override
+    public TableTemplate getById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Table Template with id=%s not found", id)));
+    }
+
+    @Override
+    public List<TableTemplate> getAllById(List<Long> ids) {
+        List<TableTemplate> tables = repository.findAllById(ids);
+        if (tables.isEmpty()) {
+            throw new NotFoundException(String.format("Tables Templates by ids=%s not found", ids));
+        }
+        return tables;
     }
 }

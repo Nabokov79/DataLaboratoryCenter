@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -16,6 +17,13 @@ import javax.validation.constraints.Positive;
 @Schema(description = "Данные для получения нормативно-технической документации")
 public class NewDocumentationDataDto {
 
+    @Schema(description = "Индентификатор подраздела")
+    @NotNull(message = "subsection id should not be null")
+    @Positive(message = "subsection id can only be positive")
+    private Long subsectionId;
+    @Schema(description = "Тип данных")
+    @NotBlank(message = "subsection data type should not be blank")
+    private String subsectionDataType;
     @Schema(description = "Идентификатор типа объекта")
     @NotNull(message = "object type id should not be null")
     @Positive(message = "object type id can only be positive")

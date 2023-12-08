@@ -16,6 +16,8 @@ public class ShortSurveyObjectDto {
     private Long id;
     @Schema(description = "Тип объекта")
     private ShortObjectsTypeDto objectType;
-    @Schema(description = "Объем объекта")
+    @Schema(description = "Стационарный номер")
     private Integer number;
+    @Schema(description = "Объем объекта")
+    private Integer volume;
 }

@@ -4,12 +4,14 @@ import ru.nabokovsg.templates.dto.subsectionData.NewDivisionDataDto;
 import ru.nabokovsg.templates.dto.subsectionData.NewDocumentationDataDto;
 import ru.nabokovsg.templates.dto.subsectionData.NewMeasuringToolDataDto;
 import ru.nabokovsg.templates.dto.subsectionData.SubsectionTemplateDataDto;
+import java.util.List;
 
 public interface SubsectionTemplateDataService {
 
     SubsectionTemplateDataDto saveDivisionData(NewDivisionDataDto divisionDataDto);
 
-    SubsectionTemplateDataDto saveDocumentationData(NewDocumentationDataDto documentationDataDto);
+    List<SubsectionTemplateDataDto> saveDocumentationData(NewDocumentationDataDto documentationDataDto);
 
-    SubsectionTemplateDataDto saveMeasuringToolData(NewMeasuringToolDataDto measuringToolDataDto);
+    List<SubsectionTemplateDataDto> saveMeasuringToolData(Long subsectionId
+                                                        , List<NewMeasuringToolDataDto> measuringToolDataDto);
 }

@@ -15,6 +15,9 @@ import javax.validation.constraints.NotBlank;
 @Schema(description = "Данные для изменения информации в подразделе")
 public class NewMeasuringToolDataDto {
 
+    @Schema(description = "Тип данных")
+    @NotBlank(message = "subsection data type should not be blank")
+    private String subsectionDataType;
     @Schema(description = "Название")
     @NotBlank(message = "toll should not be blank")
     private String toll;

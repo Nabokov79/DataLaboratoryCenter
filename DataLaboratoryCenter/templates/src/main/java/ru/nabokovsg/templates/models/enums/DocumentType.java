@@ -1,4 +1,4 @@
-package ru.nabokovsg.templates.client.enums;
+package ru.nabokovsg.templates.models.enums;
 
 import java.util.Optional;
 

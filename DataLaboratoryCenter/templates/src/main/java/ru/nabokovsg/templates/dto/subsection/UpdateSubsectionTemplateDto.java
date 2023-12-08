@@ -21,6 +21,9 @@ public class UpdateSubsectionTemplateDto {
     @NotNull(message = "id should not be null")
     @Positive(message = "id can only be positive")
     private Long id;
+    @Schema(description = "Тип данных подраздела")
+    @NotBlank(message = "data type subsection should not be blank")
+    private String subsectionDataType;
     @Schema(description = "Порядковый номер подраздела")
     @NotNull(message = "sequential subsection number should not be null")
     @Positive(message = "sequential subsection number can only be positive")
@@ -30,9 +33,6 @@ public class UpdateSubsectionTemplateDto {
     private String subsectionName;
     @Schema(description = "Текст подраздела")
     private String subsectionText;
-    @Schema(description = "Тип данных подраздела")
-    @NotBlank(message = "data type subsection should not be blank")
-    private String subsectionDataType;
     @Schema(description = "Показать номер подраздела в документе")
     @NotNull(message = "subsection number should not be null")
     private boolean subsectionNumber;

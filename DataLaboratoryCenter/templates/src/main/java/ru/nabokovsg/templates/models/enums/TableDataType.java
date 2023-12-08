@@ -4,11 +4,15 @@ import java.util.Optional;
 
 public enum TableDataType {
 
-    REFERENCE_POINT_MEASURING,
-    CONTROL_POINT_MEASURING,
     VISUAL_MEASURING_CONTROL,
+    ULTRASONIC_CONTROL,
+    ULTRASONIC_MEASURING_THICKNESS,
+    HARDNESS_MEASURING,
+    MEASUREMENT_POINTS,
+    MEASUREMENT_REFERENCE_POINTS,
     REPAIRS,
-    SURVEYS;
+    SURVEYS,
+    SUMMARY_DATA;
 
     public static Optional<TableDataType> from(String tableDataType) {
         for (TableDataType type : values()) {

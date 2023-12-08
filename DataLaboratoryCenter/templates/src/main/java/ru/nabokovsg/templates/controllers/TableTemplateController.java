@@ -8,10 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.nabokovsg.templates.dto.tables.NewTableTemplateDto;
-import ru.nabokovsg.templates.dto.tables.ShortTableTemplateDto;
-import ru.nabokovsg.templates.dto.tables.UpdateTableTemplateDto;
-import ru.nabokovsg.templates.dto.tables.TableTemplateDto;
+import ru.nabokovsg.templates.dto.tables.*;
 import ru.nabokovsg.templates.services.TableTemplateService;
 
 import javax.validation.Valid;
@@ -31,11 +28,19 @@ public class TableTemplateController {
     private final TableTemplateService service;
 
     @Operation(summary = "Добавление нового шаблона таблицы")
-    @PostMapping
-    public ResponseEntity<TableTemplateDto> save(
-                                      @RequestBody @Valid
-                                      @Parameter(description = "Данные шаблона таблицы") NewTableTemplateDto tableDto) {
-        return ResponseEntity.ok().body(service.save(tableDto));
+    @PostMapping("/protocol")
+    public ResponseEntity<TableTemplateDto> saveForProtocol(
+                              @RequestBody @Valid
+                              @Parameter(description = "Данные шаблона таблицы") NewProtocolTableTemplateDto tableDto) {
+        return ResponseEntity.ok().body(service.saveForProtocol(tableDto));
+    }
+
+    @Operation(summary = "Добавление нового шаблона таблицы")
+    @PostMapping("/subsection")
+    public ResponseEntity<TableTemplateDto> saveForSubsection(
+                            @RequestBody @Valid
+                            @Parameter(description = "Данные шаблона таблицы") NewSubsectionTableTemplateDto tableDto) {
+        return ResponseEntity.ok().body(service.saveForSubsection(tableDto));
     }
 
     @Operation(summary = "Изменение информации в шаблоне таблицы")

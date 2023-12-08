@@ -9,10 +9,8 @@ import ru.nabokovsg.templates.dto.title.TitleDto;
 import ru.nabokovsg.templates.mappers.ProtocolTemplateMapper;
 import ru.nabokovsg.templates.models.HeaderTemplate;
 import ru.nabokovsg.templates.models.ProtocolTemplate;
-import ru.nabokovsg.templates.models.Title;
 import ru.nabokovsg.templates.repository.ProtocolTemplateRepository;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Service
@@ -29,7 +27,8 @@ public class ProtocolTemplateServiceImpl implements ProtocolTemplateService {
 
     @Override
     public ProtocolTemplateDto get(Long objectTypeId, Long reportingDocumentId) {
-        ProtocolTemplate protocol = repository.findByObjectTypeIdAndReportingDocumentId(objectTypeId, reportingDocumentId);
+        ProtocolTemplate protocol = repository.findByObjectTypeIdAndReportingDocumentId(objectTypeId
+                                                                                      , reportingDocumentId);
         if (protocol == null) {
             throw new NotFoundException(
                     String.format("Protocol template by objectsTypeId=%s, reportingDocumentId=%s not found"

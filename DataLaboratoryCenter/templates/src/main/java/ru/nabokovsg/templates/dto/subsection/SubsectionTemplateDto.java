@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.nabokovsg.templates.dto.subsectionData.SubsectionTemplateDataDto;
+import ru.nabokovsg.templates.dto.tables.TableTemplateDto;
 import ru.nabokovsg.templates.models.enums.SubsectionDataType;
 
 import java.util.List;
@@ -29,8 +30,8 @@ public class SubsectionTemplateDto {
     private String subsectionText;
     @Schema(description = "Данные подраздела")
     private List<SubsectionTemplateDataDto> subsectionData;
-//    @Schema(description = "Шаблон таблиц")
-//    private List<TableTemplateDto> tables;
+    @Schema(description = "Шаблон таблицы")
+    private TableTemplateDto table;
 //    @Schema(description = "Шаблон рекомендаций")
 //    private List<RecommendationTemplateDto> recommendations;
 //    @Schema(description = "Шаблон заключений")

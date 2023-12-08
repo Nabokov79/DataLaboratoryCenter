@@ -2,6 +2,7 @@ package ru.nabokovsg.templates.services.builders;
 
 import org.springframework.stereotype.Service;
 import ru.nabokovsg.templates.client.dto.*;
+import ru.nabokovsg.templates.dto.subsectionData.DivisionDataParam;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -80,31 +81,44 @@ public class StringBuilderServiceImpl implements StringBuilderService {
     }
 
     @Override
-    public String convertOrganization(OrganizationDto organization) {
+    public String convertOrganization(OrganizationDto organization, DivisionDataParam param) {
         return String.join(". ", organization.getOrganization()
                 , convertToShortRequisites(organization.getContact(), organization.getAddress())
                 , convertLicense(organization.getLicenses()));
     }
 
     @Override
-    public String convertBranch(String divisionName, BranchDto branch) {
-        String name = branch.getBranch();
-        if (divisionName != null) {
-            name = divisionName;
+    public String convertBranch(BranchDto branch, DivisionDataParam param) {
+        String divisionData = getDivisionName(branch.getBranch(), param.getDivisionName());
+        if (param.getAddress()) {
+            divisionData = String.join(". ", divisionData
+                                                    , convertContacts(branch.getContact(), branch.getAddress()));
+
         }
-        return String.join(". ", name
-                , convertToShortRequisites(branch.getContact(), branch.getAddress())
-                , convertLicense(branch.getLicenses()));
+        if (param.getLicense()) {
+            divisionData = String.join(". ", divisionData, convertLicense(branch.getLicenses()));
+        }
+        return divisionData;
     }
 
     @Override
-    public String convertDepartment(String divisionName, DepartmentDto department) {
-        String name = department.getDepartment();
-        if (divisionName != null) {
-            name = divisionName;
+    public String convertDepartment(DepartmentDto department, DivisionDataParam param) {
+        String divisionData = getDivisionName(department.getDepartment(), param.getDivisionName());
+        if (param.getAddress()) {
+            divisionData = String.join(". ", divisionData
+                                                   , convertContacts(department.getContact(), department.getAddress()));
+
         }
-        return String.join(". ", name
-                , convertToShortRequisites(department.getContact(), department.getAddress())
-                , convertLicense(department.getLicenses()));
+        if (param.getLicense()) {
+            divisionData = String.join(". ", divisionData, convertLicense(department.getLicenses()));
+        }
+        return divisionData;
+    }
+
+    private String getDivisionName(String name, String divisionName){
+        if (divisionName != null) {
+            return divisionName;
+        }
+        return name;
     }
 }

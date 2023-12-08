@@ -1,6 +1,7 @@
 package ru.nabokovsg.templates.services.builders;
 
 import ru.nabokovsg.templates.client.dto.*;
+import ru.nabokovsg.templates.dto.subsectionData.DivisionDataParam;
 
 import java.util.List;
 
@@ -18,9 +19,9 @@ public interface StringBuilderService {
 
     String convertEmployee(ShortEmployeeDto employee);
 
-    String convertOrganization(OrganizationDto organization);
+    String convertOrganization(OrganizationDto organization, DivisionDataParam param);
 
-    String convertBranch(String divisionName, BranchDto branch);
+    String convertBranch(BranchDto branch, DivisionDataParam param);
 
-    String convertDepartment(String divisionName, DepartmentDto department);
+    String convertDepartment(DepartmentDto department, DivisionDataParam param);
 }

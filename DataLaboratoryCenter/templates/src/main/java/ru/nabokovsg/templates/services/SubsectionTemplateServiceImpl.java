@@ -8,10 +8,9 @@ import ru.nabokovsg.templates.mappers.SubsectionTemplateMapper;
 import ru.nabokovsg.templates.models.SubsectionTemplate;
 import ru.nabokovsg.templates.models.SubsectionTemplateData;
 import ru.nabokovsg.templates.repository.SubsectionTemplateRepository;
-import ru.nabokovsg.templates.services.converters.ConverterToEnum;
+import ru.nabokovsg.templates.services.converter.ConverterStringToEnumService;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -19,16 +18,17 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
 
     private final SubsectionTemplateRepository repository;
     private final SubsectionTemplateMapper mapper;
-    private final ConverterToEnum converter;
     private final TableTemplateService tableService;
+    private final ConverterStringToEnumService converter;
 
     @Override
     public SubsectionTemplateDto save(NewSubsectionTemplateDto subsectionDto) {
-        SubsectionTemplate subsection = repository.findBySubsectionDataType(subsectionDto.getSubsectionDataType());
+        SubsectionTemplate subsection = repository.findBySubsectionDataType(
+                                            converter.convertToSubsectionDataType(subsectionDto.getSubsectionDataType())
+                                            );
         if (subsection == null) {
              subsection = mapper.mapToNewSubsectionTemplate(subsectionDto);
-             subsection.setSubsectionData(dataService.save(subsectionDto.getSubsectionDataType(), subsectionDto.getSubsectionData()));
-            subsection = repository.save(subsection);
+             subsection = repository.save(subsection);
         }
         return mapper.mapToSubsectionTemplateDto(subsection);
     }
@@ -39,28 +39,34 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
            SubsectionTemplate subsections = mapper.mapToUpdateSubsectionTemplate(subsectionsDto);
            return mapper.mapToSubsectionTemplateDto(repository.save(subsections));
        }
-       throw new NotFoundException(String.format("SubsectionTemplate with id=%s not found for update", subsectionsDto.getId()));
+       throw new NotFoundException(
+                           String.format("SubsectionTemplate with id=%s not found for update", subsectionsDto.getId()));
     }
-
     @Override
-    public List<SubsectionTemplateDto> getAll(Long sectionId) {
-        return repository.findAllBySectionId(sectionId).stream().map(mapper::mapToSubsectionTemplateDto).toList();
-    }
-
-    @Override
-    public void addSubsectionTemplateData(Long subsectionId, List<SubsectionTemplateData> subsectionTemplateData) {
-        SubsectionTemplate subsection = get(subsectionId);
+    public void addSubsectionTemplateData(Long id, List<SubsectionTemplateData> subsectionTemplateData) {
+        SubsectionTemplate subsection = get(id);
         subsection.setSubsectionData(subsectionTemplateData);
         repository.save(subsection);
     }
 
-    private SubsectionTemplate get(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Subsection template with id=%s not found", id)));
+    @Override
+    public SubsectionTemplateDto addTableData(Long id, Long tableId) {
+        SubsectionTemplate subsection = get(id);
+        subsection.setTable(tableService.getById(tableId));
+        return mapper.mapToSubsectionTemplateDto(repository.save(subsection));
     }
 
+    @Override
+    public List<SubsectionTemplate> getAllById(List<Long> id) {
+        List<SubsectionTemplate> subsections = repository.findAllById(id);
+        if (subsections.isEmpty()) {
+            throw new NotFoundException(String.format("Subsection template with ids=%s not found", id));
+        }
+        return subsections;
+    }
 
-    private List<NewSubsectionTemplateDto> filter(Set<String> subsectionDataType, List<NewSubsectionTemplateDto> subsectionsDto) {
-        return subsectionsDto.stream().filter(s -> !subsectionDataType.contains(s.getSubsectionDataType())).toList();
+    private SubsectionTemplate get(Long id) {
+        return repository.findById(id)
+               .orElseThrow(() -> new NotFoundException(String.format("Subsection template with id=%s not found", id)));
     }
 }

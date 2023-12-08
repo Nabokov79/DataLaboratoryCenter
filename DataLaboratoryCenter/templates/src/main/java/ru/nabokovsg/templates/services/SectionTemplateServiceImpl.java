@@ -61,9 +61,7 @@ public class SectionTemplateServiceImpl implements SectionTemplateService {
 
     @Override
     public Set<SectionTemplate> create(Long objectTypeId, Long reportingDocumentId) {
-        return repository.findByObjectTypeIdAndReportingDocumentId(objectTypeId, reportingDocumentId)
-                .stream()
-                .collect(Collectors.toSet());
+        return new HashSet<>(repository.findByObjectTypeIdAndReportingDocumentId(objectTypeId, reportingDocumentId));
     }
 
     private List<SectionTemplateDto> map(List<SectionTemplate> sections) {

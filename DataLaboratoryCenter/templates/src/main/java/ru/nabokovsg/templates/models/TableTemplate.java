@@ -1,6 +1,8 @@
 package ru.nabokovsg.templates.models;
 
 import lombok.*;
+import ru.nabokovsg.templates.models.enums.ProtocolType;
+import ru.nabokovsg.templates.models.enums.SubsectionDataType;
 import ru.nabokovsg.templates.models.enums.TableDataType;
 
 import javax.persistence.*;
@@ -17,6 +19,12 @@ public class TableTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "protocol_type")
+    @Enumerated(EnumType.STRING)
+    private ProtocolType protocolType;
+    @Column(name = "subsection_data_type")
+    @Enumerated(EnumType.STRING)
+    private SubsectionDataType subsectionDataType;
     @Column(name = "table_data_type")
     @Enumerated(EnumType.STRING)
     private TableDataType tableDataType;

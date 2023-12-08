@@ -15,8 +15,6 @@ public class ShortObjectsTypeDto {
     private Long id;
     @Schema(description = "Название объекта")
     private String objectName;
-    @Schema(description = "Объем объекта")
-    private Integer volume;
     @Schema(description = "Положение объекта")
     private String orientation;
     @Schema(description = "Модель объекта")

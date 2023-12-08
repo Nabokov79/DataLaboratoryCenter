@@ -18,9 +18,12 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Данные новой таблицы подраздела")
-public class NewTableTemplateDto {
+@Schema(description = "Данные новой таблицы протокола")
+public class NewProtocolTableTemplateDto {
 
+    @Schema(description = "Тип протокола")
+    @NotBlank(message = "protocol type should not be blank")
+    private String protocolType;
     @Schema(description = "Тип данных таблицы")
     @NotBlank(message = "table data type should not be blank")
     private String tableDataType;

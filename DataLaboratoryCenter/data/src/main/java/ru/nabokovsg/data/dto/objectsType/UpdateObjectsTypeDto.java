@@ -24,8 +24,6 @@ public class UpdateObjectsTypeDto {
     private String objectName;
     @Schema(description = "Положение объекта")
     private String orientation;
-    @Schema(description = "Объем объекта")
-    private Integer volume;
     @Schema(description = "Модель объекта")
     private String model;
 }

@@ -2,6 +2,7 @@ package ru.nabokovsg.templates.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.nabokovsg.templates.models.SubsectionTemplateData;
 import ru.nabokovsg.templates.models.enums.SubsectionDataType;
 
@@ -10,8 +11,15 @@ import java.util.Set;
 
 public interface SubsectionTemplateDataRepository extends JpaRepository<SubsectionTemplateData, Long> {
 
-    Set<SubsectionTemplateData> findAllBySubsectionDataType(SubsectionDataType subsectionDataType);
+    SubsectionTemplateData findBySubsectionDataTypeAndDivisionId(SubsectionDataType subsectionDataType
+                                                               , Long divisionId);
 
-    @Query("select s.id from SubsectionTemplateData s where s.subsectionDataType =?1")
-    List<Long> findAllIdSubsectionDataType(SubsectionDataType subsectionsDataType);
+    Set<SubsectionTemplateData> findAllBySubsectionDataTypeAndObjectTypeId(SubsectionDataType subsectionDataType
+                                                                         , Long objectTypeId);
+
+    @Query("select s" +
+          " from SubsectionTemplateData s" +
+          " where s.subsectionDataType in :subsectionsDataType and s.subsectionData in :tolls")
+    Set<SubsectionTemplateData> findAllByToll(@Param("subsectionsDataType") List<String> subsectionsDataType
+                                            , @Param("tolls") List<String> tolls);
 }
