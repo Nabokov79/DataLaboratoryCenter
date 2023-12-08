@@ -22,6 +22,8 @@ public class NewSurveyObjectDto {
     private Long objectTypeId;
     @Schema(description = "Стационарный номер объекта")
     private Integer stationaryNumber;
+    @Schema(description = "Объем объекта")
+    private Integer volume;
     @Schema(description = "Индентификатор строения")
     @NotNull(message = "id building address must not be null")
     @Positive(message = "id building address must be negative")
