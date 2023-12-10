@@ -1,4 +1,4 @@
-package ru.nabokovsg.templates.dto.tables.columns;
+package ru.nabokovsg.templates.dto.columns;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

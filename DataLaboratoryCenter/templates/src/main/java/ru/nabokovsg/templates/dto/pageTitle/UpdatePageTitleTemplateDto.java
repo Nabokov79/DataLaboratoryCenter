@@ -23,7 +23,6 @@ public class UpdatePageTitleTemplateDto {
     private Long id;
     @Schema(description = "Индентификатор типа объекта")
     @NotNull(message = "object type id should not be null")
-    @Positive(message = "object type id must be positive")
     private Long objectTypeId;
     @Schema(description = "Индентификатор типа отчетного документа")
     @NotNull(message = "reporting document id should not be null")
@@ -31,13 +30,13 @@ public class UpdatePageTitleTemplateDto {
     private Long reportingDocumentId;
     @Schema(description = "Строка наименования объекта")
     @NotBlank(message = "object string should not be blank")
-    private String objectString;
+    private String object;
     @Schema(description = "Строка наименования места расположения объекта")
     @NotBlank(message = "installation location string should not be blank")
-    private String installationLocationString;
+    private String installationLocation;
     @Schema(description = "Строка указания адреса")
     @NotBlank(message = "address string should not be blank")
-    private String addressString;
+    private String address;
     @Schema(description = "Индентификатор сотрудника")
     @NotNull(message = "employee id should not be null")
     @Positive(message = "employee id can only be positive")

@@ -25,18 +25,18 @@ public class PageTitleTemplate {
     @OneToOne
     @JoinColumn(name = "header_id", referencedColumnName = "id")
     private HeaderTemplate header;
-    @Column(name = "document_name")
-    private String documentName;
-    @Column(name = "document_title")
-    private String documentTitle;
-    @Column(name = "object_string")
-    private String objectString;
-    @Column(name = "installation_location_string")
-    private String installationLocationString;
-    @Column(name = "address_string")
-    private String addressString;
-    @Column(name = "signature_string")
-    private String signatureString;
+    @Column(name = "title")
+    private String title;
+    @Column(name = "heading")
+    private String heading;
+    @Column(name = "object")
+    private String object;
+    @Column(name = "installation_location")
+    private String installationLocation;
+    @Column(name = "address")
+    private String address;
+    @Column(name = "signature")
+    private String signature;
     @Column(name = "city")
     private String city;
     @Column(name = "year")

@@ -8,11 +8,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.nabokovsg.templates.dto.tables.*;
+import ru.nabokovsg.templates.dto.table.NewTableTemplateDto;
+import ru.nabokovsg.templates.dto.table.TableTemplateDto;
+import ru.nabokovsg.templates.dto.table.UpdateTableTemplateDto;
 import ru.nabokovsg.templates.services.TableTemplateService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(
@@ -29,31 +30,17 @@ public class TableTemplateController {
 
     @Operation(summary = "Добавление нового шаблона таблицы")
     @PostMapping("/protocol")
-    public ResponseEntity<TableTemplateDto> saveForProtocol(
-                              @RequestBody @Valid
-                              @Parameter(description = "Данные шаблона таблицы") NewProtocolTableTemplateDto tableDto) {
-        return ResponseEntity.ok().body(service.saveForProtocol(tableDto));
-    }
-
-    @Operation(summary = "Добавление нового шаблона таблицы")
-    @PostMapping("/subsection")
-    public ResponseEntity<TableTemplateDto> saveForSubsection(
-                            @RequestBody @Valid
-                            @Parameter(description = "Данные шаблона таблицы") NewSubsectionTableTemplateDto tableDto) {
-        return ResponseEntity.ok().body(service.saveForSubsection(tableDto));
+    public ResponseEntity<TableTemplateDto> save(
+            @RequestBody @Valid
+            @Parameter(description = "Данные шаблона таблицы") NewTableTemplateDto tableDto) {
+        return ResponseEntity.ok().body(service.save(tableDto));
     }
 
     @Operation(summary = "Изменение информации в шаблоне таблицы")
     @PatchMapping
     public ResponseEntity<TableTemplateDto> update(
-                                   @RequestBody @Valid
-                                   @Parameter(description = "Данные шаблона таблицы") UpdateTableTemplateDto tableDto) {
+            @RequestBody @Valid
+            @Parameter(description = "Данные шаблона таблицы") UpdateTableTemplateDto tableDto) {
         return ResponseEntity.ok().body(service.update(tableDto));
-    }
-
-    @Operation(summary = "Получить все таблицы")
-@GetMapping
-    public ResponseEntity<List<ShortTableTemplateDto>> getAll() {
-        return ResponseEntity.ok().body(service.getAll());
     }
 }

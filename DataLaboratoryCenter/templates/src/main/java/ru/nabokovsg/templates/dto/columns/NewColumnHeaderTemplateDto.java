@@ -1,4 +1,4 @@
-package ru.nabokovsg.templates.dto.tables.columns;
+package ru.nabokovsg.templates.dto.columns;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -19,10 +19,10 @@ public class NewColumnHeaderTemplateDto {
     @Schema(description = "Порядковый номер колонки")
     @NotNull(message = "sequential cell number should not be null")
     @Positive(message = "sequential cell number must be positive")
-    private Integer sequentialCellNumber;
-    @Schema(description = "Название колонки")
-    @NotBlank(message = "cell name should not be blank")
-    private String cellName;
+    private Integer sequentialNumber;
+    @Schema(description = "Заголовок колонки")
+    @NotBlank(message = "heading should not be blank")
+    private String heading;
     @Schema(description = "Тип данных колонки")
     private String columnDataType;
 }

@@ -38,21 +38,4 @@ public class HeaderTemplate {
     private String departmentContacts;
     @Column(name = "department_license")
     private String departmentLicense;
-
-    @Override
-    public String toString() {
-        return "HeaderTemplate{" +
-                "id=" + id +
-                ", reportingDocumentId=" + reportingDocumentId +
-                ", organization='" + organization + '\'' +
-                ", organizationLicense='" + organizationLicense + '\'' +
-                ", organizationContacts='" + organizationContacts + '\'' +
-                ", branch='" + branch + '\'' +
-                ", branchContacts='" + branchContacts + '\'' +
-                ", licenseBranch='" + licenseBranch + '\'' +
-                ", department='" + department + '\'' +
-                ", departmentContacts='" + departmentContacts + '\'' +
-                ", departmentLicense='" + departmentLicense + '\'' +
-                '}';
-    }
 }

@@ -15,7 +15,6 @@ import ru.nabokovsg.templates.services.HeaderTemplateService;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @RestController
 @RequestMapping(
@@ -32,7 +31,7 @@ public class HeaderTemplateController {
 
     @Operation(summary = "Новые данные заголовка")
     @PostMapping
-    public ResponseEntity<List<HeaderTemplateDto>> save(@RequestBody @Valid NewHeaderTemplateDto headerDto) {
+    public ResponseEntity<HeaderTemplateDto> save(@RequestBody @Valid NewHeaderTemplateDto headerDto) {
         return ResponseEntity.ok().body(service.save(headerDto));
     }
 

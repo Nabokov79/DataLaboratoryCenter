@@ -1,4 +1,4 @@
-package ru.nabokovsg.templates.services.dataHandlers;
+package ru.nabokovsg.templates.services.headerDataHandlers;
 
 import ru.nabokovsg.templates.client.dto.DepartmentDto;
 import ru.nabokovsg.templates.dto.header.HeaderTemplateDataDto;

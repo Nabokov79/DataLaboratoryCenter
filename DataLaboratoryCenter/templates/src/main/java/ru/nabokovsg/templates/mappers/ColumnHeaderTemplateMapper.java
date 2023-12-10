@@ -1,8 +1,8 @@
 package ru.nabokovsg.templates.mappers;
 
 import org.mapstruct.Mapper;
-import ru.nabokovsg.templates.dto.tables.columns.NewColumnHeaderTemplateDto;
-import ru.nabokovsg.templates.dto.tables.columns.UpdateColumnHeaderTemplateDto;
+import ru.nabokovsg.templates.dto.columns.NewColumnHeaderTemplateDto;
+import ru.nabokovsg.templates.dto.columns.UpdateColumnHeaderTemplateDto;
 import ru.nabokovsg.templates.models.ColumnHeaderTemplate;
 
 @Mapper(componentModel = "spring")

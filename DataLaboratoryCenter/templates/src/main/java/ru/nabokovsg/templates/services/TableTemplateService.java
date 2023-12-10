@@ -1,20 +1,12 @@
 package ru.nabokovsg.templates.services;
 
-import ru.nabokovsg.templates.dto.tables.*;
-import ru.nabokovsg.templates.models.TableTemplate;
-
-import java.util.List;
+import ru.nabokovsg.templates.dto.table.NewTableTemplateDto;
+import ru.nabokovsg.templates.dto.table.TableTemplateDto;
+import ru.nabokovsg.templates.dto.table.UpdateTableTemplateDto;
 
 public interface TableTemplateService {
 
-    TableTemplateDto saveForProtocol(NewProtocolTableTemplateDto tableDto);
-
-   TableTemplateDto saveForSubsection(NewSubsectionTableTemplateDto tableDto);
+    TableTemplateDto save(NewTableTemplateDto tableDto);
 
     TableTemplateDto update(UpdateTableTemplateDto tableDto);
-
-    List<ShortTableTemplateDto> getAll();
-
-    TableTemplate getById(Long id);
-    List<TableTemplate> getAllById(List<Long> ids);
 }

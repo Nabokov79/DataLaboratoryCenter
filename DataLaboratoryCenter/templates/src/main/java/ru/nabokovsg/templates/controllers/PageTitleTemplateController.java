@@ -1,5 +1,6 @@
 package ru.nabokovsg.templates.controllers;
 
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-@Validated
 @RestController
 @RequestMapping(
         value = "/template/title/page",
         consumes = MediaType.ALL_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
+@Validated
 @RequiredArgsConstructor
 @Tag(name="Шаблон титульного листа",
         description="API для работы с данными шаблона титульного листа")
@@ -32,7 +33,7 @@ public class PageTitleTemplateController {
 
     @Operation(summary = "Данные титульного листа")
     @PostMapping
-    public ResponseEntity<List<PageTitleTemplateDto>> save(@RequestBody @Valid NewPageTitleTemplateDto pageTitleDto) {
+    public ResponseEntity<PageTitleTemplateDto> save(@RequestBody @Valid NewPageTitleTemplateDto pageTitleDto) {
         return ResponseEntity.ok().body(service.save(pageTitleDto));
     }
 

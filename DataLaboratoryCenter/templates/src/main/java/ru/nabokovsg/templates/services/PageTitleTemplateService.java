@@ -3,15 +3,16 @@ package ru.nabokovsg.templates.services;
 import ru.nabokovsg.templates.dto.pageTitle.NewPageTitleTemplateDto;
 import ru.nabokovsg.templates.dto.pageTitle.PageTitleTemplateDto;
 import ru.nabokovsg.templates.dto.pageTitle.UpdatePageTitleTemplateDto;
+
 import java.util.List;
 
 public interface PageTitleTemplateService {
 
-   List<PageTitleTemplateDto> save(NewPageTitleTemplateDto pageTitleDto);
+    PageTitleTemplateDto save(NewPageTitleTemplateDto pageTitleDto);
 
-   PageTitleTemplateDto update(UpdatePageTitleTemplateDto pageTitleDto);
+    PageTitleTemplateDto update(UpdatePageTitleTemplateDto pageTitleDto);
 
-   PageTitleTemplateDto get(Long id);
+    PageTitleTemplateDto get(Long id);
 
-   List<PageTitleTemplateDto> getAll(Long reportingDocumentId);
+    List<PageTitleTemplateDto> getAll(Long reportingDocumentId);
 }

@@ -1,7 +1,5 @@
 package ru.nabokovsg.templates.services;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nabokovsg.templates.client.TemplateClient;
@@ -13,15 +11,10 @@ import ru.nabokovsg.templates.dto.pageTitle.UpdatePageTitleTemplateDto;
 import ru.nabokovsg.templates.exceptions.NotFoundException;
 import ru.nabokovsg.templates.mappers.PageTitleTemplateMapper;
 import ru.nabokovsg.templates.models.PageTitleTemplate;
-import ru.nabokovsg.templates.models.QPageTitleTemplate;
 import ru.nabokovsg.templates.repository.PageTitleTemplateRepository;
-import ru.nabokovsg.templates.services.builders.StringBuilderService;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,49 +24,33 @@ public class PageTitleTemplateServiceImpl implements PageTitleTemplateService {
     private final PageTitleTemplateMapper mapper;
     private final TemplateClient client;
     private final HeaderTemplateService headerService;
-    private final EntityManager entityManager;
     private final StringBuilderService stringBuilder;
 
     @Override
-    public List<PageTitleTemplateDto> save(NewPageTitleTemplateDto pageTitleDto) {
-        Map<Long, PageTitleTemplate> pageTitlesDb = getAllByReportingDocumentIdAndObjectTypeIds(pageTitleDto.getReportingDocumentId()
-                , pageTitleDto.getObjectTypeIds()).stream().collect(Collectors.toMap(PageTitleTemplate::getObjectTypeId, p -> p));
-        List<Long> objectTypeIds = pageTitleDto.getObjectTypeIds().stream().filter(id -> !pageTitlesDb.containsKey(id)).toList();
-        if (objectTypeIds.isEmpty()) {
-            return pageTitlesDb.values().stream().map(mapper::mapToPageTitleTemplateDto).toList();
+    public PageTitleTemplateDto save(NewPageTitleTemplateDto pageTitleDto) {
+        PageTitleTemplate pageTitle = repository.findByObjectTypeIdAndReportingDocumentId(pageTitleDto.getObjectTypeId(), pageTitleDto.getReportingDocumentId());
+        if (pageTitle == null) {
+            String year = String.valueOf((LocalDate.now().getYear()));
+            HeaderTemplateDto header = headerService.get(pageTitleDto.getReportingDocumentId());
+            ReportingDocumentDto reportingDocument = client.getReportingDocument(pageTitleDto.getReportingDocumentId());
+            String signature = stringBuilder.convertEmployee(client.getEmployee(pageTitleDto.getEmployeeId()));
+            pageTitle = repository.save(mapper.mapToNewPageTitleTemplate(pageTitleDto, header, reportingDocument, signature, year));
         }
-        String year = String.valueOf((LocalDate.now().getYear()));
-        HeaderTemplateDto header = headerService.get(pageTitleDto.getReportingDocumentId());
-        ReportingDocumentDto reportingDocument = client.getReportingDocument(pageTitleDto.getReportingDocumentId());
-        String signature = stringBuilder.convertEmployee(client.getEmployee(pageTitleDto.getEmployeeId()));
-        List<PageTitleTemplate> pageTitles = objectTypeIds.stream()
-                .map(id -> {
-                    PageTitleTemplate pageTitle = mapper.mapToPageTitleTemplate(
-                            mapper.mapToNewPageTitleTemplate(pageTitleDto), header, reportingDocument, signature, year);
-                    pageTitle.setObjectTypeId(id);
-                    return pageTitle;
-                         })
-                .toList();
-       return repository.saveAll(pageTitles).stream().map(mapper::mapToPageTitleTemplateDto).toList();
-
+        return mapper.mapToPageTitleTemplateDto(pageTitle);
     }
 
     @Override
     public PageTitleTemplateDto update(UpdatePageTitleTemplateDto pageTitleDto) {
-        if (repository.existsByReportingDocumentIdAndObjectTypeId(pageTitleDto.getReportingDocumentId()
-                                                               , pageTitleDto.getObjectTypeId())) {
-            String signature = stringBuilder.convertEmployee(client.getEmployee(pageTitleDto.getEmployeeId()));
+        if (repository.existsById(pageTitleDto.getId())) {
             String year = String.valueOf((LocalDate.now().getYear()));
-            PageTitleTemplate pageTitle = mapper.mapToUpdatePageTitleTemplate(pageTitleDto);
             HeaderTemplateDto header = headerService.get(pageTitleDto.getReportingDocumentId());
             ReportingDocumentDto reportingDocument = client.getReportingDocument(pageTitleDto.getReportingDocumentId());
-            return mapper.mapToPageTitleTemplateDto(repository.save(mapper.mapToPageTitleTemplate(pageTitle
-                                                                                                , header
-                                                                                               , reportingDocument
-                                                                                                , signature
-                                                                                                , year)));
+            String signature = stringBuilder.convertEmployee(client.getEmployee(pageTitleDto.getEmployeeId()));
+            return mapper.mapToPageTitleTemplateDto(repository.save(mapper.mapToUpdatePageTitleTemplate(pageTitleDto, header, reportingDocument, signature, year)));
         }
-        throw new NotFoundException(String.format("PageTitleTemplate with id=%s not found", pageTitleDto.getId()));
+        throw new NotFoundException(
+                String.format("Page title template with id=%s not found for update", pageTitleDto.getId())
+        );
     }
 
     @Override
@@ -85,19 +62,7 @@ public class PageTitleTemplateServiceImpl implements PageTitleTemplateService {
     @Override
     public List<PageTitleTemplateDto> getAll(Long reportingDocumentId) {
         return repository.findAllByReportingDocumentId(reportingDocumentId).stream()
-                                                                           .map(mapper::mapToPageTitleTemplateDto)
-                                                                           .toList();
-    }
-
-    private List<PageTitleTemplate> getAllByReportingDocumentIdAndObjectTypeIds(Long reportingDocumentId
-                                                                              , List<Long> objectTypeIds) {
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-        booleanBuilder.and(QPageTitleTemplate.pageTitleTemplate.reportingDocumentId.eq(reportingDocumentId));
-        booleanBuilder.and(QPageTitleTemplate.pageTitleTemplate.objectTypeId.in(objectTypeIds));
-        QPageTitleTemplate pageTitle = QPageTitleTemplate.pageTitleTemplate;
-        return new JPAQueryFactory(entityManager).from(pageTitle)
-                                                 .select(pageTitle)
-                                                 .where(booleanBuilder)
-                                                 .fetch();
+                .map(mapper::mapToPageTitleTemplateDto)
+                .toList();
     }
 }

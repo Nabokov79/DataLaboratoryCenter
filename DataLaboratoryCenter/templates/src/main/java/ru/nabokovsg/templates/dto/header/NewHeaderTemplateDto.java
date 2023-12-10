@@ -6,10 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @Setter
 @Getter
@@ -19,9 +17,9 @@ import java.util.List;
 public class NewHeaderTemplateDto {
 
     @Schema(description = "Индентификатор типа отчетного документа")
-    @NotNull(message = "reporting document ids should not be null")
-    @NotEmpty(message = "reporting document ids should not be empty")
-    private List<Long> reportingDocumentIds;
+    @NotNull(message = "reporting document id should not be null")
+    @Positive(message = "reporting document id can only be positive")
+    private Long reportingDocumentId;
     @Schema(description = "Индентификатор организации")
     @NotNull(message = "organization id should not be null")
     @Positive(message = "organization id can only be positive")

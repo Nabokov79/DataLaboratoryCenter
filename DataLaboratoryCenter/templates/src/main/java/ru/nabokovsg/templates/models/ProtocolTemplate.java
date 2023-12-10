@@ -1,10 +1,9 @@
 package ru.nabokovsg.templates.models;
 
 import lombok.*;
-import ru.nabokovsg.templates.models.enums.ProtocolType;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Setter
 @Getter
@@ -17,17 +16,14 @@ public class ProtocolTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "protocol_type")
-    @Enumerated(EnumType.STRING)
-    private ProtocolType protocolType;
-    @Column(name = "object_type_id")
-    private Long objectTypeId;
     @Column(name = "reporting_document_id")
     private Long reportingDocumentId;
-    @Column(name = "document_name")
-    private String documentName;
-    @Column(name = "document_title")
-    private String documentTitle;
+    @Column(name = "object_type_id")
+    private Long objectTypeId;
+    @Column(name = "title")
+    private String title;
+    @Column(name = "heading")
+    private String heading;
     @OneToOne
     @JoinColumn(name = "header_id", referencedColumnName = "id")
     private HeaderTemplate header;
@@ -37,26 +33,29 @@ public class ProtocolTemplate {
             joinColumns = {@JoinColumn(name = "protocol_id")},
             inverseJoinColumns = {@JoinColumn(name = "subsection_id")})
     @ToString.Exclude
-    private Set<SubsectionTemplate> subsections;
+    private List<SubsectionTemplate> subsections;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "protocol_tables_templates",
+            name = "protocol_table_templates",
             joinColumns = {@JoinColumn(name = "protocol_id")},
             inverseJoinColumns = {@JoinColumn(name = "table_id")})
     @ToString.Exclude
-    private Set<TableTemplate> tables;
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "protocol_templates_recommendations",
-//            joinColumns = {@JoinColumn(name = "protocol_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "recommendation_id")})
-//    @ToString.Exclude
-//    private List<RecommendationTemplate> recommendations;
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "protocol_templates_appendices",
-//            joinColumns = {@JoinColumn(name = "protocol_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "appendices_id")})
-//    @ToString.Exclude
-//    private List<AppendicesTemplates> appendices;
+    private List<TableTemplate> tables;
+    @OneToOne
+    @JoinColumn(name = "conclusion_template_id", referencedColumnName = "id")
+    private ConclusionTemplate conclusions;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "protocol_recommendation_templates",
+            joinColumns = {@JoinColumn(name = "protocol_id")},
+            inverseJoinColumns = {@JoinColumn(name = "recommendation_id")})
+    @ToString.Exclude
+    private List<RecommendationTemplate> recommendations;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "protocol_appendices_templates",
+            joinColumns = {@JoinColumn(name = "protocol_id")},
+            inverseJoinColumns = {@JoinColumn(name = "appendices_id")})
+    @ToString.Exclude
+    private List<AppendicesTemplate> appendices;
 }

@@ -7,7 +7,6 @@ import lombok.Setter;
 import ru.nabokovsg.templates.models.enums.ColumnDataType;
 
 import javax.persistence.*;
-
 @Setter
 @Getter
 @AllArgsConstructor
@@ -22,8 +21,8 @@ public class ColumnHeaderTemplate {
     @Column(name = "column_data_type")
     @Enumerated(EnumType.STRING)
     private ColumnDataType columnDataType;
-    @Column(name = "sequential_cell_number")
-    private Integer sequentialCellNumber;
-    @Column(name = "cell_name")
-    private String cellName;
+    @Column(name = "sequential_number")
+    private Integer sequentialNumber;
+    @Column(name = "heading")
+    private String heading;
 }

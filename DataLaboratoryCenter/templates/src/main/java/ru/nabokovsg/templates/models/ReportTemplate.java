@@ -3,7 +3,7 @@ package ru.nabokovsg.templates.models;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Setter
 @Getter
@@ -16,10 +16,10 @@ public class ReportTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "object_type_id")
-    private Long objectTypeId;
     @Column(name = "reporting_document_id")
     private Long reportingDocumentId;
+    @Column(name = "object_type_id")
+    private Long objectTypeId;
     @OneToOne
     @JoinColumn(name = "page_title_id", referencedColumnName = "id")
     private PageTitleTemplate pageTitle;
@@ -29,5 +29,5 @@ public class ReportTemplate {
             joinColumns = {@JoinColumn(name = "report_id")},
             inverseJoinColumns = {@JoinColumn(name = "section_id")})
     @ToString.Exclude
-    private Set<SectionTemplate> sections;
+    private List<SectionTemplate> sections;
 }

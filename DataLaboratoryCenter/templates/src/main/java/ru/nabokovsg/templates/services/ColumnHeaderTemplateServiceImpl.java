@@ -2,8 +2,8 @@ package ru.nabokovsg.templates.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nabokovsg.templates.dto.tables.columns.NewColumnHeaderTemplateDto;
-import ru.nabokovsg.templates.dto.tables.columns.UpdateColumnHeaderTemplateDto;
+import ru.nabokovsg.templates.dto.columns.NewColumnHeaderTemplateDto;
+import ru.nabokovsg.templates.dto.columns.UpdateColumnHeaderTemplateDto;
 import ru.nabokovsg.templates.exceptions.NotFoundException;
 import ru.nabokovsg.templates.mappers.ColumnHeaderTemplateMapper;
 import ru.nabokovsg.templates.models.ColumnHeaderTemplate;
@@ -25,13 +25,13 @@ public class ColumnHeaderTemplateServiceImpl implements ColumnHeaderTemplateServ
     @Override
     public List<ColumnHeaderTemplate> save(List<NewColumnHeaderTemplateDto> templatesDto) {
         Map<String, ColumnHeaderTemplate> columnHeadersDb = repository.findAllByCellName(templatesDto
-                                                                           .stream()
-                                                                           .map(NewColumnHeaderTemplateDto::getCellName)
-                                                                           .toList())
-                                                .stream()
-                                                .collect(Collectors.toMap(ColumnHeaderTemplate::getCellName, c -> c));
+                        .stream()
+                        .map(NewColumnHeaderTemplateDto::getHeading)
+                        .toList())
+                .stream()
+                .collect(Collectors.toMap(ColumnHeaderTemplate::getHeading, c -> c));
         templatesDto = templatesDto.stream()
-                .filter(s -> !columnHeadersDb.containsKey(s.getCellName()))
+                .filter(s -> !columnHeadersDb.containsKey(s.getHeading()))
                 .toList();
         if (templatesDto.isEmpty()) {
             return columnHeadersDb.values().stream().toList();
@@ -62,6 +62,7 @@ public class ColumnHeaderTemplateServiceImpl implements ColumnHeaderTemplateServ
             List<Long> idsDb = new ArrayList<>(columnHeaderTemplate.keySet());
             ids = ids.stream().filter(e -> !idsDb.contains(e)).collect(Collectors.toList());
             throw new NotFoundException(String.format("Column header template with ids= %s not found", ids));
+
         }
     }
 }

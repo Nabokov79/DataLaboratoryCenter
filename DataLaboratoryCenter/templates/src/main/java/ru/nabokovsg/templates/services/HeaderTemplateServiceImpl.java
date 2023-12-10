@@ -14,13 +14,12 @@ import ru.nabokovsg.templates.exceptions.NotFoundException;
 import ru.nabokovsg.templates.mappers.HeaderTemplateMapper;
 import ru.nabokovsg.templates.models.HeaderTemplate;
 import ru.nabokovsg.templates.repository.HeaderTemplateRepository;
-import ru.nabokovsg.templates.services.dataHandlers.BranchDataService;
-import ru.nabokovsg.templates.services.dataHandlers.DepartmentDataService;
-import ru.nabokovsg.templates.services.dataHandlers.OrganizationDataService;
+import ru.nabokovsg.templates.services.headerDataHandlers.BranchDataService;
+import ru.nabokovsg.templates.services.headerDataHandlers.DepartmentDataService;
+import ru.nabokovsg.templates.services.headerDataHandlers.OrganizationDataService;
 
-import java.util.*;
+import java.util.Collection;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -34,64 +33,50 @@ public class HeaderTemplateServiceImpl implements HeaderTemplateService {
     private final DepartmentDataService departmentDataService;
 
     @Override
-    public List<HeaderTemplateDto> save(NewHeaderTemplateDto headerDto) {
-        Map<Long, HeaderTemplate> headersDb = repository.findAllByReportingDocumentIds(
-         headerDto.getReportingDocumentIds()).stream()
-                                             .collect(Collectors.toMap(HeaderTemplate::getReportingDocumentId, h -> h));
-        HeaderTemplate headerData = set(new HeaderTemplate(), mapper.mapToNewHeaderTemplateDataDto(headerDto));
-        List<HeaderTemplate> headers =  repository.saveAll(headerDto.getReportingDocumentIds()
-                                                                        .stream()
-                                                                        .map(id -> {
-                                                                            HeaderTemplate header = headersDb.get(id);
-                                                                            if (header == null) {
-                                                                                header = mapper.mapToHeader(headerData);
-                                                                                header.setReportingDocumentId(id);
-                                                                            }
-                                                                            return header;
-                                                                        })
-                                                                        .toList());
-        if (!headersDb.isEmpty()) {
-            headers = Stream.of(headersDb.values(), headers).flatMap(Collection::stream).toList();
+    public HeaderTemplateDto save(NewHeaderTemplateDto headerDto) {
+        HeaderTemplate header = repository.findByReportingDocumentId(headerDto.getReportingDocumentId());
+        if (header == null) {
+            header = repository.save(set(new HeaderTemplate(), mapper.mapToNewHeaderTemplateDataDto(headerDto)));
         }
-        return headers.stream()
-                      .map(mapper::mapToHeaderTemplateDto)
-                      .toList();
+        return mapper.mapToHeaderTemplateDto(header);
     }
 
     @Override
     public HeaderTemplateDto update(UpdateHeaderTemplateDto headerDto) {
         return mapper.mapToHeaderTemplateDto(repository.save(
                 set(repository.findById(headerDto.getId()).orElseThrow(() -> new NotFoundException(
-                                               String.format("HeaderTemplate with id=%s not found", headerDto.getId())))
-                  , mapper.mapToUpdateHeaderTemplateDataDto(headerDto))
+                                String.format("Header template with id=%s not found for update", headerDto.getId())))
+                        , mapper.mapToUpdateHeaderTemplateDataDto(headerDto))
         ));
     }
 
     @Override
     public HeaderTemplateDto get(Long reportingDocumentId) {
-        return mapper.mapToHeaderTemplateDto(repository.findByReportingDocumentId(reportingDocumentId)
-                .orElseThrow(() -> new NotFoundException(
-                        String.format("HeaderTemplate by reportingDocumentId=%s not found", reportingDocumentId)))
-        );
+        HeaderTemplate header = repository.findByReportingDocumentId(reportingDocumentId);
+        if (header == null) {
+            throw new NotFoundException(
+                    String.format("Header template by reportingDocumentId=%s not found", reportingDocumentId));
+        }
+        return mapper.mapToHeaderTemplateDto(header);
     }
 
     private HeaderTemplate set(HeaderTemplate header, HeaderTemplateDataDto headerDto) {
         OrganizationDto organization = client.getOrganization(headerDto.getOrganizationId());
         organizationDataService.getHeaderData(header, organization, headerDto);
         branchDataService.getHeaderData(header
-                           , organization.getBranches()
-                            .stream()
-                            .collect(Collectors.toMap(BranchDto::getId, b -> b))
-                            .get(headerDto.getBranchId())
-                          , headerDto);
+                , organization.getBranches()
+                        .stream()
+                        .collect(Collectors.toMap(BranchDto::getId, b -> b))
+                        .get(headerDto.getBranchId())
+                , headerDto);
         departmentDataService.getHeaderData(header
-                                , organization.getBranches()
-                                 .stream()
-                                 .map(BranchDto::getDepartments)
-                                 .flatMap(Collection::stream)
-                                 .collect(Collectors.toMap(DepartmentDto::getId, d -> d))
-                                 .get(headerDto.getDepartmentId())
-                                , headerDto);
+                , organization.getBranches()
+                        .stream()
+                        .map(BranchDto::getDepartments)
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toMap(DepartmentDto::getId, d -> d))
+                        .get(headerDto.getDepartmentId())
+                , headerDto);
         return header;
     }
 }
