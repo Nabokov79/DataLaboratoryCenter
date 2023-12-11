@@ -11,5 +11,4 @@ public interface ColumnHeaderTemplateService {
     List<ColumnHeaderTemplate> save(List<NewColumnHeaderTemplateDto> templatesDto);
 
     List<ColumnHeaderTemplate> update(List<UpdateColumnHeaderTemplateDto> templatesDto);
-
 }
