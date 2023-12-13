@@ -28,6 +28,10 @@ public class SubsectionTemplate {
     @ManyToOne
     @JoinColumn(name = "table_id", referencedColumnName = "id")
     private TableTemplate table;
+    @Column(name = "text_before_table")
+    private String textBeforeTable;
+    @Column(name = "text_after_table")
+    private String textAfterTable;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "subsection_subsection_data_templates",
