@@ -84,8 +84,6 @@ CREATE TABLE IF NOT EXISTS TABLE_TEMPLATES
     reporting_document_id BIGINT                                  NOT NULL,
     sequential_number     INTEGER,
     table_name            VARCHAR,
-    text_before_table     VARCHAR,
-    text_after_table      VARCHAR,
     CONSTRAINT pk_tableTemplate PRIMARY KEY (id),
     CONSTRAINT UQ_TABLE_TEMPLATES UNIQUE (table_data_type, object_type_id, reporting_document_id)
 );
@@ -113,6 +111,8 @@ CREATE TABLE IF NOT EXISTS SUBSECTION_TEMPLATES
     certificate_employee VARCHAR,
     division_data        VARCHAR,
     table_id             BIGINT,
+    text_before_table     VARCHAR,
+    text_after_table      VARCHAR,
     CONSTRAINT pk_subsectionTemplate PRIMARY KEY (id),
     CONSTRAINT FK_SUBSECTION_TEMPLATES_ON_TABLE_TEMPLATES FOREIGN KEY (table_id) REFERENCES table_templates (id)
 );
