@@ -26,7 +26,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper mapper;
     private final CertificateRepository certificateRepository;
     private final MeasuringToolRepository measuringToolRepository;
-    private final ContactService requisitesService;
+    private final ContactService contactService;
     private final ContactMapper contactMapper;
     private final OrganizationService organizationService;
     private final OrganizationMapper organizationMapper;
@@ -39,7 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public ShortEmployeeDto save(NewEmployeeDto employeeDto) {
         Employee employee = mapper.mapToEmployee(employeeDto);
         if (employeeDto.getContact() != null) {
-            employee.setContact(requisitesService.save(contactMapper.mapToNewRequisitesDto(employeeDto.getContact())));
+            employee.setContact(contactService.save(contactMapper.mapToNewRequisitesDto(employeeDto.getContact())));
         }
         set(employee
                 , employeeDto.getOrganizationId()
@@ -55,7 +55,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         Employee employee = mapper.mapToUpdateEmployee(employeeDto);
         if (employeeDto.getContact() != null) {
-            employee.setContact(requisitesService.update(contactMapper.mapToUpdateRequisitesDto(employeeDto.getContact())));
+            employee.setContact(contactService.update(contactMapper.mapToUpdateRequisitesDto(employeeDto.getContact())));
         }
         return mapper.mapToEmployeeShortDto(repository.save(set(employee
                 , employeeDto.getOrganizationId()
