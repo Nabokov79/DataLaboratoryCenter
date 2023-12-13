@@ -28,10 +28,6 @@ public class TableTemplate {
     private Integer sequentialNumber;
     @Column(name = "table_name")
     private String tableName;
-    @Column(name = "text_before_table")
-    private String textBeforeTable;
-    @Column(name = "text_after_table")
-    private String textAfterTable;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "table_columns_headers_templates",
