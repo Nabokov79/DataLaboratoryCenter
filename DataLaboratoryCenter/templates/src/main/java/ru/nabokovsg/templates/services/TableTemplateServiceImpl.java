@@ -46,6 +46,15 @@ public class TableTemplateServiceImpl implements TableTemplateService {
         );
     }
 
+    @Override
+    public TableTemplate getByTableDataType(String tableDataType) {
+        TableTemplate table = repository.findByTableDataType(converter.convertToTableDataType(tableDataType));
+        if (table == null) {
+            throw new NotFoundException(String.format("Table template with tableDataType=%s not found", tableDataType));
+        }
+        return table;
+    }
+
     private TableTemplate get(Long id) {
         return repository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format("Table template with id=%s not found", id))
