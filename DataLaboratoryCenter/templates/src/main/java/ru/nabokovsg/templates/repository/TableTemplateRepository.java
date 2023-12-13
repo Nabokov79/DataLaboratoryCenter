@@ -9,4 +9,6 @@ public interface TableTemplateRepository extends JpaRepository<TableTemplate, Lo
     TableTemplate findByTableDataTypeAndObjectTypeIdAndReportingDocumentId(TableDataType tableDataType
                                                                          , Long objectTypeId
                                                                          , Long reportingDocumentId);
+
+    TableTemplate findByTableDataType(TableDataType tableDataType);
 }
