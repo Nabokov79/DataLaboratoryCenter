@@ -31,8 +31,8 @@ public class EmployeeDto {
     private String surname;
     @Schema(description = "Должность")
     private String post;
-    @Schema(description = "Реквизиты филиала организации")
-    private ContactEmployeeDto requisites;
+    @Schema(description = "Контакты сотрудника")
+    private ContactEmployeeDto contact;
     @Schema(description = "Организация")
     @NotNull(message = "organization id user should not be blank")
     @Positive(message = "organization id user must be positive")

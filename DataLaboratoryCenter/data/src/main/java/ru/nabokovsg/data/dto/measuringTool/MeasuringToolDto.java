@@ -18,7 +18,7 @@ public class MeasuringToolDto {
     @Schema(description = "Индентификатор")
     private Long id;
     @Schema(description = "Название")
-    private String name;
+    private String toll;
     @Schema(description = "Модель")
     private String model;
     @Schema(description = "Заводской номер")
@@ -36,7 +36,7 @@ public class MeasuringToolDto {
     @Schema(description = "Характеристики")
     private String characteristics;
     @Schema(description = "Владелец средства(прибора)")
-    private ShortOrganizationDto branch;
+    private ShortOrganizationDto toolOwner;
     @Schema(description = "Дата поверки")
     private LocalDate verificationDate;
     @Schema(description = "Дата следующей поверки")
@@ -50,7 +50,7 @@ public class MeasuringToolDto {
     @Schema(description = "Примечание")
     private String note;
     @Schema(description = "Вид контроля")
-    private String type;
+    private String controlType;
     @Schema(description = "Сотрудник")
     private ShortEmployeeDto employee;
 }

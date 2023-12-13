@@ -7,7 +7,6 @@ import ru.nabokovsg.templates.client.dto.ReportingDocumentDto;
 import ru.nabokovsg.templates.dto.header.HeaderTemplateDto;
 import ru.nabokovsg.templates.dto.pageTitle.NewPageTitleTemplateDto;
 import ru.nabokovsg.templates.dto.pageTitle.PageTitleTemplateDto;
-import ru.nabokovsg.templates.dto.pageTitle.UpdatePageTitleTemplateDto;
 import ru.nabokovsg.templates.models.PageTitleTemplate;
 
 @Mapper(componentModel = "spring")
@@ -32,9 +31,10 @@ public interface PageTitleTemplateMapper {
             @Mapping(source = "reportingDocument.document", target = "title"),
             @Mapping(source = "reportingDocument.documentTitle", target = "heading"),
             @Mapping(source = "signature", target = "signature"),
-            @Mapping(source = "year", target = "year")
+            @Mapping(source = "year", target = "year"),
+            @Mapping(source = "id", target = "id")
     })
-    PageTitleTemplate mapToUpdatePageTitleTemplate(UpdatePageTitleTemplateDto pageTitleDto
+    PageTitleTemplate mapToUpdatePageTitleTemplate(Long id
                                                  , HeaderTemplateDto header
                                                  , ReportingDocumentDto reportingDocument
                                                  , String signature

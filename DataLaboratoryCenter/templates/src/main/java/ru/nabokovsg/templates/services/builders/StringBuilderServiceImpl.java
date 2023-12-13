@@ -2,7 +2,7 @@ package ru.nabokovsg.templates.services.builders;
 
 import org.springframework.stereotype.Service;
 import ru.nabokovsg.templates.client.dto.*;
-import ru.nabokovsg.templates.dto.subsectionData.DivisionDataParam;
+import ru.nabokovsg.templates.dto.subsectionDada.DivisionDataParam;
 
 import java.time.LocalDate;
 import java.util.Comparator;

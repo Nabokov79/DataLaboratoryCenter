@@ -23,5 +23,5 @@ public class ShortEmployeeDto {
     @Schema(description = "Должность")
     private String post;
     @Schema(description = "Контактные данные сотрудника")
-    private ContactEmployeeDto requisites;
+    private ContactEmployeeDto contact;
 }

@@ -12,6 +12,7 @@ import ru.nabokovsg.templates.exceptions.NotFoundException;
 import ru.nabokovsg.templates.mappers.PageTitleTemplateMapper;
 import ru.nabokovsg.templates.models.PageTitleTemplate;
 import ru.nabokovsg.templates.repository.PageTitleTemplateRepository;
+import ru.nabokovsg.templates.services.builders.StringBuilderService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,28 +29,30 @@ public class PageTitleTemplateServiceImpl implements PageTitleTemplateService {
 
     @Override
     public PageTitleTemplateDto save(NewPageTitleTemplateDto pageTitleDto) {
-        PageTitleTemplate pageTitle = repository.findByObjectTypeIdAndReportingDocumentId(pageTitleDto.getObjectTypeId(), pageTitleDto.getReportingDocumentId());
+        PageTitleTemplate pageTitle = repository.findByObjectTypeIdAndReportingDocumentId(pageTitleDto.getObjectTypeId()
+                                                                               , pageTitleDto.getReportingDocumentId());
         if (pageTitle == null) {
             String year = String.valueOf((LocalDate.now().getYear()));
             HeaderTemplateDto header = headerService.get(pageTitleDto.getReportingDocumentId());
             ReportingDocumentDto reportingDocument = client.getReportingDocument(pageTitleDto.getReportingDocumentId());
             String signature = stringBuilder.convertEmployee(client.getEmployee(pageTitleDto.getEmployeeId()));
-            pageTitle = repository.save(mapper.mapToNewPageTitleTemplate(pageTitleDto, header, reportingDocument, signature, year));
+            pageTitle = repository.save(mapper.mapToNewPageTitleTemplate(pageTitleDto, header, reportingDocument
+                                                                                               , signature, year));
         }
         return mapper.mapToPageTitleTemplateDto(pageTitle);
     }
 
     @Override
     public PageTitleTemplateDto update(UpdatePageTitleTemplateDto pageTitleDto) {
-        if (repository.existsById(pageTitleDto.getId())) {
-            String year = String.valueOf((LocalDate.now().getYear()));
-            HeaderTemplateDto header = headerService.get(pageTitleDto.getReportingDocumentId());
-            ReportingDocumentDto reportingDocument = client.getReportingDocument(pageTitleDto.getReportingDocumentId());
-            String signature = stringBuilder.convertEmployee(client.getEmployee(pageTitleDto.getEmployeeId()));
-            return mapper.mapToPageTitleTemplateDto(repository.save(mapper.mapToUpdatePageTitleTemplate(pageTitleDto, header, reportingDocument, signature, year)));
-        }
-        throw new NotFoundException(
-                String.format("Page title template with id=%s not found for update", pageTitleDto.getId())
+        PageTitleTemplate pageTitle = repository.findById(pageTitleDto.getId()).orElseThrow(() -> new NotFoundException(
+                String.format("PageTitleTemplate id=%s not found for update",pageTitleDto.getId())));
+        String year = String.valueOf((LocalDate.now().getYear()));
+        HeaderTemplateDto header = headerService.get(pageTitleDto.getReportingDocumentId());
+        ReportingDocumentDto reportingDocument = client.getReportingDocument(pageTitleDto.getReportingDocumentId());
+        String signature = stringBuilder.convertEmployee(client.getEmployee(pageTitleDto.getEmployeeId()));
+        return mapper.mapToPageTitleTemplateDto(
+                repository.save(mapper.mapToUpdatePageTitleTemplate(pageTitle.getId(), header, reportingDocument
+                                                                                               , signature, year))
         );
     }
 

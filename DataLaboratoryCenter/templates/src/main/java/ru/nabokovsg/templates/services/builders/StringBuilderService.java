@@ -1,7 +1,7 @@
 package ru.nabokovsg.templates.services.builders;
 
 import ru.nabokovsg.templates.client.dto.*;
-import ru.nabokovsg.templates.dto.subsectionData.DivisionDataParam;
+import ru.nabokovsg.templates.dto.subsectionDada.DivisionDataParam;
 
 import java.util.List;
 

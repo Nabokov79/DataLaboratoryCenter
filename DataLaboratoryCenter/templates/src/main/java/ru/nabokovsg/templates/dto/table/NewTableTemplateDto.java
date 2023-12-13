@@ -36,10 +36,6 @@ public class NewTableTemplateDto {
     private Integer sequentialNumber;
     @Schema(description = "Название таблицы")
     private String tableName;
-    @Schema(description = "Текст перед таблицей")
-    private String textBeforeTable;
-    @Schema(description = "Текст после таблицы")
-    private String textAfterTable;
     @Schema(description = "Шаблоны колонок таблицы")
     @NotNull(message = "column headers should not be null")
     @NotEmpty(message = "column headers should not be empty")

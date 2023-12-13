@@ -1,4 +1,5 @@
 package ru.nabokovsg.templates.models;
+
 import lombok.*;
 import javax.persistence.*;
 

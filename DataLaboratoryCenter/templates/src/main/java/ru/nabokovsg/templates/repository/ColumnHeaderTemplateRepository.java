@@ -10,6 +10,6 @@ import java.util.Set;
 
 public interface ColumnHeaderTemplateRepository extends JpaRepository<ColumnHeaderTemplate, Long> {
 
-    @Query("select c from ColumnHeaderTemplate c where c.cellName in :cellNames")
-    Set<ColumnHeaderTemplate> findAllByCellName(@Param("cellNames") List<String> cellNames);
+    @Query("select c from ColumnHeaderTemplate c where c.heading in :headings")
+    Set<ColumnHeaderTemplate> findAllByCellName(@Param("headings") List<String> headings);
 }

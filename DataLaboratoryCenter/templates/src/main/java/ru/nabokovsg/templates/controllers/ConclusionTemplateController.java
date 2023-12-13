@@ -42,7 +42,7 @@ public class ConclusionTemplateController {
     }
 
     @Operation(summary = "Изменение данных шаблона заключений")
-    @PatchMapping
+    @GetMapping
     public ResponseEntity<ConclusionTemplateDto> getBy(
                                      @RequestParam("objectTypeId") @NotNull @Positive Long objectTypeId,
                                      @RequestParam("reportingDocumentId") @NotNull @Positive Long reportingDocumentId) {
