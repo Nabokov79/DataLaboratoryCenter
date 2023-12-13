@@ -21,8 +21,6 @@ public class ObjectsType {
     private String objectName;
     @Column(name = "model")
     private String model;
-    @Column(name = "volume")
-    private Integer volume;
     @Column(name = "orientation")
     private String orientation;
     @ManyToMany(fetch = FetchType.LAZY)
@@ -66,7 +64,6 @@ public class ObjectsType {
         return "ObjectsType{" +
                 "id=" + id +
                 ", objectName='" + objectName + '\'' +
-                ", volume=" + volume +
                 ", orientation='" + orientation + '\'' +
                 ", repairMethods=" + repairMethods +
                 ", documentations=" + documentations +
@@ -81,7 +78,6 @@ public class ObjectsType {
         if (o == null || getClass() != o.getClass()) return false;
         ObjectsType that = (ObjectsType) o;
         return id == that.id && Objects.equals(objectName, that.objectName)
-                             && Objects.equals(volume, that.volume)
                              && Objects.equals(orientation, that.orientation)
                              && Objects.equals(repairMethods, that.repairMethods)
                              && Objects.equals(documentations, that.documentations)
@@ -91,7 +87,6 @@ public class ObjectsType {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, objectName, volume, orientation
-                              , repairMethods, documentations, defects, elements);
+        return Objects.hash(id, objectName, orientation, repairMethods, documentations, defects, elements);
     }
 }
