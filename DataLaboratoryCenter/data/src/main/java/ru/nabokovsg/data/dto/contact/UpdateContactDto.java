@@ -21,14 +21,11 @@ public class UpdateContactDto {
     @Positive(message = "id must be positive")
     private Long id;
     @Schema(description = "Почтовый индекс")
-    @NotNull(message = "index should not be blank")
-    @Positive(message = "index must be positive")
     private Integer index;
     @Schema(description = "Номер телефона")
     @NotBlank(message = "phone should not be blank")
     private String phone;
     @Schema(description = "Факс")
-    @NotBlank(message = "fax should not be blank")
     private String fax;
     @Schema(description = "электронная почта")
     @NotBlank(message = "email should not be blank")
