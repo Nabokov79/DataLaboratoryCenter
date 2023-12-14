@@ -17,12 +17,14 @@ public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "supply_area")
+    private String supplyArea;
+    @Column(name = "short_supply_area")
+    private String shortSupplyArea;
     @Column(name = "department")
     private String department;
     @Column(name = "short_name_department")
     private String shortNameDepartment;
-    @Column(name = "department_number")
-    private Integer departmentNumber;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
