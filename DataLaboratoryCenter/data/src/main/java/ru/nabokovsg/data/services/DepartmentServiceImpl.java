@@ -33,7 +33,9 @@ public class DepartmentServiceImpl implements DepartmentService {
             return mapper.mapToDepartmentDto(department);
         }
         department = mapper.mapToNewDepartment(departmentDto);
-        department.setAddress(addressService.get(departmentDto.getAddressId()));
+        if(departmentDto.getAddressId() != null) {
+            department.setAddress(addressService.get(departmentDto.getAddressId()));
+        }
         department.setBranch(branchMapper.mapToBranch(branchService.get(departmentDto.getBranchId())));
         if (departmentDto.getContact() != null) {
             department.setContact(contactService.save(departmentDto.getContact()));
@@ -44,7 +46,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentDto update(UpdateDepartmentDto departmentDto) {
         Department department = mapper.mapToUpdateDepartment(departmentDto);
-        department.setAddress(addressService.get(departmentDto.getAddressId()));
+        if(departmentDto.getAddressId() != null) {
+            department.setAddress(addressService.get(departmentDto.getAddressId()));
+        }
         department.setBranch(branchMapper.mapToBranch(branchService.get(departmentDto.getBranchId())));
         if (departmentDto.getContact() != null) {
             department.setContact(contactService.update(departmentDto.getContact()));
