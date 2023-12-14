@@ -12,6 +12,7 @@ import javax.validation.constraints.Positive;
 @Setter
 @Getter
 @AllArgsConstructor
+@Schema(description = "Информация для изменения данных энергетических источников")
 public class UpdateBuildingDto {
 
     @Schema(description = "Индентификатор")

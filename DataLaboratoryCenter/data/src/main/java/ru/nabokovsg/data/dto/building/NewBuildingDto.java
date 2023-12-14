@@ -14,6 +14,7 @@ import javax.validation.constraints.Positive;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Данные новых энергетических источников")
 public class NewBuildingDto {
 
     @Schema(description = "Тип строения")

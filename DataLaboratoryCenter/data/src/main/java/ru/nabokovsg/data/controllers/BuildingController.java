@@ -20,12 +20,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping(
-        value = "/data/organizations/department/building",
+        value = "/data/department/building",
         consumes = MediaType.ALL_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 @Validated
-@Tag(name="Строение",
+@Tag(name="Строение(энергетический источник)",
         description="API для работы с информацией о строении")
 public class BuildingController {
 
