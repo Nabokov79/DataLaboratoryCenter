@@ -20,16 +20,18 @@ public class UpdateDepartmentDto {
     @NotNull(message = "id should not be blank")
     @Positive(message = "id must be positive")
     private Long id;
-    @Schema(description = "Полное название")
+    @Schema(description = "Полное наименование района теплоснабжения")
+    @NotBlank(message = "supply area should not be blank")
+    private String supplyArea;
+    @Schema(description = "Краткое наименование района теплоснабжения")
+    @NotBlank(message = "short supply area should not be blank")
+    private String shortSupplyArea;
+    @Schema(description = "Полное наименование подразделения")
     @NotBlank(message = "branch should not be blank")
     private String department;
-    @Schema(description = "Краткое название")
+    @Schema(description = "Краткое наименование подразделения")
     private String shortNameDepartment;
-    @Schema(description = "Номер подразделения")
-    private Integer departmentNumber;
     @Schema(description = "Индентификатор адреса")
-    @NotNull(message = "address id should not be blank")
-    @Positive(message = "address id can only be positive")
     private Long addressId;
     @Schema(description = "Контакты")
     private UpdateContactDto contact;

@@ -18,18 +18,18 @@ import javax.validation.constraints.Positive;
 @Schema(description = "Данные нового подразделения филиала организации")
 public class NewDepartmentDto {
 
-    @Schema(description = "Полное название")
+    @Schema(description = "Полное наименование района теплоснабжения")
+    private String supplyArea;
+    @Schema(description = "Краткое наименование района теплоснабжения")
+    private String shortSupplyArea;
+    @Schema(description = "Полное наименование подразделения")
     @NotBlank(message = "branch should not be blank")
     private String department;
-    @Schema(description = "Краткое название")
+    @Schema(description = "Краткое наименование подразделения")
     private String shortNameDepartment;
-    @Schema(description = "Номер подразделения")
-    private Integer departmentNumber;
     @Schema(description = "Индентификатор адреса")
-    @NotNull(message = "address id should not be blank")
-    @Positive(message = "address id can only be positive")
     private Long addressId;
-    @Schema(description = "Контыкты")
+    @Schema(description = "Контакты")
     private NewContactDto contact;
     @Schema(description = "Индентификатор филиала организации")
     @NotNull(message = "branch id should not be blank")

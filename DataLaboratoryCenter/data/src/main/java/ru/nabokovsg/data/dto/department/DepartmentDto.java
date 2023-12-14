@@ -19,12 +19,14 @@ public class DepartmentDto {
 
     @Schema(description = "Индентификатор")
     private Long id;
+    @Schema(description = "Полное наименование района теплоснабжения")
+    private String supplyArea;
+    @Schema(description = "Краткое наименование района теплоснабжения")
+    private String shortSupplyArea;
     @Schema(description = "Полное название")
     private String department;
     @Schema(description = "Краткое название")
     private String shortNameDepartment;
-    @Schema(description = "Номер подразделения")
-    private Integer departmentNumber;
     @Schema(description = "Адрес")
     private AddressDto address;
     @Schema(description = "Котельная, ЦТП")
