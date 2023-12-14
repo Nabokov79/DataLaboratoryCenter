@@ -30,4 +30,14 @@ public class NewBuildingDto {
     @NotNull(message = "address id should not be blank")
     @Positive(message = "address id can only be positive")
     private Long addressId;
+
+    @Override
+    public String toString() {
+        return "NewBuildingDto{" +
+                "buildingType='" + buildingType + '\'' +
+                ", login='" + login + '\'' +
+                ", departmentId=" + departmentId +
+                ", addressId=" + addressId +
+                '}';
+    }
 }

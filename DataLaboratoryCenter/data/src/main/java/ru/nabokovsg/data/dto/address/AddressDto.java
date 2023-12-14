@@ -23,4 +23,16 @@ public class AddressDto {
     private Integer buildingNumber;
     @Schema(description = "Литера дома")
     private String letter;
+
+    @Override
+    public String toString() {
+        return "AddressDto{" +
+                "id=" + id +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                ", buildingNumber=" + buildingNumber +
+                ", letter='" + letter + '\'' +
+                '}';
+    }
 }

@@ -19,4 +19,14 @@ public class BuildingDto {
     private String login;
     @Schema(description = "Адрес строения")
     private AddressDto address;
+
+    @Override
+    public String toString() {
+        return "BuildingDto{" +
+                "id=" + id +
+                ", buildingType='" + buildingType + '\'' +
+                ", login='" + login + '\'' +
+                ", address=" + address +
+                '}';
+    }
 }
