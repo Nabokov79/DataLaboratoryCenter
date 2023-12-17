@@ -69,7 +69,12 @@ public class ElementServiceImpl implements ElementService {
                 }
             }
         }
-        return objectsTypeService.addElements(objectsTypeId, repository.saveAll(elements));
+        if (!elementsDb.isEmpty()) {
+            elements = elementsDb.stream().toList();
+        } else {
+            elements = repository.saveAll(elements);
+        }
+        return objectsTypeService.addElements(objectsTypeId, elements);
     }
 
     @Override

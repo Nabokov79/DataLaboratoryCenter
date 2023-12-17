@@ -29,7 +29,7 @@ public class TableTemplateController {
     private final TableTemplateService service;
 
     @Operation(summary = "Добавление нового шаблона таблицы")
-    @PostMapping("/protocol")
+    @PostMapping
     public ResponseEntity<TableTemplateDto> save(
             @RequestBody @Valid
             @Parameter(description = "Данные шаблона таблицы") NewTableTemplateDto tableDto) {

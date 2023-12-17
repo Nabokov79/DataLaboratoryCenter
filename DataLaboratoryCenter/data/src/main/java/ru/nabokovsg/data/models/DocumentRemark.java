@@ -22,10 +22,10 @@ public class DocumentRemark {
     private String documentRemarkText;
     @Column(name = "drawing_remark_text")
     private String drawingRemarkText;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "employee_document_id", referencedColumnName = "id")
     private Employee employeeDocument;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "employee_drawing_id", referencedColumnName = "id")
     private Employee employeeDrawing;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

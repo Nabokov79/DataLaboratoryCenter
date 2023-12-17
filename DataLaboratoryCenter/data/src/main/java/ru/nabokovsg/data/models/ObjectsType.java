@@ -51,13 +51,6 @@ public class ObjectsType {
             inverseJoinColumns = {@JoinColumn(name = "element_id")})
     @ToString.Exclude
     private List<Element> elements;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "object_types_norms",
-            joinColumns = {@JoinColumn(name = "object_type_id")},
-            inverseJoinColumns = {@JoinColumn(name = "norm_id")})
-    @ToString.Exclude
-    private List<Norm> norms;
 
     @Override
     public String toString() {

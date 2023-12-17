@@ -22,7 +22,7 @@ public class Building {
     private String buildingType;
     @Column(name = "login")
     private String login;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

@@ -9,7 +9,6 @@ import ru.nabokovsg.data.dto.branch.UpdateBranchDto;
 import ru.nabokovsg.data.exceptions.BadRequestException;
 import ru.nabokovsg.data.exceptions.NotFoundException;
 import ru.nabokovsg.data.mappers.BranchMapper;
-import ru.nabokovsg.data.mappers.OrganizationMapper;
 import ru.nabokovsg.data.models.Branch;
 import ru.nabokovsg.data.models.Licenses;
 import ru.nabokovsg.data.repository.BranchRepository;
@@ -23,7 +22,6 @@ public class BranchServiceImpl implements BranchService {
     private final BranchRepository repository;
     private final BranchMapper mapper;
     private final OrganizationService organizationService;
-    private final OrganizationMapper organizationMapper;
     private final ContactService contactService;
     private final AddressService addressService;
 
@@ -35,8 +33,7 @@ public class BranchServiceImpl implements BranchService {
         }
         branch = mapper.mapToNewBranch(branchDto);
         branch.setAddress(addressService.get(branchDto.getAddressId()));
-        branch.setOrganization(
-                organizationMapper.mapToOrganization(organizationService.get(branchDto.getOrganizationId())));
+        branch.setOrganization(organizationService.getById(branchDto.getOrganizationId()));
         if (branchDto.getContact() != null) {
             branch.setContact(contactService.save(branchDto.getContact()));
         }
@@ -47,8 +44,7 @@ public class BranchServiceImpl implements BranchService {
     public BranchDto update(UpdateBranchDto branchDto) {
         if (repository.existsById(branchDto.getId())) {
             Branch branch = mapper.mapToUpdateBranch(branchDto);
-            branch.setOrganization(
-                    organizationMapper.mapToOrganization(organizationService.get(branchDto.getOrganizationId())));
+            branch.setOrganization(organizationService.getById(branchDto.getOrganizationId()));
             branch.setAddress(addressService.get(branchDto.getAddressId()));
             if (branchDto.getContact() != null) {
                 branch.setContact(contactService.update(branchDto.getContact()));
@@ -60,15 +56,18 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public BranchDto get(Long id) {
-        return mapper.mapToBranchDto(getById(id));
+        Branch branch = getById(id);
+        branch.setDepartments(branch.getDepartments().stream()
+                .filter(d -> d.getSupplyArea() != null)
+                .sorted((d1, d2) -> d1.getSupplyArea().compareToIgnoreCase(d2.getSupplyArea()))
+                .toList());
+        return mapper.mapToBranchDto(branch);
     }
 
     @Override
     public List<ShortBranchDto> getAll(Long organizationId) {
         return mapper.mapToShortBranchDto(
-                repository.findAllByOrganization(
-                        organizationMapper.mapToOrganization(organizationService.get(organizationId))
-                )
+                repository.findAllByOrganization(organizationService.getById(organizationId))
         );
     }
 

@@ -55,6 +55,13 @@ public class SurveyObjectController {
         return ResponseEntity.ok().body(service.get(id));
     }
 
+    @Operation(summary = "Изменение сведений об объекте")
+    @GetMapping("/building/{buildingId}")
+    public ResponseEntity<List<SurveyObjectDto>> getAll(@PathVariable @NotNull @Positive
+                                               @Parameter(description = "Индентификатор объекта") Long buildingId) {
+        return ResponseEntity.ok().body(service.getAll(buildingId));
+    }
+
     @Operation(summary = "Удаление объекта")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable @NotNull @Positive

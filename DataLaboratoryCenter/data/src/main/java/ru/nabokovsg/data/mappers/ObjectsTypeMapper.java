@@ -25,8 +25,6 @@ public interface ObjectsTypeMapper {
 
     ObjectsTypeRepairMethodDto mapToObjectsTypeRepairMethodDto(ObjectsType objectsType);
 
-    ObjectsTypeNormDto mapToObjectsTypeNormDto(ObjectsType objectsType);
-
     List<NewObjectsTypeDto> mapToNewObjectTypeDto(List<ObjectsType> objectsTypes);
 
     ObjectsTypeElementsDto mapToObjectTypeElementsDto(ObjectsType objectType);

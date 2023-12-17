@@ -25,15 +25,12 @@ public class Department {
     private String department;
     @Column(name = "short_name_department")
     private String shortNameDepartment;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-    @OneToMany(mappedBy = "department",
-            orphanRemoval = true,
-            cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     private Set<Building> buildings;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "contact_id", referencedColumnName = "id")
     private Contact contact;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

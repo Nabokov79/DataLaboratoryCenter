@@ -35,10 +35,10 @@ public class ReportingDocumentData {
     private LocalDate transferDate;
     @Column(name = "next_survey_date")
     private LocalDate nextSurveyDate;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "employee_document_id", referencedColumnName = "id")
     private Employee employeeDocument;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "employee_drawing_id", referencedColumnName = "id")
     private Employee employeeDrawing;
     @Column(name = "document_status")

@@ -15,7 +15,6 @@ public class DataBuilder {
     private final Map<Long, Address> addresses;
     private final List<Element> elements;
     private final List<Defect> defects;
-    private final List<Norm> norms;
     private final List<Documentation> documentations;
     private final Map<Long, Organization> organizations;
     private final Map<Long, Employee> employees;
@@ -31,7 +30,6 @@ public class DataBuilder {
         this.type =  data.type;
         this.elements =  data.elements;
         this.defects =  data.defects;
-        this.norms =  data.norms;
         this.documentations =  data.documentations;
         this.organizations = data.organizations;
         this.employees = data.employees;
@@ -71,10 +69,6 @@ public class DataBuilder {
         return defects;
     }
 
-    public List<Norm> getNorms() {
-        return norms;
-    }
-
     public List<Documentation> getDocumentations() {
         return documentations;
     }
@@ -105,7 +99,6 @@ public class DataBuilder {
         private BuilderType type;
         private List<Element> elements;
         private List<Defect> defects;
-        private List<Norm> norms;
         private List<Documentation> documentations;
         private Map<Long, Organization> organizations;
         private Map<Long, Employee> employees;
@@ -149,11 +142,6 @@ public class DataBuilder {
 
         public Data defects(List<Defect> defects) {
             this.defects = defects;
-            return this;
-        }
-
-        public Data norms(List<Norm> norms) {
-            this.norms = norms;
             return this;
         }
 

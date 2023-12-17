@@ -8,10 +8,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.nabokovsg.data.dto.objectsSurveyElement.NewObjectsSurveyElementDto;
-import ru.nabokovsg.data.dto.objectsSurveyElement.ObjectsSurveyElementDto;
-import ru.nabokovsg.data.dto.objectsSurveyElement.UpdateObjectsSurveyElementDto;
-import ru.nabokovsg.data.services.ObjectsSurveyElementService;
+import ru.nabokovsg.data.dto.objectsSurveyElementData.NewObjectsSurveyElementDataDto;
+import ru.nabokovsg.data.dto.objectsSurveyElementData.ObjectsSurveyElementDataDto;
+import ru.nabokovsg.data.dto.objectsSurveyElementData.UpdateObjectsSurveyElementDataDto;
+import ru.nabokovsg.data.services.ObjectsSurveyElementDataService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -27,27 +27,27 @@ import java.util.List;
 @Validated
 @Tag(name="Элементы объекта обследования",
         description="API для работы с данными елементов объекта обследования")
-public class ObjectsSurveyElementController {
+public class ObjectsSurveyElementDataController {
 
-    private final ObjectsSurveyElementService service;
+    private final ObjectsSurveyElementDataService service;
 
     @Operation(summary = "Добавление данных типа объекта")
     @PostMapping
-    public ResponseEntity<List<ObjectsSurveyElementDto>> save(
+    public ResponseEntity<List<ObjectsSurveyElementDataDto>> save(
             @RequestParam @Parameter(description = "Индентификатор объекта обследования")
             @NotNull @Positive Long surveyObjectId,
             @RequestBody @Valid
-            @Parameter(description = "Объект обследования") List<NewObjectsSurveyElementDto> elementsDataDto) {
+            @Parameter(description = "Объект обследования") List<NewObjectsSurveyElementDataDto> elementsDataDto) {
         return ResponseEntity.ok().body(service.save(surveyObjectId, elementsDataDto));
     }
 
     @Operation(summary = "Изменение данных типа объекта")
     @PatchMapping
-    public ResponseEntity<List<ObjectsSurveyElementDto>> update(
+    public ResponseEntity<List<ObjectsSurveyElementDataDto>> update(
             @RequestParam @Parameter(description = "Индентификатор объекта обследования")
             @NotNull @Positive Long surveyObjectId,
             @RequestBody @Valid
-            @Parameter(description = "Объект обследования") List<UpdateObjectsSurveyElementDto> elementsDataDto) {
+            @Parameter(description = "Объект обследования") List<UpdateObjectsSurveyElementDataDto> elementsDataDto) {
         return ResponseEntity.ok().body(service.update(surveyObjectId, elementsDataDto));
     }
 

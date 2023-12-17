@@ -21,12 +21,12 @@ import java.util.List;
 @Schema(description = "Данные изменения информации в шаблоне таблицы")
 public class UpdateTableTemplateDto {
 
-    @Schema(description = "Индентификатор типа объекта")
-    @NotNull(message = "object type id should not be null")
-    @Positive(message = "object type id can only be positive")
+    @Schema(description = "Индентификатор")
+    @NotNull(message = "id should not be null")
+    @Positive(message = "id can only be positive")
     private Long id;
-    @Schema(description = "Индентификатор организации")
-    @NotBlank(message = "organization id should not be blank")
+    @Schema(description = "Тип данных таблицы")
+    @NotBlank(message = "Table data type should not be blank")
     private String tableDataType;
     @Schema(description = "Порядковый номер таблицы")
     private Integer sequentialNumber;

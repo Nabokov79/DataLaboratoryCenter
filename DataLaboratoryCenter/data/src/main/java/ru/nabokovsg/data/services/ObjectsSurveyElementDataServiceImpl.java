@@ -2,13 +2,13 @@ package ru.nabokovsg.data.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nabokovsg.data.dto.objectsSurveyElement.NewObjectsSurveyElementDto;
-import ru.nabokovsg.data.dto.objectsSurveyElement.ObjectsSurveyElementDto;
-import ru.nabokovsg.data.dto.objectsSurveyElement.UpdateObjectsSurveyElementDto;
+import ru.nabokovsg.data.dto.objectsSurveyElementData.NewObjectsSurveyElementDataDto;
+import ru.nabokovsg.data.dto.objectsSurveyElementData.ObjectsSurveyElementDataDto;
+import ru.nabokovsg.data.dto.objectsSurveyElementData.UpdateObjectsSurveyElementDataDto;
 import ru.nabokovsg.data.exceptions.NotFoundException;
-import ru.nabokovsg.data.mappers.ObjectsSurveyElementMapper;
+import ru.nabokovsg.data.mappers.ObjectsSurveyElementDataMapper;
 import ru.nabokovsg.data.models.*;
-import ru.nabokovsg.data.repository.ObjectsSurveyElementRepository;
+import ru.nabokovsg.data.repository.ObjectsSurveyElementDataRepository;
 import ru.nabokovsg.data.services.builder.RepositoryRequestService;
 
 import java.util.ArrayList;
@@ -19,21 +19,21 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ObjectsSurveyElementServiceImpl implements ObjectsSurveyElementService {
+public class ObjectsSurveyElementDataServiceImpl implements ObjectsSurveyElementDataService {
 
-    private final ObjectsSurveyElementRepository repository;
-    private final ObjectsSurveyElementMapper mapper;
+    private final ObjectsSurveyElementDataRepository repository;
+    private final ObjectsSurveyElementDataMapper mapper;
     private final RepositoryRequestService requestService;
 
     @Override
-    public List<ObjectsSurveyElementDto> save(Long surveyObjectId, List<NewObjectsSurveyElementDto> elementsDataDto) {
+    public List<ObjectsSurveyElementDataDto> save(Long surveyObjectId, List<NewObjectsSurveyElementDataDto> elementsDataDto) {
         ObjectsSurveyElementData data = getDataForObjectsSurveyElement(surveyObjectId
                                                                      , elementsDataDto
                                                                           .stream()
-                                                                          .map(NewObjectsSurveyElementDto::getElementId)
+                                                                          .map(NewObjectsSurveyElementDataDto::getElementId)
                                                                           .toList());
         return mapper.mapFromObjectsSurveyElementDto(repository.saveAll(elementsDataDto.stream().map(e -> {
-            SurveyObjectElement elementData = mapper.mapFromNewObjectsSurveyElement(e);
+            SurveyObjectElementData elementData = mapper.mapFromNewObjectsSurveyElement(e);
             elementData.setElement(data.getElements().get(e.getElementId()));
             elementData.setSubElement(data.getSubElements().get(e.getSubElementId()));
             elementData.setObjectSurvey(data.getObjectSurvey());
@@ -42,15 +42,15 @@ public class ObjectsSurveyElementServiceImpl implements ObjectsSurveyElementServ
     }
 
     @Override
-    public List<ObjectsSurveyElementDto> update(Long surveyObjectId, List<UpdateObjectsSurveyElementDto> elementsDataDto) {
-        validateIds(elementsDataDto.stream().map(UpdateObjectsSurveyElementDto::getId).toList());
+    public List<ObjectsSurveyElementDataDto> update(Long surveyObjectId, List<UpdateObjectsSurveyElementDataDto> elementsDataDto) {
+        validateIds(elementsDataDto.stream().map(UpdateObjectsSurveyElementDataDto::getId).toList());
         ObjectsSurveyElementData data = getDataForObjectsSurveyElement(surveyObjectId
                                                                , elementsDataDto
                                                                        .stream()
-                                                                       .map(UpdateObjectsSurveyElementDto::getElementId)
+                                                                       .map(UpdateObjectsSurveyElementDataDto::getElementId)
                                                                        .toList());
         return mapper.mapFromObjectsSurveyElementDto(repository.saveAll(elementsDataDto.stream().map(e -> {
-            SurveyObjectElement elementData = mapper.mapFromUpdateObjectsSurveyElement(e);
+            SurveyObjectElementData elementData = mapper.mapFromUpdateObjectsSurveyElement(e);
             elementData.setElement(data.getElements().get(e.getElementId()));
             elementData.setSubElement(data.getSubElements().get(e.getSubElementId()));
             elementData.setObjectSurvey(data.getObjectSurvey());
@@ -82,8 +82,8 @@ public class ObjectsSurveyElementServiceImpl implements ObjectsSurveyElementServ
 
 
     private void validateIds(List<Long> ids) {
-        Map<Long, SurveyObjectElement> elements = repository.findAllById((ids))
-                .stream().collect(Collectors.toMap(SurveyObjectElement::getId, e -> e));
+        Map<Long, SurveyObjectElementData> elements = repository.findAllById((ids))
+                .stream().collect(Collectors.toMap(SurveyObjectElementData::getId, e -> e));
         if (elements.size() != ids.size() || elements.isEmpty()) {
             List<Long> idsDb = new ArrayList<>(elements.keySet());
             ids = ids.stream().filter(e -> !idsDb.contains(e)).collect(Collectors.toList());

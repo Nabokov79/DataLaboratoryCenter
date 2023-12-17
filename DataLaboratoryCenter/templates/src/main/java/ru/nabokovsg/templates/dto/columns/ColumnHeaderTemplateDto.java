@@ -15,7 +15,7 @@ public class ColumnHeaderTemplateDto {
     @Schema(description = "Индентификатор")
     private long id;
     @Schema(description = "Порядковый номер колонки")
-    private Integer sequentialCellNumber;
+    private Integer sequentialNumber;
     @Schema(description = "Название колонки")
     private String cellName;
     @Schema(description = "Тип данных колонки")

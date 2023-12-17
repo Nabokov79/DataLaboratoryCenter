@@ -15,5 +15,7 @@ public interface SurveyObjectService {
 
     SurveyObjectDto get(Long id);
 
+    List<SurveyObjectDto> getAll(Long buildingId);
+
      void delete(Long id);
 }

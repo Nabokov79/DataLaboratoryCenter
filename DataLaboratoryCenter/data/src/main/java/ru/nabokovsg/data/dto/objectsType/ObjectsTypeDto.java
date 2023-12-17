@@ -7,7 +7,6 @@ import lombok.Setter;
 import ru.nabokovsg.data.dto.defect.DefectDto;
 import ru.nabokovsg.data.dto.documentation.DocumentationDto;
 import ru.nabokovsg.data.dto.element.ElementDto;
-import ru.nabokovsg.data.dto.norms.NormsDto;
 import ru.nabokovsg.data.dto.repairMethod.RepairMethodDto;
 
 import java.util.List;
@@ -32,8 +31,6 @@ public class ObjectsTypeDto {
     private List<DocumentationDto> documentations;
     @Schema(description = "Дефекты объекта")
     private List<DefectDto> defects;
-    @Schema(description = "Нормы оценки дефектов объекта")
-    private List<NormsDto> norms;
     @Schema(description = "Способы ремонта объекта")
     private List<RepairMethodDto> repairMethods;
 }

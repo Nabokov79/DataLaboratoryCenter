@@ -31,21 +31,21 @@ public class MeasuringTool {
     private LocalDate manufacturing;
     @Column(name = "exploitation")
     private LocalDate exploitation;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "manufacturer_id", referencedColumnName = "id")
     private Organization manufacturer;
     @Column(name = "measuring_range")
     private String  measuringRange;
     @Column(name = "characteristics")
     private String characteristics;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "tool_owner_id", referencedColumnName = "id")
     private Organization toolOwner;
     @Column(name = "verification_date")
     private LocalDate verificationDate;
     @Column(name = "next_verification_date")
     private LocalDate nextVerificationDate;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     private Organization organization;
     @Column(name = "certificate_number")

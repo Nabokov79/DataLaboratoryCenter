@@ -33,7 +33,7 @@ public class Certificate {
     private LocalDate endDate;
     @Column(name = "points")
     private String points;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     private Organization organization;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

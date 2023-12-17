@@ -17,7 +17,7 @@ public interface SurveyObjectMapper {
 
     SurveyObject mapToUpdateObjectSurvey(UpdateSurveyObjectDto objectDto);
 
-    List<ShortSurveyObjectDto> mapToObjectSurveyDtos(List<SurveyObject> objects);
+    List<ShortSurveyObjectDto> mapToObjectSurveyDto(List<SurveyObject> objects);
 
     SurveyObjectDto mapToObjectSurveyDto(SurveyObject object);
 

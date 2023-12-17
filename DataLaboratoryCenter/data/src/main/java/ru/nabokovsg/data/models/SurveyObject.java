@@ -24,8 +24,10 @@ public class SurveyObject {
     private ObjectsType objectType;
     @Column(name = "stationary_number")
     private Integer stationaryNumber;
+    @Column(name = "volume")
+    private Integer volume;
     @OneToMany(mappedBy = "objectSurvey", fetch = FetchType.LAZY)
-    private List<SurveyObjectElement> elements;
+    private List<SurveyObjectElementData> elements;
     @ManyToOne
     @JoinColumn(name = "building_id", referencedColumnName = "id")
     private Building building;

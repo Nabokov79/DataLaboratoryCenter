@@ -36,7 +36,9 @@ public class HeaderTemplateServiceImpl implements HeaderTemplateService {
     public HeaderTemplateDto save(NewHeaderTemplateDto headerDto) {
         HeaderTemplate header = repository.findByReportingDocumentId(headerDto.getReportingDocumentId());
         if (header == null) {
-            header = repository.save(set(new HeaderTemplate(), mapper.mapToNewHeaderTemplateDataDto(headerDto)));
+            header = set(new HeaderTemplate(), mapper.mapToNewHeaderTemplateDataDto(headerDto));
+            header.setReportingDocumentId(headerDto.getReportingDocumentId());
+            header = repository.save(header);
         }
         return mapper.mapToHeaderTemplateDto(header);
     }

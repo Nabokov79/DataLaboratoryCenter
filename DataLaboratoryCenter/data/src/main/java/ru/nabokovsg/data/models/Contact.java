@@ -26,4 +26,15 @@ public class Contact {
     private String fax;
     @Column(name = "email")
     private String email;
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "id=" + id +
+                ", index=" + index +
+                ", phone='" + phone + '\'' +
+                ", fax='" + fax + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

@@ -98,16 +98,6 @@ public class ObjectsTypeServiceImpl implements ObjectsTypeService {
                                             .toList();
     }
 
-    @Override
-    public List<ObjectsTypeNormDto> addNorms(List<Long> ids, List<Norm> norms) {
-        return repository.saveAll(getAllByIds(ids).stream()
-                                                    .peek(o -> o.setNorms(norms))
-                                                    .toList())
-                                            .stream()
-                                            .map(mapper::mapToObjectsTypeNormDto)
-                                            .toList();
-    }
-
     private List<ObjectsType> getAllByIds(List<Long> ids) {
         List<ObjectsType> objectsTypes = repository.findAllById(ids);
         if (objectsTypes.isEmpty()) {

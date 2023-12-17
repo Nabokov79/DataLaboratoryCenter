@@ -32,7 +32,7 @@ public class SurveyObjectServiceImpl implements SurveyObjectService {
         DataBuilder builder = getData(mapper.mapFromNewObjectSurveyIds(objectsDto));
         Map<Long, Building> buildings = convertBuildings(builder);
         Map<Long, ObjectsType> types = convertObjectsType(builder);
-        return mapper.mapToObjectSurveyDtos(repository.saveAll(
+        return mapper.mapToObjectSurveyDto(repository.saveAll(
                                           objectsDto.stream()
                                                     .map(o -> {
                                                                 SurveyObject object = mapper.mapToNewObjectSurvey(o);
@@ -49,7 +49,7 @@ public class SurveyObjectServiceImpl implements SurveyObjectService {
         DataBuilder builder = getData(mapper.mapFromUpdateObjectSurveyIds(objectsDto));
         Map<Long, Building> buildings = convertBuildings(builder);
         Map<Long, ObjectsType> types = convertObjectsType(builder);
-        return mapper.mapToObjectSurveyDtos(repository.saveAll(
+        return mapper.mapToObjectSurveyDto(repository.saveAll(
                 objectsDto.stream()
                         .map(o -> {
                             SurveyObject object = mapper.mapToUpdateObjectSurvey(o);
@@ -67,6 +67,11 @@ public class SurveyObjectServiceImpl implements SurveyObjectService {
                         .orElseThrow(
                                 () -> new NotFoundException(String.format("ObjectSurvey with id=%s not found", id)))
         );
+    }
+
+    @Override
+    public List<SurveyObjectDto> getAll(Long buildingId) {
+        return repository.findAllByBuildingId(buildingId).stream().map(mapper::mapToObjectSurveyDto).toList();
     }
 
     @Override

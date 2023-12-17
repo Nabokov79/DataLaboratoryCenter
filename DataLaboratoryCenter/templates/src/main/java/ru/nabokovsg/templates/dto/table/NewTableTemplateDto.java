@@ -29,8 +29,8 @@ public class NewTableTemplateDto {
     @NotNull(message = "object type id should not be null")
     @Positive(message = "object type id can only be positive")
     private Long objectTypeId;
-    @Schema(description = "Индентификатор организации")
-    @NotBlank(message = "organization id should not be blank")
+    @Schema(description = "Тип данных таблицы")
+    @NotBlank(message = "Table data type should not be blank")
     private String tableDataType;
     @Schema(description = "Порядковый номер таблицы")
     private Integer sequentialNumber;

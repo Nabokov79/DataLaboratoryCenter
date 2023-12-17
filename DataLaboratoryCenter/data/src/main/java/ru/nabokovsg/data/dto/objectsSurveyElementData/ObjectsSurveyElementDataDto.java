@@ -1,4 +1,4 @@
-package ru.nabokovsg.data.dto.objectsSurveyElement;
+package ru.nabokovsg.data.dto.objectsSurveyElementData;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import ru.nabokovsg.data.dto.subElement.SubElementDto;
 @Getter
 @AllArgsConstructor
 @Schema(description = "Данные об элементах объекта обследования")
-public class ObjectsSurveyElementDto {
+public class ObjectsSurveyElementDataDto {
 
     @Schema(description = "Краткие сведения об элементе объекта обследования")
     private ShortElementDto element;

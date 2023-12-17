@@ -23,12 +23,9 @@ public class Branch {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-    @OneToMany(mappedBy = "branch",
-            orphanRemoval = true,
-            cascade = CascadeType.REMOVE,
-            fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY)
     private List<Department> departments;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "contact_id", referencedColumnName = "id")
     private Contact contact;
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
