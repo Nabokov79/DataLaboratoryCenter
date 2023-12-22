@@ -21,10 +21,6 @@ public class UpdateAppendicesTemplateDto {
     @NotNull(message = "object type id should not be null")
     @Positive(message = "object type id can only be positive")
     private Long objectTypeId;
-    @Schema(description = "Порядковый номер")
-    @NotNull(message = "sequential number should not be null")
-    @Positive(message = "sequential number can only be positive")
-    private Integer sequentialNumber;
     @Schema(description = "Название приложения")
     @NotNull(message = "appendices name should not be blank")
     private String appendicesName;
