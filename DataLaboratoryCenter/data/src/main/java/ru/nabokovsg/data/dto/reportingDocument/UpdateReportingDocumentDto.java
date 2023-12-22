@@ -21,13 +21,8 @@ public class UpdateReportingDocumentDto {
     private Long id;
     @Schema(description = "Тип документа")
     @NotBlank(message = "reporting document should not be blank")
-    private String document;
-    @Schema(description = "заголовок документа")
+    private String name;
+    @Schema(description = "Заголовок документа")
     @NotBlank(message = "reporting document title should not be blank")
-    private String documentTitle;
-    @Schema(description = "Тип документа")
-    @NotBlank(message = "reporting document type should not be blank")
-    private String documentType;
-    @Schema(description = "Тип протокола")
-    private String protocolType;
+    private String title;
 }
