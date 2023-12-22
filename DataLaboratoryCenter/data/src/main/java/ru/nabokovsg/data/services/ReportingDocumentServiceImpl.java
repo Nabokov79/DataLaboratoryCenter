@@ -5,15 +5,12 @@ import org.springframework.stereotype.Service;
 import ru.nabokovsg.data.dto.reportingDocument.NewReportingDocumentDto;
 import ru.nabokovsg.data.dto.reportingDocument.ReportingDocumentDto;
 import ru.nabokovsg.data.dto.reportingDocument.UpdateReportingDocumentDto;
-import ru.nabokovsg.data.models.enums.DocumentType;
-import ru.nabokovsg.data.models.enums.ProtocolType;
-import ru.nabokovsg.data.exceptions.BadRequestException;
 import ru.nabokovsg.data.exceptions.NotFoundException;
 import ru.nabokovsg.data.mappers.ReportingDocumentMapper;
 import ru.nabokovsg.data.models.ReportingDocument;
+import ru.nabokovsg.data.models.enums.DocumentType;
 import ru.nabokovsg.data.repository.ReportingDocumentRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,47 +23,40 @@ public class ReportingDocumentServiceImpl implements ReportingDocumentService {
     private final ReportingDocumentMapper mapper;
 
     @Override
-    public List<ReportingDocumentDto> save(List<NewReportingDocumentDto> reportingDocumentDto) {
-        return repository.saveAll(reportingDocumentDto.stream()
-                        .map(d -> {
-                                    ReportingDocument document = mapper.mapFromNewReportingDocument(d);
-                                    document.setDocument(document.getDocument().toUpperCase());
-                                    document.setDocumentType(
-                                    DocumentType.from(d.getDocumentType()).orElseThrow(
-                                           () -> new BadRequestException("Unknown document type: " + d.getDocumentType()
-                                        )
-                                    ));
-                                   if (d.getProtocolType() != null) {
-                                       document.setProtocolType(
-                                        ProtocolType.from(d.getProtocolType()).orElseThrow(
-                                           () -> new BadRequestException("Unknown protocol type: " + d.getProtocolType()
-                                           )
-                                         )
-                                       );
-                                   }
-                                    return document;
-                                })
-                        .toList()
-        ).stream().map(mapper::mapToReportingDocumentDto).toList();
+    public List<ReportingDocumentDto> save(DocumentType documentType, List<NewReportingDocumentDto> documentDto) {
+        return repository.saveAll(documentDto.stream()
+                                             .map(r -> {
+                                                 ReportingDocument document = mapper.mapToNewReportingDocument(documentType, r);
+                                                 document.setName(document.getName().toUpperCase());
+                                                 return document;
+                                             })
+                                             .toList())
+                                             .stream()
+                                             .map(mapper::mapToReportingDocumentDto)
+                                             .toList();
     }
 
     @Override
-    public List<ReportingDocumentDto> update(List<UpdateReportingDocumentDto> reportingDocumentDto) {
-        validateIds(reportingDocumentDto.stream().map(UpdateReportingDocumentDto::getId).toList());
-        return repository.saveAll(reportingDocumentDto.stream()
-                        .map(d -> {
-                            ReportingDocument document = mapper.mapFromUpdateReportingDocument(d);
-                            document.setDocument(document.getDocument().toUpperCase());
-                            document.setDocumentType(
-                                    DocumentType.from(d.getDocumentType()).orElseThrow(
-                                            () -> new BadRequestException("Unknown documentType: " + d.getDocumentType()
-                                            )
-                                    )
-                            );
-                            return document;
-                        })
-                        .toList()
-        ).stream().map(mapper::mapToReportingDocumentDto).toList();
+    public List<ReportingDocumentDto> update(List<UpdateReportingDocumentDto> documentsDto) {
+        List<Long> ids = documentsDto.stream()
+                                     .map(UpdateReportingDocumentDto::getId)
+                                     .toList();
+        Map<Long, ReportingDocument> documentsDb = repository.findAllById(ids)
+                                                        .stream()
+                                                        .collect(Collectors.toMap(ReportingDocument::getId, m -> m));
+        if (!documentsDb.isEmpty()) {
+            for (UpdateReportingDocumentDto documentDto : documentsDto) {
+                ReportingDocument document = documentsDb.get(documentDto.getId());
+                if (document != null) {
+                    documentDto.setName(documentDto.getName().toUpperCase());
+                    documentsDb.put(documentDto.getId(), mapper.mapToUpdateReportingDocument(document, documentDto));
+                }
+                return repository.saveAll(documentsDb.values()).stream()
+                                                               .map(mapper::mapToReportingDocumentDto)
+                                                               .toList();
+            }
+        }
+       throw new NotFoundException(String.format("Reporting document with ids=%s not found for update", ids));
     }
 
     @Override
@@ -88,15 +78,5 @@ public class ReportingDocumentServiceImpl implements ReportingDocumentService {
             return;
         }
         throw new NotFoundException(String.format("reporting document with id=%s not found for delete", id));
-    }
-
-    private void validateIds(List<Long> ids) {
-        Map<Long, ReportingDocument> documents = repository.findAllById((ids))
-                .stream().collect(Collectors.toMap(ReportingDocument::getId, m -> m));
-        if (documents.size() != ids.size() || documents.isEmpty()) {
-            List<Long> idsDb = new ArrayList<>(documents.keySet());
-            ids = ids.stream().filter(e -> !idsDb.contains(e)).collect(Collectors.toList());
-            throw new NotFoundException(String.format("reporting document with ids= %s not found", ids));
-        }
     }
 }
