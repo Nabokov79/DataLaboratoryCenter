@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.nabokovsg.data.dto.reportingDocument.NewReportingDocumentDto;
 import ru.nabokovsg.data.dto.reportingDocument.ReportingDocumentDto;
 import ru.nabokovsg.data.dto.reportingDocument.UpdateReportingDocumentDto;
+import ru.nabokovsg.data.models.enums.DocumentType;
 import ru.nabokovsg.data.services.ReportingDocumentService;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -30,20 +31,28 @@ public class ReportingDocumentController {
 
     private final ReportingDocumentService service;
 
-    @Operation(summary = "Добавление новых типов отчетных документов")
-    @PostMapping
-    public ResponseEntity<List<ReportingDocumentDto>> save(
+    @Operation(summary = "Добавление новых типа отчета")
+    @PostMapping("/report")
+    public ResponseEntity<List<ReportingDocumentDto>> saveReport(
               @RequestBody @Valid
-              @Parameter(description = "Типы отчетного документа") List<NewReportingDocumentDto> reportingDocumentDto) {
-        return ResponseEntity.ok().body(service.save(reportingDocumentDto));
+              @Parameter(description = "Типы отчетного документа") List<NewReportingDocumentDto>documentDto) {
+        return ResponseEntity.ok().body(service.save(DocumentType.REPORT,documentDto));
+    }
+
+    @Operation(summary = "Добавление новых типа протокола/заключения")
+    @PostMapping("/protocol")
+    public ResponseEntity<List<ReportingDocumentDto>> saveProtocol(
+            @RequestBody @Valid
+            @Parameter(description = "Типы отчетного документа") List<NewReportingDocumentDto> documentDto) {
+        return ResponseEntity.ok().body(service.save(DocumentType.PROTOCOL,documentDto));
     }
 
     @Operation(summary = "Изменение данных типов отчетных документа")
     @PatchMapping
     public ResponseEntity<List<ReportingDocumentDto>> update(
            @RequestBody @Valid
-           @Parameter(description = "Типы отчетного документа") List<UpdateReportingDocumentDto> reportingDocumentDto) {
-        return ResponseEntity.ok().body(service.update(reportingDocumentDto));
+           @Parameter(description = "Типы отчетного документа") List<UpdateReportingDocumentDto> documentDto) {
+        return ResponseEntity.ok().body(service.update(documentDto));
     }
 
     @Operation(summary = "Получение данных типов отчетных документов")
