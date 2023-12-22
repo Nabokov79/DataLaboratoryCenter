@@ -20,8 +20,6 @@ public class AppendicesTemplate {
     private long id;
     @Column(name = "object_type_id")
     private Long objectTypeId;
-    @Column(name = "sequential_number")
-    private Integer sequentialNumber;
     @Column(name = "appendices_name")
     private String appendicesName;
 }
