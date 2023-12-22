@@ -19,6 +19,7 @@ public class NewPageTitleTemplateDto {
 
     @Schema(description = "Индентификатор типа объекта")
     @NotNull(message = "object type id should not be null")
+    @Positive(message = "object type id must be positive")
     private Long objectTypeId;
     @Schema(description = "Индентификатор типа отчетного документа")
     @NotNull(message = "reporting document id should not be null")
