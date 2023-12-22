@@ -14,9 +14,7 @@ import ru.nabokovsg.templates.exceptions.NotFoundException;
 import ru.nabokovsg.templates.mappers.HeaderTemplateMapper;
 import ru.nabokovsg.templates.models.HeaderTemplate;
 import ru.nabokovsg.templates.repository.HeaderTemplateRepository;
-import ru.nabokovsg.templates.services.headerDataHandlers.BranchDataService;
-import ru.nabokovsg.templates.services.headerDataHandlers.DepartmentDataService;
-import ru.nabokovsg.templates.services.headerDataHandlers.OrganizationDataService;
+import ru.nabokovsg.templates.services.builders.StringBuilderService;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -28,9 +26,7 @@ public class HeaderTemplateServiceImpl implements HeaderTemplateService {
     private final HeaderTemplateRepository repository;
     private final HeaderTemplateMapper mapper;
     private final TemplateClient client;
-    private final OrganizationDataService organizationDataService;
-    private final BranchDataService branchDataService;
-    private final DepartmentDataService departmentDataService;
+    private final StringBuilderService stringBuilder;
 
     @Override
     public HeaderTemplateDto save(NewHeaderTemplateDto headerDto) {
@@ -64,14 +60,14 @@ public class HeaderTemplateServiceImpl implements HeaderTemplateService {
 
     private HeaderTemplate set(HeaderTemplate header, HeaderTemplateDataDto headerDto) {
         OrganizationDto organization = client.getOrganization(headerDto.getOrganizationId());
-        organizationDataService.getHeaderData(header, organization, headerDto);
-        branchDataService.getHeaderData(header
+        getHeaderByOrganizationData(header, organization, headerDto);
+        getHeaderByBranchData(header
                 , organization.getBranches()
                         .stream()
                         .collect(Collectors.toMap(BranchDto::getId, b -> b))
                         .get(headerDto.getBranchId())
                 , headerDto);
-        departmentDataService.getHeaderData(header
+        getHeaderByDepartmentData(header
                 , organization.getBranches()
                         .stream()
                         .map(BranchDto::getDepartments)
@@ -80,5 +76,63 @@ public class HeaderTemplateServiceImpl implements HeaderTemplateService {
                         .get(headerDto.getDepartmentId())
                 , headerDto);
         return header;
+    }
+
+    private void getHeaderByDepartmentData(HeaderTemplate header
+                                         , DepartmentDto department
+                                         , HeaderTemplateDataDto data) {
+        if (data.getDepartmentFullName()) {
+            header.setDepartment(department.getDepartment());
+        } else {
+            header.setDepartment(department.getShortNameDepartment());
+        }
+        if (data.getDepartmentLicense()) {
+            header.setDepartmentLicense(stringBuilder.convertLicense(department.getLicenses()));
+        } else {
+            header.setDepartmentLicense(null);
+        }
+        if (data.getDepartmentContacts()) {
+            header.setDepartmentContacts(stringBuilder.convertContacts(department.getContact()
+                    , department.getAddress()));
+        } else {
+            header.setDepartmentContacts(null);
+        }
+    }
+
+    public void getHeaderByBranchData(HeaderTemplate header
+                                    , BranchDto branch
+                                    , HeaderTemplateDataDto data) {
+        if (data.getBranchFullName()) {
+            header.setBranch(branch.getBranch());
+        } else {
+            header.setBranch(branch.getShortNameBranch());
+        }
+        if (data.getBranchLicense()) {
+            header.setOrganizationLicense(stringBuilder.convertLicense(branch.getLicenses()));
+        } else {
+            header.setOrganizationLicense(null);
+        }
+        if (data.getBranchContacts()) {
+            header.setBranchContacts(stringBuilder.convertContacts(branch.getContact(), branch.getAddress()));
+        } else {
+            header.setBranchContacts(null);
+        }
+    }
+
+    public void getHeaderByOrganizationData(HeaderTemplate header
+                                          , OrganizationDto organization
+                                          , HeaderTemplateDataDto data) {
+        if (data.getOrganizationFullName()) {
+            header.setOrganization(organization.getOrganization());
+        } else {
+            header.setOrganization(organization.getShortNameOrganization());
+        }
+        if (data.getOrganizationLicense()) {
+            header.setOrganizationLicense(stringBuilder.convertLicense(organization.getLicenses()));
+        }
+        if (data.getOrganizationContacts()) {
+            header.setOrganizationContacts(stringBuilder.convertContacts(organization.getContact()
+                    , organization.getAddress()));
+        }
     }
 }
