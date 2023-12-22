@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import ru.nabokovsg.data.models.enums.DocumentType;
-import ru.nabokovsg.data.models.enums.ProtocolType;
 
 @Setter
 @Getter
@@ -16,11 +15,9 @@ public class ReportingDocumentDto {
     @Schema(description = "Индентификатор")
     private Long id;
     @Schema(description = "Название документа")
-    private String document;
-    @Schema(description = "заголовок документа")
-    private String documentTitle;
+    private String name;
+    @Schema(description = "Заголовок документа")
+    private String title;
     @Schema(description = "Тип документа")
     private DocumentType documentType;
-    @Schema(description = "Тип протокола")
-    private ProtocolType protocolType;
 }
