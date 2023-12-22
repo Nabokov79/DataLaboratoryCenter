@@ -15,8 +15,6 @@ public class AppendicesTemplateDto {
     private Long id;
     @Schema(description = "Индентификатор типа объекта")
     private Long objectTypeId;
-    @Schema(description = "Порядковый номер")
-    private Integer sequentialNumber;
     @Schema(description = "Название приложения")
     private String appendicesName;
 }
