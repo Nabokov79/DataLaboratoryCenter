@@ -16,14 +16,9 @@ import javax.validation.constraints.NotBlank;
 public class NewReportingDocumentDto {
 
     @Schema(description = "Название документа")
-    @NotBlank(message = "reporting document should not be blank")
-    private String document;
-    @Schema(description = "заголовок документа")
+    @NotBlank(message = "reporting document name should not be blank")
+    private String name;
+    @Schema(description = "Заголовок документа")
     @NotBlank(message = "reporting document title should not be blank")
-    private String documentTitle;
-    @Schema(description = "Тип документа")
-    @NotBlank(message = "reporting document type should not be blank")
-    private String documentType;
-    @Schema(description = "Тип протокола")
-    private String protocolType;
+    private String title;
 }
