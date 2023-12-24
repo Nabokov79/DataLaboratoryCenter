@@ -19,7 +19,7 @@ import javax.validation.constraints.Positive;
 
 @RestController
 @RequestMapping(
-        value = "/template/section/subsection",
+        value = "/template/subsection",
         consumes = MediaType.ALL_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
@@ -30,12 +30,24 @@ public class SubsectionTemplateController {
 
     private final SubsectionTemplateService service;
 
-    @Operation(summary = "Добавление нового шаблона подраздела")
-    @PostMapping
-    public ResponseEntity<SubsectionTemplateDto> save(
-                                @RequestBody @Valid
-                                @Parameter(description = "Шаблон подраздела") NewSubsectionTemplateDto subsectionsDto) {
-        return ResponseEntity.ok().body(service.save(subsectionsDto));
+    @Operation(summary = "Добавление нового шаблона подраздела раздела")
+    @PostMapping("/section")
+    public ResponseEntity<SubsectionTemplateDto> saveFromSectionTemplate(
+            @RequestParam(name = "sectionId")
+            @NotNull @Positive @Parameter(name = "Индентификатор раздела") Long sectionId,
+            @RequestBody @Valid
+            @Parameter(description = "Шаблон подраздела") NewSubsectionTemplateDto subsectionsDto) {
+        return ResponseEntity.ok().body(service.saveFromSectionTemplate(sectionId, subsectionsDto));
+    }
+
+    @Operation(summary = "Добавление нового шаблона подраздела протокола")
+    @PostMapping("/protocol")
+    public ResponseEntity<SubsectionTemplateDto> saveFromProtocolTemplate(
+            @RequestParam(name = "protocolId")
+            @NotNull @Positive @Parameter(name = "Индентификатор протокола") Long protocolId,
+            @RequestBody @Valid
+            @Parameter(description = "Шаблон подраздела") NewSubsectionTemplateDto subsectionsDto) {
+        return ResponseEntity.ok().body(service.saveFromProtocolTemplate(protocolId, subsectionsDto));
     }
 
     @Operation(summary = "Изменение данных шаблона подраздела")
@@ -46,10 +58,17 @@ public class SubsectionTemplateController {
         return ResponseEntity.ok().body(service.update(subsectionsDto));
     }
 
-    @Operation(summary = "Изменение данных шаблона подраздела")
+    @Operation(summary = "Получить данные шаблона подраздела")
+    @GetMapping("/{id}")
+    public ResponseEntity<SubsectionTemplateDto> get(@PathVariable @NotNull @Positive
+                                                     @Parameter(description = "Индентификатор") Long id) {
+        return ResponseEntity.ok().body(service.get(id));
+    }
+
+    @Operation(summary = "Удалить подраздел")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(
-                                 @PathVariable @NotNull @Positive @Parameter(description = "Индентификатор") Long id) {
+    public ResponseEntity<String> delete(@PathVariable @NotNull @Positive
+                                         @Parameter(description = "Индентификатор") Long id) {
         service.delete(id);
         return ResponseEntity.ok("Подраздел удален.");
     }
