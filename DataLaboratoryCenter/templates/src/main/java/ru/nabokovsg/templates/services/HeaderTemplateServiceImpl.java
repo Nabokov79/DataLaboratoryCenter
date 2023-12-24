@@ -7,7 +7,6 @@ import ru.nabokovsg.templates.client.dto.BranchDto;
 import ru.nabokovsg.templates.client.dto.DepartmentDto;
 import ru.nabokovsg.templates.client.dto.OrganizationDto;
 import ru.nabokovsg.templates.dto.header.HeaderTemplateDataDto;
-import ru.nabokovsg.templates.dto.header.HeaderTemplateDto;
 import ru.nabokovsg.templates.dto.header.NewHeaderTemplateDto;
 import ru.nabokovsg.templates.dto.header.UpdateHeaderTemplateDto;
 import ru.nabokovsg.templates.exceptions.NotFoundException;
@@ -29,110 +28,95 @@ public class HeaderTemplateServiceImpl implements HeaderTemplateService {
     private final StringBuilderService stringBuilder;
 
     @Override
-    public HeaderTemplateDto save(NewHeaderTemplateDto headerDto) {
+    public HeaderTemplate save(NewHeaderTemplateDto headerDto) {
         HeaderTemplate header = repository.findByReportingDocumentId(headerDto.getReportingDocumentId());
         if (header == null) {
-            header = set(new HeaderTemplate(), mapper.mapToNewHeaderTemplateDataDto(headerDto));
-            header.setReportingDocumentId(headerDto.getReportingDocumentId());
-            header = repository.save(header);
+            header = repository.save(set(mapper.mapToNewHeaderTemplateData(headerDto)));
         }
-        return mapper.mapToHeaderTemplateDto(header);
-    }
-
-    @Override
-    public HeaderTemplateDto update(UpdateHeaderTemplateDto headerDto) {
-        return mapper.mapToHeaderTemplateDto(repository.save(
-                set(repository.findById(headerDto.getId()).orElseThrow(() -> new NotFoundException(
-                                String.format("Header template with id=%s not found for update", headerDto.getId())))
-                        , mapper.mapToUpdateHeaderTemplateDataDto(headerDto))
-        ));
-    }
-
-    @Override
-    public HeaderTemplateDto get(Long reportingDocumentId) {
-        HeaderTemplate header = repository.findByReportingDocumentId(reportingDocumentId);
-        if (header == null) {
-            throw new NotFoundException(
-                    String.format("Header template by reportingDocumentId=%s not found", reportingDocumentId));
-        }
-        return mapper.mapToHeaderTemplateDto(header);
-    }
-
-    private HeaderTemplate set(HeaderTemplate header, HeaderTemplateDataDto headerDto) {
-        OrganizationDto organization = client.getOrganization(headerDto.getOrganizationId());
-        getHeaderByOrganizationData(header, organization, headerDto);
-        getHeaderByBranchData(header
-                , organization.getBranches()
-                        .stream()
-                        .collect(Collectors.toMap(BranchDto::getId, b -> b))
-                        .get(headerDto.getBranchId())
-                , headerDto);
-        getHeaderByDepartmentData(header
-                , organization.getBranches()
-                        .stream()
-                        .map(BranchDto::getDepartments)
-                        .flatMap(Collection::stream)
-                        .collect(Collectors.toMap(DepartmentDto::getId, d -> d))
-                        .get(headerDto.getDepartmentId())
-                , headerDto);
         return header;
     }
 
-    private void getHeaderByDepartmentData(HeaderTemplate header
-                                         , DepartmentDto department
-                                         , HeaderTemplateDataDto data) {
-        if (data.getDepartmentFullName()) {
-            header.setDepartment(department.getDepartment());
-        } else {
-            header.setDepartment(department.getShortNameDepartment());
+    @Override
+    public HeaderTemplate update(UpdateHeaderTemplateDto headerDto) {
+        if (repository.existsById(headerDto.getId())) {
+            return repository.save(
+                    mapper.mapToUpdateHeaderTemplate(
+                            set(mapper.mapToUpdateHeaderTemplateDataDto(headerDto)), headerDto.getId()
+                    )
+            );
         }
-        if (data.getDepartmentLicense()) {
-            header.setDepartmentLicense(stringBuilder.convertLicense(department.getLicenses()));
-        } else {
-            header.setDepartmentLicense(null);
-        }
-        if (data.getDepartmentContacts()) {
-            header.setDepartmentContacts(stringBuilder.convertContacts(department.getContact()
-                    , department.getAddress()));
-        } else {
-            header.setDepartmentContacts(null);
-        }
+        throw new NotFoundException(
+                String.format("Header template with id=%s not found for update", headerDto.getId())
+        );
     }
 
-    public void getHeaderByBranchData(HeaderTemplate header
-                                    , BranchDto branch
-                                    , HeaderTemplateDataDto data) {
-        if (data.getBranchFullName()) {
-            header.setBranch(branch.getBranch());
-        } else {
-            header.setBranch(branch.getShortNameBranch());
-        }
-        if (data.getBranchLicense()) {
-            header.setOrganizationLicense(stringBuilder.convertLicense(branch.getLicenses()));
-        } else {
-            header.setOrganizationLicense(null);
-        }
-        if (data.getBranchContacts()) {
-            header.setBranchContacts(stringBuilder.convertContacts(branch.getContact(), branch.getAddress()));
-        } else {
-            header.setBranchContacts(null);
-        }
+    private HeaderTemplate set(HeaderTemplateDataDto headerData) {
+        OrganizationDto organization = client.getOrganization(headerData.getOrganizationId());
+        return mapper.mapToNewHeaderTemplate(getHeaderByOrganizationData(organization, headerData)
+                                           , getHeaderByBranchData(
+                                                   organization.getBranches()
+                                                               .stream()
+                                                               .collect(Collectors.toMap(BranchDto::getId, b -> b))
+                                                               .get(headerData.getBranchId())
+                                                 , headerData)
+                                           , getHeaderByDepartmentData(
+                                                   organization.getBranches()
+                                                               .stream()
+                                                               .map(BranchDto::getDepartments)
+                                                               .flatMap(Collection::stream)
+                                                               .collect(Collectors.toMap(DepartmentDto::getId, d -> d))
+                                                               .get(headerData.getDepartmentId())
+                                                 , headerData)
+                                    );
     }
 
-    public void getHeaderByOrganizationData(HeaderTemplate header
-                                          , OrganizationDto organization
-                                          , HeaderTemplateDataDto data) {
+    public HeaderTemplate getHeaderByOrganizationData(OrganizationDto organizationDto, HeaderTemplateDataDto data) {
+        String organization = organizationDto.getShortNameOrganization();
+        String license = "";
+        String contacts = "";
         if (data.getOrganizationFullName()) {
-            header.setOrganization(organization.getOrganization());
-        } else {
-            header.setOrganization(organization.getShortNameOrganization());
+            organization = organizationDto.getOrganization();
         }
         if (data.getOrganizationLicense()) {
-            header.setOrganizationLicense(stringBuilder.convertLicense(organization.getLicenses()));
+            license = stringBuilder.convertLicense(organizationDto.getLicenses());
         }
         if (data.getOrganizationContacts()) {
-            header.setOrganizationContacts(stringBuilder.convertContacts(organization.getContact()
-                    , organization.getAddress()));
+            contacts = stringBuilder.convertContacts(organizationDto.getContact()
+                    , organizationDto.getAddress());
         }
+        return mapper.mapFromOrganizationData(organization, license, contacts);
+    }
+
+    public HeaderTemplate getHeaderByBranchData(BranchDto branchDto, HeaderTemplateDataDto data) {
+        String branch = branchDto.getShortNameBranch();
+        String license = "";
+        String contacts = "";
+        if (data.getBranchFullName()) {
+            branch = branchDto.getBranch();
+        }
+        if (data.getBranchLicense()) {
+            license = stringBuilder.convertLicense(branchDto.getLicenses());
+        }
+        if (data.getBranchContacts()) {
+            contacts = stringBuilder.convertContacts(branchDto.getContact(), branchDto.getAddress());
+        }
+        return mapper.mapFromBranchData(branch, license, contacts);
+    }
+
+    private HeaderTemplate getHeaderByDepartmentData(DepartmentDto departmentDto, HeaderTemplateDataDto data) {
+        String department = departmentDto.getShortNameDepartment();
+        String license = "";
+        String contacts = "";
+        if (data.getDepartmentFullName()) {
+            department = departmentDto.getDepartment();
+        }
+        if (data.getDepartmentLicense()) {
+            license = stringBuilder.convertLicense(departmentDto.getLicenses());
+        }
+        if (data.getDepartmentContacts()) {
+            contacts = stringBuilder.convertContacts(departmentDto.getContact(), departmentDto.getAddress());
+        }
+
+        return mapper.mapFromDepartmentData(department, license, contacts);
     }
 }
