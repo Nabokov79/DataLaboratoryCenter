@@ -16,10 +16,6 @@ public class ReportTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "reporting_document_id")
-    private Long reportingDocumentId;
-    @Column(name = "object_type_id")
-    private Long objectTypeId;
     @OneToOne
     @JoinColumn(name = "page_title_id", referencedColumnName = "id")
     private PageTitleTemplate pageTitle;
