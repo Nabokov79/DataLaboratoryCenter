@@ -47,6 +47,15 @@ public class RecommendationTemplateServiceImpl implements RecommendationTemplate
                                                              .toList();
     }
 
+    @Override
+    public void delete(Long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return;
+        }
+        throw  new NotFoundException(String.format("Recommendation template with id=%s not found for delete", id));
+    }
+
     private RecommendationTemplate get(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
