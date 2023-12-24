@@ -1,14 +1,12 @@
 package ru.nabokovsg.templates.services;
 
-import ru.nabokovsg.templates.dto.header.HeaderTemplateDto;
 import ru.nabokovsg.templates.dto.header.NewHeaderTemplateDto;
 import ru.nabokovsg.templates.dto.header.UpdateHeaderTemplateDto;
+import ru.nabokovsg.templates.models.HeaderTemplate;
 
 public interface HeaderTemplateService {
 
-    HeaderTemplateDto save(NewHeaderTemplateDto headerDto);
+    HeaderTemplate save(NewHeaderTemplateDto headerDto);
 
-    HeaderTemplateDto update(UpdateHeaderTemplateDto headerDto);
-
-    HeaderTemplateDto get(Long reportingDocumentId);
+    HeaderTemplate update(UpdateHeaderTemplateDto headerDto);
 }
