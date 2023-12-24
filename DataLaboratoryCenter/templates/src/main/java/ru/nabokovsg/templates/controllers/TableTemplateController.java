@@ -14,6 +14,8 @@ import ru.nabokovsg.templates.dto.table.UpdateTableTemplateDto;
 import ru.nabokovsg.templates.services.TableTemplateService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @RestController
 @RequestMapping(
@@ -29,11 +31,21 @@ public class TableTemplateController {
     private final TableTemplateService service;
 
     @Operation(summary = "Добавление нового шаблона таблицы")
-    @PostMapping
-    public ResponseEntity<TableTemplateDto> save(
+    @PostMapping("/subsection")
+    public ResponseEntity<TableTemplateDto> saveFromSubsectionTemplate(@RequestParam(name = "subsectionId")
+                                                                       @NotNull @Positive @Parameter(name = "Индентификатор подраздела") Long subsectionId,
             @RequestBody @Valid
             @Parameter(description = "Данные шаблона таблицы") NewTableTemplateDto tableDto) {
-        return ResponseEntity.ok().body(service.save(tableDto));
+        return ResponseEntity.ok().body(service.saveFromSubsectionTemplate(subsectionId, tableDto));
+    }
+
+    @Operation(summary = "Добавление нового шаблона таблицы")
+    @PostMapping("/protocol")
+    public ResponseEntity<TableTemplateDto> saveFromProtocolTemplate(@RequestParam(name = "protocolId")
+                                                                       @NotNull @Positive @Parameter(name = "Индентификатор протокола") Long protocolId,
+                                                                       @RequestBody @Valid
+                                                                       @Parameter(description = "Данные шаблона таблицы") NewTableTemplateDto tableDto) {
+        return ResponseEntity.ok().body(service.saveFromProtocolTemplate(protocolId, tableDto));
     }
 
     @Operation(summary = "Изменение информации в шаблоне таблицы")
@@ -43,4 +55,18 @@ public class TableTemplateController {
             @Parameter(description = "Данные шаблона таблицы") UpdateTableTemplateDto tableDto) {
         return ResponseEntity.ok().body(service.update(tableDto));
     }
+
+    @Operation(summary = "Получить таблицу")
+    @GetMapping("/{id}")
+    public ResponseEntity<TableTemplateDto> get(@PathVariable @NotNull @Positive @Parameter(name = "Индентификатор") Long id) {
+        return ResponseEntity.ok().body(service.get(id));
+    }
+
+    @Operation(summary = "Удалить таблицу")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable @NotNull @Positive @Parameter(name = "Индентификатор") Long id) {
+        service.delete(id);
+        return ResponseEntity.ok("Приложение удалено.");
+    }
+
 }
