@@ -26,12 +26,6 @@ public class NewSubsectionTemplateDto {
     @Schema(description = "Показать номер подраздела в документе")
     @NotNull(message = "subsection number should not be null")
     private boolean subsectionNumber;
-    @Schema(description = "Тип таблицы")
-    private String tableDataType;
-    @Schema(description = "Текст перед таблицей")
-    private String textBeforeTable;
-    @Schema(description = "Текст после таблицы")
-    private String textAfterTable;
     @Schema(description = "Индентификаторы данных подраздела")
     private List<Long> subsectionDataIds;
 }
