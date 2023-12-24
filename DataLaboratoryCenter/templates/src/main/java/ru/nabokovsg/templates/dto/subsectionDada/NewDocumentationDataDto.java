@@ -20,7 +20,6 @@ public class NewDocumentationDataDto {
     @NotNull(message = "object type id should not be null")
     @Positive(message = "object type id can only be positive")
     private Long objectTypeId;
-
     @Schema(description = "Указать методическую документацию")
     @NotNull(message = "Methodological document should not be null")
     private Boolean methodologicalDocument;
