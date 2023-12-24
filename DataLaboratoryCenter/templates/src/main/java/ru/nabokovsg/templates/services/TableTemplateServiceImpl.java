@@ -9,7 +9,6 @@ import ru.nabokovsg.templates.exceptions.NotFoundException;
 import ru.nabokovsg.templates.mappers.TableTemplateMapper;
 import ru.nabokovsg.templates.models.TableTemplate;
 import ru.nabokovsg.templates.repository.TableTemplateRepository;
-import ru.nabokovsg.templates.services.converter.ConverterStringToEnumService;
 
 @Service
 @RequiredArgsConstructor
@@ -18,46 +17,64 @@ public class TableTemplateServiceImpl implements TableTemplateService {
     private final TableTemplateRepository repository;
     private final TableTemplateMapper mapper;
     private final ColumnHeaderTemplateService columnHeaderService;
-    private final ConverterStringToEnumService converter;
+    private final SubsectionTemplateService subsectionService;
+    private final ProtocolTemplateService protocolService;
 
 
     @Override
-    public TableTemplateDto save(NewTableTemplateDto tableDto) {
-        TableTemplate table = repository.findByTableDataTypeAndObjectTypeIdAndReportingDocumentId(
-                                                          converter.convertToTableDataType(tableDto.getTableDataType())
-                                                        , tableDto.getObjectTypeId()
-                                                        , tableDto.getReportingDocumentId());
-        if (table == null) {
-            table = repository.save(mapper.mapToNewTableTemplate(tableDto
-                                                               , columnHeaderService.save(tableDto.getColumnHeaders()))
-            );
+    public TableTemplateDto saveFromSubsectionTemplate(Long subsectionId, NewTableTemplateDto tableDto) {
+        if (subsectionService.existsById(subsectionId)) {
+            TableTemplate table = repository.save(mapper.mapToNewTableTemplate(tableDto
+                    , columnHeaderService.save(tableDto.getColumnHeaders())));
+            subsectionService.saveWithTable(subsectionId, table);
+            return mapper.mapToTableTemplateDto(table);
         }
-        return mapper.mapToTableTemplateDto(table);
+        throw new NotFoundException(
+                String.format("Subsection template with id=%s not found for add table template", subsectionId)
+        );
+    }
+
+    @Override
+    public TableTemplateDto saveFromProtocolTemplate(Long protocolId, NewTableTemplateDto tableDto) {
+        if (protocolService.existsById(protocolId)) {
+            TableTemplate table = repository.save(mapper.mapToNewTableTemplate(tableDto
+                    , columnHeaderService.save(tableDto.getColumnHeaders())));
+            protocolService.saveWithTable(protocolId, table);
+            return mapper.mapToTableTemplateDto(table);
+        }
+        throw new NotFoundException(
+                String.format("Protocol template with id=%s not found for add table template", protocolId)
+        );
     }
 
     @Override
     public TableTemplateDto update(UpdateTableTemplateDto tableDto) {
-        return mapper.mapToTableTemplateDto(
-                repository.save(
-                        mapper.mapToUpdateTableTemplate(get(tableDto.getId())
-                                                          , tableDto
-                                                          , columnHeaderService.update(tableDto.getColumnHeaders()))
-                )
-        );
+        if (repository.existsById(tableDto.getId())) {
+            return mapper.mapToTableTemplateDto(repository.save(mapper.mapToUpdateTableTemplate(
+                                                                tableDto
+                                                              , columnHeaderService.update(tableDto.getColumnHeaders()))
+                    )
+            );
+        }
+       throw new NotFoundException(String.format("Table template with id=%s not found for update", tableDto.getId()));
     }
 
     @Override
-    public TableTemplate getByTableDataType(String tableDataType) {
-        TableTemplate table = repository.findByTableDataType(converter.convertToTableDataType(tableDataType));
-        if (table == null) {
-            throw new NotFoundException(String.format("Table template with tableDataType=%s not found", tableDataType));
-        }
-        return table;
+    public TableTemplateDto get(Long id) {
+        return mapper.mapToTableTemplateDto(getById(id));
     }
 
-    private TableTemplate get(Long id) {
+    public TableTemplate getById(Long id) {
         return repository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("Table template with id=%s not found", id))
-        );
+                () -> new NotFoundException(String.format("Table template with id=%s not found", id)));
+    }
+
+    @Override
+    public void delete(Long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return;
+        }
+        throw  new NotFoundException(String.format("Table template with id=%s not found for delete", id));
     }
 }
