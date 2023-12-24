@@ -12,16 +12,15 @@ import java.util.List;
 @Setter
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
 @Schema(description = "Данные подраздела")
 public class SubsectionTemplateDto {
 
     @Schema(description = "Индентификатор")
     private Long id;
-    @Schema(description = "Тип данных подраздела")
-    private String subsectionName;
     @Schema(description = "Порядковый номер подраздела")
     private double sequentialNumber;
+    @Schema(description = "Название подраздела")
+    private String subsectionName;
     @Schema(description = "Текст пользователя")
     private String text;
     @Schema(description = "Показать номер подраздела в документе")
