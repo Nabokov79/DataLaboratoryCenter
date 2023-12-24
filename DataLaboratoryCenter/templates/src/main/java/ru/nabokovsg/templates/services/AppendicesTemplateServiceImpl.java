@@ -39,4 +39,13 @@ public class AppendicesTemplateServiceImpl implements AppendicesTemplateService 
                 String.format("Appendices template with id=%s not found for update", appendicesDto.getId())
         );
     }
+
+    @Override
+    public void delete(Long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return;
+        }
+        throw  new NotFoundException(String.format("Appendices template with id=%s not found for delete", id));
+    }
 }

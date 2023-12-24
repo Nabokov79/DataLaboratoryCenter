@@ -9,4 +9,6 @@ public interface AppendicesTemplateService {
     AppendicesTemplateDto save(NewAppendicesTemplateDto appendicesDto);
 
     AppendicesTemplateDto update(UpdateAppendicesTemplateDto appendicesDto);
+
+    void delete(Long id);
 }
