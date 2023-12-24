@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.nabokovsg.templates.dto.header.UpdateHeaderTemplateDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -44,4 +45,7 @@ public class UpdatePageTitleTemplateDto {
     @Schema(description = "Населенный пункт")
     @NotBlank(message = "city should not be blank")
     private String city;
+    @Schema(description = "Заголовок титульного листа")
+    @NotNull(message = "header should not be null")
+    private UpdateHeaderTemplateDto header;
 }
