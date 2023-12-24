@@ -36,16 +36,12 @@ public class ConclusionTemplateServiceImpl implements ConclusionTemplateService 
     }
 
     @Override
-    public ConclusionTemplateDto getBy(Long objectTypeId, Long reportingDocumentId) {
-        ConclusionTemplate conclusion = repository.findByObjectTypeIdAndReportingDocumentId(objectTypeId
-                                                                                          , reportingDocumentId);
-        if (conclusion == null) {
-            throw new NotFoundException(
-                    String.format("Conclusion template by objectTypeId=%s, reportingDocumentId=%s not found",
-                                                                                      objectTypeId, reportingDocumentId)
-            );
+    public void delete(Long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return;
         }
-        return mapper.mapToConclusionTemplateDto(conclusion);
+        throw  new NotFoundException(String.format("Conclusion template with id=%s not found for delete", id));
     }
 
     private ConclusionTemplate get(Long id) {

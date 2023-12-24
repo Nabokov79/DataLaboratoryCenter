@@ -1,6 +1,7 @@
 package ru.nabokovsg.templates.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -41,11 +42,10 @@ public class ConclusionTemplateController {
         return ResponseEntity.ok().body(service.update(conclusionDto));
     }
 
-    @Operation(summary = "Изменение данных шаблона заключений")
-    @GetMapping
-    public ResponseEntity<ConclusionTemplateDto> getBy(
-                                     @RequestParam("objectTypeId") @NotNull @Positive Long objectTypeId,
-                                     @RequestParam("reportingDocumentId") @NotNull @Positive Long reportingDocumentId) {
-        return ResponseEntity.ok().body(service.getBy(objectTypeId, reportingDocumentId));
+    @Operation(summary = "Удалить заключения")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable @NotNull @Positive @Parameter(name = "Индентификатор") Long id) {
+        service.delete(id);
+        return ResponseEntity.ok("Рекомендация удалена.");
     }
 }

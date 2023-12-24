@@ -10,5 +10,5 @@ public interface ConclusionTemplateService {
 
     ConclusionTemplateDto update(UpdateConclusionTemplateDto conclusionDto);
 
-    ConclusionTemplateDto getBy(Long objectTypeId, Long reportingDocumentId);
+    void delete(Long id);
 }
