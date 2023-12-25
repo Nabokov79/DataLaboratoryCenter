@@ -52,22 +52,19 @@ public class HeaderTemplateServiceImpl implements HeaderTemplateService {
 
     private HeaderTemplate set(HeaderTemplateDataDto headerData) {
         OrganizationDto organization = client.getOrganization(headerData.getOrganizationId());
-        return mapper.mapToNewHeaderTemplate(getHeaderByOrganizationData(organization, headerData)
-                                           , getHeaderByBranchData(
-                                                   organization.getBranches()
-                                                               .stream()
-                                                               .collect(Collectors.toMap(BranchDto::getId, b -> b))
-                                                               .get(headerData.getBranchId())
-                                                 , headerData)
-                                           , getHeaderByDepartmentData(
-                                                   organization.getBranches()
-                                                               .stream()
-                                                               .map(BranchDto::getDepartments)
-                                                               .flatMap(Collection::stream)
-                                                               .collect(Collectors.toMap(DepartmentDto::getId, d -> d))
-                                                               .get(headerData.getDepartmentId())
-                                                 , headerData)
-                                    );
+        return getHeaderByDepartmentData(getHeaderByBranchData(getHeaderByOrganizationData(organization, headerData),
+                        organization.getBranches()
+                                .stream()
+                                .collect(Collectors.toMap(BranchDto::getId, b -> b))
+                                .get(headerData.getBranchId())
+                        , headerData),
+                organization.getBranches()
+                        .stream()
+                        .map(BranchDto::getDepartments)
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toMap(DepartmentDto::getId, d -> d))
+                        .get(headerData.getDepartmentId())
+                , headerData);
     }
 
     public HeaderTemplate getHeaderByOrganizationData(OrganizationDto organizationDto, HeaderTemplateDataDto data) {
@@ -87,7 +84,7 @@ public class HeaderTemplateServiceImpl implements HeaderTemplateService {
         return mapper.mapFromOrganizationData(organization, license, contacts);
     }
 
-    public HeaderTemplate getHeaderByBranchData(BranchDto branchDto, HeaderTemplateDataDto data) {
+    public HeaderTemplate getHeaderByBranchData(HeaderTemplate header, BranchDto branchDto, HeaderTemplateDataDto data) {
         String branch = branchDto.getShortNameBranch();
         String license = "";
         String contacts = "";
@@ -100,10 +97,10 @@ public class HeaderTemplateServiceImpl implements HeaderTemplateService {
         if (data.getBranchContacts()) {
             contacts = stringBuilder.convertContacts(branchDto.getContact(), branchDto.getAddress());
         }
-        return mapper.mapFromBranchData(branch, license, contacts);
+        return mapper.mapFromBranchData(header, branch, license, contacts);
     }
 
-    private HeaderTemplate getHeaderByDepartmentData(DepartmentDto departmentDto, HeaderTemplateDataDto data) {
+    private HeaderTemplate getHeaderByDepartmentData(HeaderTemplate header, DepartmentDto departmentDto, HeaderTemplateDataDto data) {
         String department = departmentDto.getShortNameDepartment();
         String license = "";
         String contacts = "";
@@ -117,6 +114,6 @@ public class HeaderTemplateServiceImpl implements HeaderTemplateService {
             contacts = stringBuilder.convertContacts(departmentDto.getContact(), departmentDto.getAddress());
         }
 
-        return mapper.mapFromDepartmentData(department, license, contacts);
+        return mapper.mapFromDepartmentData(header, department, license, contacts);
     }
 }
