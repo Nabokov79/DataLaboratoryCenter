@@ -26,8 +26,7 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
         if (sectionService.existsById(sectionId)) {
             SubsectionTemplate subsection = mapper.mapToNewSubsectionTemplate(subsectionDto);
             if (!subsectionDto.getSubsectionDataIds().isEmpty()) {
-                subsection = mapper.mapSubsectionData(subsection
-                                              , subsectionDataService.getAllById(subsectionDto.getSubsectionDataIds()));
+                subsection.setSubsectionData(subsectionDataService.getAllById(subsectionDto.getSubsectionDataIds()));
             }
             subsection = repository.save(subsection);
             sectionService.saveWithSubsectionTemplate(sectionId, subsection);
@@ -43,8 +42,7 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
         if (protocolService.existsById(protocolId)) {
             SubsectionTemplate subsection = mapper.mapToNewSubsectionTemplate(subsectionDto);
             if (!subsectionDto.getSubsectionDataIds().isEmpty()) {
-                subsection = mapper.mapSubsectionData(subsection
-                                              , subsectionDataService.getAllById(subsectionDto.getSubsectionDataIds()));
+                subsection.setSubsectionData(subsectionDataService.getAllById(subsectionDto.getSubsectionDataIds()));
             }
             return mapper.mapToSubsectionTemplateDto(repository.save(subsection));
         }
@@ -88,7 +86,9 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
 
     @Override
     public void saveWithTable(Long subsectionId, TableTemplate table) {
-        repository.save(mapper.mapTableTemplate(getById(subsectionId), table));
+        SubsectionTemplate template = getById(subsectionId);
+        template.setTable(table);
+        repository.save(template);
     }
 
     public SubsectionTemplate getById(Long id) {
