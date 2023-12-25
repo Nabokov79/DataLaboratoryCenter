@@ -25,24 +25,19 @@ public interface HeaderTemplateMapper {
     @Mapping(source = "license", target = "branchLicense")
     @Mapping(source = "contacts", target = "branchContacts")
     @Mapping(target = "id", ignore = true)
-    HeaderTemplate mapFromBranchData(String branch, String license, String contacts);
+    HeaderTemplate mapFromBranchData(@MappingTarget HeaderTemplate header
+                                                  , String branch
+                                                  , String license
+                                                  , String contacts);
 
     @Mapping(source = "department", target = "department")
     @Mapping(source = "license", target = "departmentLicense")
     @Mapping(source = "contacts", target = "departmentContacts")
     @Mapping(target = "id", ignore = true)
-    HeaderTemplate mapFromDepartmentData(String department, String license, String contacts);
-
-    @Mapping(source = "headerBranch.branch", target = "branch")
-    @Mapping(source = "headerBranch.branchLicense", target = "branchLicense")
-    @Mapping(source = "headerBranch.branchContacts", target = "branchContacts")
-    @Mapping(source = "headerDepartment.department", target = "department")
-    @Mapping(source = "headerDepartment.departmentLicense", target = "departmentLicense")
-    @Mapping(source = "headerDepartment.departmentContacts", target = "departmentContacts")
-    @Mapping(target = "id", ignore = true)
-    HeaderTemplate mapToNewHeaderTemplate(@MappingTarget HeaderTemplate header
-                                                       , HeaderTemplate headerBranch
-                                                       , HeaderTemplate headerDepartment);
+    HeaderTemplate mapFromDepartmentData(@MappingTarget HeaderTemplate header
+                                                      , String department
+                                                      , String license
+                                                      , String contacts);
 
     @Mapping(source = "id", target = "id")
     HeaderTemplate mapToUpdateHeaderTemplate(@MappingTarget HeaderTemplate header, Long id);
