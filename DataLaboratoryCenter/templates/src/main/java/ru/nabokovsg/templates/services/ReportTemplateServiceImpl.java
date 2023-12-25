@@ -37,7 +37,9 @@ public class ReportTemplateServiceImpl implements ReportTemplateService {
 
     @Override
     public void saveWithSectionTemplate(Long reportId, List<SectionTemplate> sections) {
-        repository.save(mapper.mapForSectionTemplate(getById(reportId), sections));
+        ReportTemplate template = getById(reportId);
+        template.setSections(sections);
+        repository.save(template);
     }
 
     private ReportTemplate getById(Long id) {
