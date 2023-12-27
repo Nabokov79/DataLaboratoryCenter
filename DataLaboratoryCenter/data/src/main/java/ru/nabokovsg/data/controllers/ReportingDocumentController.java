@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(
-        value = "/data/applications/document",
+        value = "/data/reporting/document",
         consumes = MediaType.ALL_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
