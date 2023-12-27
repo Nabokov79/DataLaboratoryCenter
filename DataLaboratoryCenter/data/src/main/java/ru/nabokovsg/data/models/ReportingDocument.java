@@ -19,10 +19,10 @@ public class ReportingDocument {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "name")
-    private String name;
     @Column(name = "title")
     private String title;
+    @Column(name = "heading")
+    private String heading;
     @Column(name = "document_type")
     @Enumerated(EnumType.STRING)
     private DocumentType documentType;
