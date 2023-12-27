@@ -19,10 +19,10 @@ public class UpdateReportingDocumentDto {
     @NotNull(message = "id reporting document should not be blank")
     @Positive(message = "id reporting document must be positive")
     private Long id;
-    @Schema(description = "Тип документа")
-    @NotBlank(message = "reporting document should not be blank")
-    private String name;
-    @Schema(description = "Заголовок документа")
-    @NotBlank(message = "reporting document title should not be blank")
+    @Schema(description = "Название документа")
+    @NotBlank(message = "title should not be blank")
     private String title;
+    @Schema(description = "Заголовок документа")
+    @NotBlank(message = "heading should not be blank")
+    private String heading;
 }
