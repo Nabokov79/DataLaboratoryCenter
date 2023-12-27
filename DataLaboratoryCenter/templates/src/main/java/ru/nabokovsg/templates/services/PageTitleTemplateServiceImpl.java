@@ -30,16 +30,15 @@ public class PageTitleTemplateServiceImpl implements PageTitleTemplateService {
         PageTitleTemplate pageTitle = repository.findByObjectTypeIdAndReportingDocumentId(pageTitleDto.getObjectTypeId()
                                                                                , pageTitleDto.getReportingDocumentId());
         if (pageTitle == null) {
-            pageTitle = repository.save(
-                    mapper.mapToNewPageTitleTemplate(
-                              pageTitleDto
-                            , headerService.save(pageTitleDto.getHeader())
+            pageTitle = mapper.mapToNewPageTitleTemplate(pageTitleDto, headerService.save(pageTitleDto.getHeader()));
+            pageTitle = repository.save(mapper.mapToPageTitleTemplate(
+                            pageTitle
                             , client.getReportingDocument(pageTitleDto.getReportingDocumentId())
                             , stringBuilder.convertEmployee(client.getEmployee(pageTitleDto.getEmployeeId()))
                             , String.valueOf((LocalDate.now().getYear()))
-                    )
-            );
+                    ));
             reportService.saveWithPageTitleTemplate(pageTitle);
+            return mapper.mapToPageTitleTemplateDto(pageTitle);
         }
         return mapper.mapToPageTitleTemplateDto(pageTitle);
     }
@@ -47,15 +46,13 @@ public class PageTitleTemplateServiceImpl implements PageTitleTemplateService {
     @Override
     public PageTitleTemplateDto update(UpdatePageTitleTemplateDto pageTitleDto) {
         if (repository.existsById(pageTitleDto.getId())) {
-            return mapper.mapToPageTitleTemplateDto(repository.save(
-                    mapper.mapToUpdatePageTitleTemplate(
-                                         pageTitleDto.getId()
-                                       , headerService.update(pageTitleDto.getHeader())
-                                       , client.getReportingDocument(pageTitleDto.getReportingDocumentId())
-                                       , stringBuilder.convertEmployee(client.getEmployee(pageTitleDto.getEmployeeId()))
-                                       , String.valueOf((LocalDate.now().getYear())))
-                    )
-            );
+            PageTitleTemplate pageTitle = mapper.mapToUpdatePageTitleTemplate(pageTitleDto, headerService.update(pageTitleDto.getHeader()));
+            pageTitle = mapper.mapToPageTitleTemplate(
+                              pageTitle
+                            , client.getReportingDocument(pageTitleDto.getReportingDocumentId())
+                            , stringBuilder.convertEmployee(client.getEmployee(pageTitleDto.getEmployeeId()))
+                            , String.valueOf((LocalDate.now().getYear())));
+            return mapper.mapToPageTitleTemplateDto(repository.save(pageTitle));
         }
         throw new NotFoundException(
                 String.format("Page title template with id=%s not found for update", pageTitleDto.getId())
