@@ -24,4 +24,6 @@ public interface StringBuilderService {
     String convertBranch(BranchDto branch, DivisionDataParam param);
 
     String convertDepartment(DepartmentDto department, DivisionDataParam param);
+
+    String convertObjectsType(ObjectsTypeDto objectType);
 }

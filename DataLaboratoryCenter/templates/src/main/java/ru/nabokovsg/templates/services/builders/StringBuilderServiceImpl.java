@@ -115,6 +115,20 @@ public class StringBuilderServiceImpl implements StringBuilderService {
         return divisionData;
     }
 
+    @Override
+    public String convertObjectsType(ObjectsTypeDto objectType) {
+        if (objectType.getObjectName() != null && objectType.getModel() != null && objectType.getOrientation() != null) {
+            return String.join(" ", objectType.getObjectName(), objectType.getModel(), objectType.getOrientation());
+        }
+        if (objectType.getObjectName() != null && objectType.getModel() != null) {
+            return String.join(" ", objectType.getObjectName(), objectType.getModel());
+        }
+        if (objectType.getObjectName() != null && objectType.getOrientation() != null) {
+            return String.join(" ", objectType.getObjectName(), objectType.getOrientation());
+        }
+        return objectType.getObjectName();
+    }
+
     private String getDivisionName(String name, String divisionName){
         if (divisionName != null) {
             return divisionName;
