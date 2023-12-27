@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import ru.nabokovsg.templates.models.HeaderTemplate;
+import ru.nabokovsg.templates.dto.header.HeaderTemplateDto;
 
 @Setter
 @Getter
@@ -19,7 +19,7 @@ public class PageTitleTemplateDto {
     @Schema(description = "Индентификатор типа отчетного документа")
     private Long reportingDocumentId;
     @Schema(description = "Заголовок")
-    private HeaderTemplate header;
+    private HeaderTemplateDto header;
     @Schema(description = "Название документа")
     private String title;
     @Schema(description = "Заголовок документа")
@@ -36,4 +36,22 @@ public class PageTitleTemplateDto {
     private String city;
     @Schema(description = "Год")
     private String year;
+
+    @Override
+    public String toString() {
+        return "PageTitleTemplateDto{" +
+                "id=" + id +
+                ", objectTypeId=" + objectTypeId +
+                ", reportingDocumentId=" + reportingDocumentId +
+                ", header=" + header +
+                ", title='" + title + '\'' +
+                ", heading='" + heading + '\'' +
+                ", object='" + object + '\'' +
+                ", installationLocation='" + installationLocation + '\'' +
+                ", address='" + address + '\'' +
+                ", signature='" + signature + '\'' +
+                ", city='" + city + '\'' +
+                ", year='" + year + '\'' +
+                '}';
+    }
 }
