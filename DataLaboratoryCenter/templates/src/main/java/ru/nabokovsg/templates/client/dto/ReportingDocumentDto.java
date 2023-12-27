@@ -16,9 +16,9 @@ public class ReportingDocumentDto {
     @Schema(description = "Индентификатор")
     private Long id;
     @Schema(description = "Название документа")
-    private String name;
-    @Schema(description = "Заголовок документа")
     private String title;
+    @Schema(description = "Заголовок документа")
+    private String heading;
     @Schema(description = "Тип документа")
     private DocumentType documentType;
 }
