@@ -23,13 +23,12 @@ public class TemplateClient {
     }
 
     public ReportingDocumentDto getReportingDocument(Long id) {
-        return client.getReportingDocument("/data/applications/document/" + id);
+        return client.getReportingDocument("/data/reporting/document/" + id);
     }
 
     public ObjectsTypeDto getObjectsType(Long id) {
         return client.getObjectsType("/data/objects/type/" + id);
     }
-
 
     public ShortEmployeeDto getEmployee(Long id) {
         return client.getEmployee("/data/employee/" + id);
