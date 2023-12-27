@@ -48,11 +48,18 @@ public class ObjectsTypeController {
         return ResponseEntity.ok().body(service.update(objectsTypeDto));
     }
 
-    @Operation(summary = "Удаление типа объекта")
+    @Operation(summary = "Получить типа объекта")
     @GetMapping("/{id}")
     public ResponseEntity<ObjectsTypeDto> get(@PathVariable @NotNull @Positive
                                               @Parameter(description = "Индентификатор типа объекта") Long id) {
         return ResponseEntity.ok().body(service.get(id));
+    }
+
+    @Operation(summary = "Получить все типы объектов")
+    @GetMapping("/all")
+    public ResponseEntity<List<ObjectsTypeDto>> getAll(
+                                @RequestParam(name = "id") @Parameter(description = "Индентификаторы") List<Long> ids) {
+        return ResponseEntity.ok().body(service.getAll(ids));
     }
 
     @Operation(summary = "Удаление типа объекта")
