@@ -30,7 +30,7 @@ public class ConclusionTemplateController {
 
     private final ConclusionTemplateService service;
 
-    @Operation(summary = "Данные шыблона новых заключений")
+    @Operation(summary = "Данные шаблона новых заключений")
     @PostMapping
     public ResponseEntity<ConclusionTemplateDto> save(@RequestBody @Valid NewConclusionTemplateDto conclusionDto) {
         return ResponseEntity.ok().body(service.save(conclusionDto));
