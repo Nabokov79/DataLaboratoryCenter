@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -20,6 +21,8 @@ public class ProtocolTemplate {
     private Long reportingDocumentId;
     @Column(name = "object_type_id")
     private Long objectTypeId;
+    @Column(name = "object_type")
+    private String objectType;
     @Column(name = "title")
     private String title;
     @Column(name = "heading")
@@ -50,12 +53,12 @@ public class ProtocolTemplate {
             joinColumns = {@JoinColumn(name = "protocol_id")},
             inverseJoinColumns = {@JoinColumn(name = "recommendation_id")})
     @ToString.Exclude
-    private List<RecommendationTemplate> recommendations;
+    private Set<RecommendationTemplate> recommendations;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "protocol_appendices_templates",
             joinColumns = {@JoinColumn(name = "protocol_id")},
             inverseJoinColumns = {@JoinColumn(name = "appendices_id")})
     @ToString.Exclude
-    private List<AppendicesTemplate> appendices;
+    private Set<AppendicesTemplate> appendices;
 }
