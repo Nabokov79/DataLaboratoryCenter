@@ -11,6 +11,7 @@ import ru.nabokovsg.templates.models.RecommendationTemplate;
 import ru.nabokovsg.templates.repository.RecommendationTemplateRepository;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +55,11 @@ public class RecommendationTemplateServiceImpl implements RecommendationTemplate
             return;
         }
         throw  new NotFoundException(String.format("Recommendation template with id=%s not found for delete", id));
+    }
+
+    @Override
+    public Set<RecommendationTemplate> getByObjectTypeId(Long objectTypeId) {
+        return repository.findAllByObjectTypeId(objectTypeId);
     }
 
     private RecommendationTemplate get(Long id) {
