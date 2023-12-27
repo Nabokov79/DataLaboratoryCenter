@@ -11,6 +11,7 @@ import ru.nabokovsg.templates.models.AppendicesTemplate;
 import ru.nabokovsg.templates.repository.AppendicesTemplateRepository;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +48,10 @@ public class AppendicesTemplateServiceImpl implements AppendicesTemplateService 
             return;
         }
         throw  new NotFoundException(String.format("Appendices template with id=%s not found for delete", id));
+    }
+
+    @Override
+    public Set<AppendicesTemplate> getByObjectTypeId(Long objectTypeId) {
+        return repository.findByObjectTypeId(objectTypeId);
     }
 }
