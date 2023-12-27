@@ -19,9 +19,7 @@ public class ConclusionTemplateServiceImpl implements ConclusionTemplateService 
 
     @Override
     public ConclusionTemplateDto save(NewConclusionTemplateDto conclusionDto) {
-        ConclusionTemplate conclusion = repository.findByObjectTypeIdAndReportingDocumentId(
-                                                                                conclusionDto.getObjectTypeId()
-                                                                              , conclusionDto.getReportingDocumentId());
+        ConclusionTemplate conclusion = repository.findByReportingDocumentId(conclusionDto.getReportingDocumentId());
         if (conclusion == null) {
             conclusion = repository.save(mapper.mapToNewConclusionTemplate(conclusionDto));
         }
@@ -33,6 +31,11 @@ public class ConclusionTemplateServiceImpl implements ConclusionTemplateService 
         return mapper.mapToConclusionTemplateDto(
                 repository.save(mapper.mapToUpdateConclusionTemplate(get(conclusionDto.getId()), conclusionDto))
         );
+    }
+
+    @Override
+    public ConclusionTemplate getByReportingDocumentId(Long reportingDocumentId) {
+        return null;
     }
 
     @Override
