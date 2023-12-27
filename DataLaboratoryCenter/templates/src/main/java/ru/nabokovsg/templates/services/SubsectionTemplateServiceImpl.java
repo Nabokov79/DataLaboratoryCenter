@@ -44,7 +44,9 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
             if (!subsectionDto.getSubsectionDataIds().isEmpty()) {
                 subsection.setSubsectionData(subsectionDataService.getAllById(subsectionDto.getSubsectionDataIds()));
             }
-            return mapper.mapToSubsectionTemplateDto(repository.save(subsection));
+            subsection = repository.save(subsection);
+            protocolService.saveWithSubsection(protocolId, subsection);
+            return mapper.mapToSubsectionTemplateDto(subsection);
         }
         throw new NotFoundException(
                 String.format("Protocol template with id=%s not found for add subsection template", protocolId)
