@@ -108,8 +108,14 @@ public class ObjectsTypeServiceImpl implements ObjectsTypeService {
 
 
     @Override
-    public List<ObjectsType> getAll(List<Long> ids) {
-        return repository.findAllById(ids);
+    public List<ObjectsTypeDto> getAll(List<Long> ids) {
+        List<ObjectsType> objectsTypes;
+        if (ids.isEmpty()) {
+            objectsTypes = repository.findAll();
+        } else {
+            objectsTypes = repository.findAllById(ids);
+        }
+        return objectsTypes.stream().map(mapper::mapToObjectTypeDto).toList();
     }
 
     @Override

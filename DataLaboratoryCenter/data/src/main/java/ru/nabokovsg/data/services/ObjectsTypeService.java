@@ -23,7 +23,7 @@ public interface ObjectsTypeService {
 
     List<ObjectsTypeRepairMethodDto> addRepairMethods(List<Long> ids, List<RepairMethod> methods);
 
-    List<ObjectsType> getAll(List<Long> ids);
+    List<ObjectsTypeDto> getAll(List<Long> ids);
 
     void delete(Long id);
 }
