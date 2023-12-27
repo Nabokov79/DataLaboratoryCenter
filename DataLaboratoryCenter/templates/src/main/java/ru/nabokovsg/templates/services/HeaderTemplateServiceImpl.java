@@ -29,11 +29,7 @@ public class HeaderTemplateServiceImpl implements HeaderTemplateService {
 
     @Override
     public HeaderTemplate save(NewHeaderTemplateDto headerDto) {
-        HeaderTemplate header = repository.findByReportingDocumentId(headerDto.getReportingDocumentId());
-        if (header == null) {
-            header = repository.save(set(mapper.mapToNewHeaderTemplateData(headerDto)));
-        }
-        return header;
+        return repository.save(set(mapper.mapToNewHeaderTemplateData(headerDto)));
     }
 
     @Override
