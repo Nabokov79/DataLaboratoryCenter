@@ -27,7 +27,7 @@ public class ReportingDocumentServiceImpl implements ReportingDocumentService {
         return repository.saveAll(documentDto.stream()
                                              .map(r -> {
                                                  ReportingDocument document = mapper.mapToNewReportingDocument(documentType, r);
-                                                 document.setName(document.getName().toUpperCase());
+                                                 document.setTitle(document.getTitle().toUpperCase());
                                                  return document;
                                              })
                                              .toList())
@@ -48,7 +48,7 @@ public class ReportingDocumentServiceImpl implements ReportingDocumentService {
             for (UpdateReportingDocumentDto documentDto : documentsDto) {
                 ReportingDocument document = documentsDb.get(documentDto.getId());
                 if (document != null) {
-                    documentDto.setName(documentDto.getName().toUpperCase());
+                    documentDto.setTitle(documentDto.getTitle().toUpperCase());
                     documentsDb.put(documentDto.getId(), mapper.mapToUpdateReportingDocument(document, documentDto));
                 }
                 return repository.saveAll(documentsDb.values()).stream()
