@@ -17,9 +17,6 @@ import javax.validation.constraints.Positive;
 @Schema(description = "Тексты новых заключений к протоколам")
 public class NewConclusionTemplateDto {
 
-    @Schema(description = "Индентификатор типа объекта")
-    @NotNull(message = "object type id should not be null")
-    private Long objectTypeId;
     @Schema(description = "Индентификатор типа отчетного документа")
     @NotNull(message = "reporting document id should not be null")
     @Positive(message = "reporting document id must be positive")
