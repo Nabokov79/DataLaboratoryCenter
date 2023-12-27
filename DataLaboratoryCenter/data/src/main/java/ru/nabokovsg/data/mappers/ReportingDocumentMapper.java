@@ -11,14 +11,15 @@ import ru.nabokovsg.data.models.enums.DocumentType;
 @Mapper(componentModel = "spring")
 public interface ReportingDocumentMapper {
 
-    @Mapping(source = "documentDto.name", target = "name")
+
     @Mapping(source = "documentDto.title", target = "title")
+    @Mapping(source = "documentDto.heading", target = "heading")
     @Mapping(source = "documentType", target = "documentType")
     @Mapping(target = "id", ignore = true)
     ReportingDocument mapToNewReportingDocument(DocumentType documentType, NewReportingDocumentDto documentDto);
 
-    @Mapping(source = "documentDto.name", target = "name")
     @Mapping(source = "documentDto.title", target = "title")
+    @Mapping(source = "documentDto.heading", target = "heading")
     @Mapping(source = "document.documentType", target = "documentType")
     @Mapping(source = "document.id", target = "id")
     ReportingDocument mapToUpdateReportingDocument(ReportingDocument document, UpdateReportingDocumentDto documentDto);
