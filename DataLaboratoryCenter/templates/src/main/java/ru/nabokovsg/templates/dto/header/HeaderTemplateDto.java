@@ -24,7 +24,7 @@ public class HeaderTemplateDto {
     @Schema(description = "Реквизиты филиала")
     private String branchContacts;
     @Schema(description = "Лицензия/аттестация филиала")
-    private String licenseBranch;
+    private String branchLicense;
     @Schema(description = "Подразделение филиала организации")
     private String department;
     @Schema(description = "Реквизиты подразделения")
