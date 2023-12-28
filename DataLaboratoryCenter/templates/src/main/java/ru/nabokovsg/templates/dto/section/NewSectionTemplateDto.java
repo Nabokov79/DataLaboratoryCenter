@@ -24,4 +24,12 @@ public class NewSectionTemplateDto {
     @Schema(description = "Название")
     @NotBlank(message = "section name should not be blank")
     private String sectionName;
+
+    @Override
+    public String toString() {
+        return "NewSectionTemplateDto{" +
+                "sequentialNumber=" + sequentialNumber +
+                ", sectionName='" + sectionName + '\'' +
+                '}';
+    }
 }
