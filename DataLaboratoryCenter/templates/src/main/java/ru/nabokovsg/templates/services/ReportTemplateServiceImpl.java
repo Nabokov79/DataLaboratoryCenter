@@ -49,7 +49,7 @@ public class ReportTemplateServiceImpl implements ReportTemplateService {
     }
 
     @Override
-    public boolean existsById(Long id) {
-        return repository.existsById(id);
+    public List<SectionTemplate> existsSubsectionsByReportId(Long id) {
+        return getById(id).getSections();
     }
 }

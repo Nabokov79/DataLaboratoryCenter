@@ -17,5 +17,5 @@ public interface ReportTemplateService {
 
     void saveWithSectionTemplate(Long reportId, List<SectionTemplate> sections);
 
-    boolean existsById(Long id);
+    List<SectionTemplate> existsSubsectionsByReportId(Long id);
 }
