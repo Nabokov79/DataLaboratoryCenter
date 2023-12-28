@@ -11,6 +11,8 @@ import ru.nabokovsg.templates.models.SubsectionTemplate;
 import ru.nabokovsg.templates.models.TableTemplate;
 import ru.nabokovsg.templates.repository.SubsectionTemplateRepository;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SubsectionTemplateServiceImpl implements SubsectionTemplateService {
@@ -23,34 +25,23 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
 
     @Override
     public SubsectionTemplateDto saveFromSectionTemplate(Long sectionId, NewSubsectionTemplateDto subsectionDto) {
-        if (sectionService.existsById(sectionId)) {
-            SubsectionTemplate subsection = mapper.mapToNewSubsectionTemplate(subsectionDto);
-            if (!subsectionDto.getSubsectionDataIds().isEmpty()) {
-                subsection.setSubsectionData(subsectionDataService.getAllById(subsectionDto.getSubsectionDataIds()));
-            }
-            subsection = repository.save(subsection);
+        SubsectionTemplate subsection = repository.findBySubsectionNameAndSectionId(subsectionDto.getSubsectionName(), sectionId);
+        if (subsection == null) {
+             subsection = repository.save(set(mapper.mapToNewSubsectionTemplate(subsectionDto), subsectionDto));
             sectionService.saveWithSubsectionTemplate(sectionId, subsection);
-            return mapper.mapToSubsectionTemplateDto(subsection);
         }
-        throw new NotFoundException(
-                String.format("Section template with id=%s not found for add subsection template", sectionId)
-        );
+        return mapper.mapToSubsectionTemplateDto(subsection);
     }
 
     @Override
     public SubsectionTemplateDto saveFromProtocolTemplate(Long protocolId, NewSubsectionTemplateDto subsectionDto) {
-        if (protocolService.existsById(protocolId)) {
-            SubsectionTemplate subsection = mapper.mapToNewSubsectionTemplate(subsectionDto);
-            if (!subsectionDto.getSubsectionDataIds().isEmpty()) {
-                subsection.setSubsectionData(subsectionDataService.getAllById(subsectionDto.getSubsectionDataIds()));
-            }
-            subsection = repository.save(subsection);
-            protocolService.saveWithSubsection(protocolId, subsection);
+        SubsectionTemplate subsection = repository.findBySubsectionNameAndProtocolId(subsectionDto.getSubsectionName(), protocolId);
+        if (subsection == null) {
+            subsection = repository.save(set(mapper.mapToNewSubsectionTemplate(subsectionDto), subsectionDto));
+            sectionService.saveWithSubsectionTemplate(protocolId, subsection);
             return mapper.mapToSubsectionTemplateDto(subsection);
         }
-        throw new NotFoundException(
-                String.format("Protocol template with id=%s not found for add subsection template", protocolId)
-        );
+        return mapper.mapToSubsectionTemplateDto(subsection);
     }
 
     @Override
@@ -92,6 +83,20 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
         template.setTable(table);
         repository.save(template);
     }
+
+    private SubsectionTemplate set(SubsectionTemplate subsection, NewSubsectionTemplateDto subsectionDto) {
+        if (subsectionDto.getDivision() != null) {
+            subsection.setSubsectionData(List.of(subsectionDataService.saveDivisionData((subsectionDto.getDivision()))));
+        }
+        if (subsectionDto.getDocumentation() != null) {
+            subsection.setSubsectionData(subsectionDataService.saveDocumentationData((subsectionDto.getDocumentation())));
+        }
+        if (subsectionDto.getMeasuringTools() != null) {
+            subsection.setSubsectionData(subsectionDataService.saveMeasuringToolData((subsectionDto.getMeasuringTools())));
+        }
+        return subsection;
+    }
+
 
     public SubsectionTemplate getById(Long id) {
         return repository.findById(id)
