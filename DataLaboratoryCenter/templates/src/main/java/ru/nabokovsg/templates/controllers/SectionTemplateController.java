@@ -26,12 +26,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Validated
 @Tag(name="Шаблон разделов отчета",
-        description="API для работы с данными шаблона разделов отчета")
+        description="API для работы с данными шаблонов разделов")
 public class SectionTemplateController {
 
     private final SectionTemplateService service;
 
-    @Operation(summary = "Изменение данных заголовка")
+    @Operation(summary = "Добавить новые разделы")
     @PostMapping
     public ResponseEntity<List<SectionTemplateDto>> save(
                                                       @RequestParam(name = "reportId") @NotNull @Positive Long reportId
@@ -39,20 +39,20 @@ public class SectionTemplateController {
         return ResponseEntity.ok().body(service.save(reportId, sectionsDto));
     }
 
-    @Operation(summary = "Изменение данных заголовка")
+    @Operation(summary = "Изменение данных разделов")
     @PatchMapping
     public ResponseEntity<List<SectionTemplateDto>> update(
                                                        @RequestBody @Valid List<UpdateSectionTemplateDto> sectionsDto) {
         return ResponseEntity.ok().body(service.update(sectionsDto));
     }
 
-    @Operation(summary = "Получить раздел отчета")
+    @Operation(summary = "Получить раздел")
     @GetMapping("/{id}")
     public ResponseEntity<SectionTemplateDto> get(@PathVariable @NotNull @Positive Long id) {
         return ResponseEntity.ok().body(service.get(id));
     }
 
-    @Operation(summary = "Получить раздел отчета")
+    @Operation(summary = "Получить подразделы раздела")
     @GetMapping("/{id}/subsection")
     public ResponseEntity<List<ShortSubsectionTemplateDto>> getAllSubsections(@PathVariable
                                                                               @NotNull @Positive Long id) {
