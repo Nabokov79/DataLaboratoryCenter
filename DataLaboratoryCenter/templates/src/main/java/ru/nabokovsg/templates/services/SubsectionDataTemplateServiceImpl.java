@@ -26,7 +26,7 @@ public class SubsectionDataTemplateServiceImpl implements SubsectionDataTemplate
     private final ConverterStringToEnumService converter;
 
     @Override
-    public SubsectionDataTemplateDto saveDivisionData(NewDivisionDataDto divisionDataDto) {
+    public SubsectionDataTemplate saveDivisionData(NewDivisionDataDto divisionDataDto) {
         DivisionType type = converter.convertToDivisionType(divisionDataDto.getDivisionType());
         String division = "";
         DivisionDataParam param = mapper.mapToDivisionDataParam(divisionDataDto);
@@ -44,11 +44,11 @@ public class SubsectionDataTemplateServiceImpl implements SubsectionDataTemplate
                     String.format("Division with parameters type=%s, id=%s not found", type
                             , divisionDataDto.getDivisionId()));
         }
-        return mapper. mapToSubsectionDataTemplateDto(repository.save(mapper.mapToSubsectionDataTemplate(division)));
+        return repository.save(mapper.mapToSubsectionDataTemplate(division));
     }
 
     @Override
-    public List<SubsectionDataTemplateDto> saveDocumentationData(NewDocumentationDataDto documentationDataDto) {
+    public List<SubsectionDataTemplate> saveDocumentationData(NewDocumentationDataDto documentationDataDto) {
         List<DocumentationDto> documentations = client.getObjectsType(documentationDataDto.getObjectTypeId())
                 .getDocumentations();
         if (documentationDataDto.getMethodologicalDocument()) {
@@ -65,20 +65,15 @@ public class SubsectionDataTemplateServiceImpl implements SubsectionDataTemplate
                                                                         .map(stringBuilder::convertDocumentation)
                                                                         .map(mapper::mapToSubsectionDataTemplate)
                                                                         .toList();
-        return repository.saveAll(documentationsData).stream()
-                                                     .map(mapper::mapToSubsectionDataTemplateDto)
-                                                     .toList();
+        return repository.saveAll(documentationsData);
     }
 
     @Override
-    public List<SubsectionDataTemplateDto> saveMeasuringToolData(List<NewMeasuringToolDataDto> measuringToolDataDto) {
-        return repository.saveAll(repository.saveAll(measuringToolDataDto.stream()
-                                                                         .map(NewMeasuringToolDataDto::getToll)
-                                                                         .map(mapper::mapToSubsectionDataTemplate)
-                                                                         .toList()))
-                                                                 .stream()
-                                                                 .map(mapper::mapToSubsectionDataTemplateDto)
-                                                                 .toList();
+    public List<SubsectionDataTemplate> saveMeasuringToolData(List<NewMeasuringToolDataDto> measuringToolDataDto) {
+        return repository.saveAll(measuringToolDataDto.stream()
+                                                      .map(NewMeasuringToolDataDto::getToll)
+                                                      .map(mapper::mapToSubsectionDataTemplate)
+                                                      .toList());
     }
 
     @Override
