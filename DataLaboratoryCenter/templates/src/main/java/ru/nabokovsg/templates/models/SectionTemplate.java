@@ -49,4 +49,17 @@ public class SectionTemplate {
             inverseJoinColumns = {@JoinColumn(name = "appendices_id")})
     @ToString.Exclude
     private List<AppendicesTemplate> appendices;
+
+    @Override
+    public String toString() {
+        return "SectionTemplate{" +
+                "id=" + id +
+                ", sequentialNumber=" + sequentialNumber +
+                ", sectionName='" + sectionName + '\'' +
+                ", subsections=" + subsections +
+                ", protocols=" + protocols +
+                ", recommendations=" + recommendations +
+                ", appendices=" + appendices +
+                '}';
+    }
 }
