@@ -1,6 +1,7 @@
 package ru.nabokovsg.templates.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.nabokovsg.templates.dto.section.NewSectionTemplateDto;
 import ru.nabokovsg.templates.dto.section.SectionTemplateDto;
@@ -12,13 +13,12 @@ import ru.nabokovsg.templates.models.SectionTemplate;
 import ru.nabokovsg.templates.models.SubsectionTemplate;
 import ru.nabokovsg.templates.repository.SectionTemplateRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SectionTemplateServiceImpl implements SectionTemplateService {
 
     private final SectionTemplateRepository repository;
@@ -27,29 +27,34 @@ public class SectionTemplateServiceImpl implements SectionTemplateService {
 
     @Override
     public List<SectionTemplateDto> save(Long reportId, List<NewSectionTemplateDto> sectionsDto) {
-        if (reportService.existsById(reportId)) {
-            List<SectionTemplate> sections = repository.saveAll(sectionsDto.stream()
-                    .map(mapper::mapToNewSectionTemplate)
-                    .toList());
-            reportService.saveWithSectionTemplate(reportId, sections);
-            return sections.stream()
-                    .map(mapper::mapToSectionTemplateDto)
-                    .toList();
+        List<SectionTemplate> sections = reportService.existsSubsectionsByReportId(reportId);
+        if (!sections.isEmpty()) {
+            List<String> sectionNames = sections.stream().map(SectionTemplate::getSectionName).toList();
+            sectionsDto = sectionsDto.stream().filter(s -> !sectionNames.contains(s.getSectionName())).toList();
         }
-        throw new NotFoundException(
-                String.format("Report template with id=%s not found for add section template", reportId)
-        );
+        if (sectionsDto.isEmpty()) {
+            return sections.stream()
+                             .map(mapper::mapToSectionTemplateDto)
+                             .sorted(Comparator.comparing(SectionTemplateDto::getId))
+                             .toList();
+        }
+        sections.addAll(repository.saveAll(sectionsDto.stream().map(mapper::mapToNewSectionTemplate).toList()));
+        reportService.saveWithSectionTemplate(reportId, sections);
+        return sections.stream()
+                .map(mapper::mapToSectionTemplateDto)
+                .sorted(Comparator.comparing(SectionTemplateDto::getId))
+                .toList();
     }
 
     @Override
     public List<SectionTemplateDto> update(List<UpdateSectionTemplateDto> sectionsDto) {
         validateIds(sectionsDto.stream().map(UpdateSectionTemplateDto::getId).toList());
         return repository.saveAll(sectionsDto.stream()
-                                             .map(mapper::mapToUpdateSectionTemplate)
-                                             .toList())
-                                             .stream()
-                                             .map(mapper::mapToSectionTemplateDto)
-                                             .toList();
+                        .map(mapper::mapToUpdateSectionTemplate)
+                        .toList())
+                .stream()
+                .map(mapper::mapToSectionTemplateDto)
+                .toList();
     }
 
     @Override
@@ -70,16 +75,16 @@ public class SectionTemplateServiceImpl implements SectionTemplateService {
     }
 
     @Override
-    public boolean existsById(Long id) {
-        return repository.existsById(id);
+    public Set<SubsectionTemplate> existsBySubsectionTemplate(Long id) {
+        return repository.findAllSubsection(id);
     }
 
     private SectionTemplate getById(Long id) {
         return repository.findById(id).orElseThrow(
-                        () -> new NotFoundException(
-                                String.format(String.format("Section template with id= %s not found", id))
-                                    )
-                                );
+                () -> new NotFoundException(
+                        String.format(String.format("Section template with id= %s not found", id))
+                )
+        );
     }
 
     private void validateIds(List<Long> ids) {

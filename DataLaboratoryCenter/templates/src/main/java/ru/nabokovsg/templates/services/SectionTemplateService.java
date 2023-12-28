@@ -7,6 +7,7 @@ import ru.nabokovsg.templates.dto.subsection.ShortSubsectionTemplateDto;
 import ru.nabokovsg.templates.models.SubsectionTemplate;
 
 import java.util.List;
+import java.util.Set;
 
 public interface SectionTemplateService {
 
@@ -20,5 +21,5 @@ public interface SectionTemplateService {
 
     void saveWithSubsectionTemplate(Long sectionId, SubsectionTemplate subsection);
 
-    boolean existsById(Long id);
+    Set<SubsectionTemplate> existsBySubsectionTemplate(Long id);
 }
