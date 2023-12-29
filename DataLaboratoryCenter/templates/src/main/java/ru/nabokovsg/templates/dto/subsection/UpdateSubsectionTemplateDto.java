@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.nabokovsg.templates.dto.subsectionDada.DivisionDataDto;
+import ru.nabokovsg.templates.dto.subsectionDada.DocumentationDataDto;
+import ru.nabokovsg.templates.dto.subsectionDada.MeasuringToolDataDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -34,12 +37,10 @@ public class UpdateSubsectionTemplateDto {
     @Schema(description = "Показать номер подраздела в документе")
     @NotNull(message = "subsection number should not be null")
     private boolean subsectionNumber;
-    @Schema(description = "Тип таблицы")
-    private String tableDataType;
-    @Schema(description = "Текст перед таблицей")
-    private String textBeforeTable;
-    @Schema(description = "Текст после таблицы")
-    private String textAfterTable;
-    @Schema(description = "Индентификаторы данных подраздела")
-    private List<Long> subsectionDataIds;
+    @Schema(description = "Данные структурного подразделения")
+    private DivisionDataDto division;
+    @Schema(description = "Данные нормативно-технической документации")
+    private DocumentationDataDto documentation;
+    @Schema(description = "Данные средст контроля и измерений")
+    private List<MeasuringToolDataDto> measuringTools;
 }

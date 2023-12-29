@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import ru.nabokovsg.templates.dto.subsection.NewSubsectionTemplateDto;
 import ru.nabokovsg.templates.dto.subsection.SubsectionTemplateDto;
 import ru.nabokovsg.templates.dto.subsection.UpdateSubsectionTemplateDto;
+import ru.nabokovsg.templates.dto.subsectionDada.DivisionDataDto;
+import ru.nabokovsg.templates.dto.subsectionDada.DocumentationDataDto;
+import ru.nabokovsg.templates.dto.subsectionDada.MeasuringToolDataDto;
 import ru.nabokovsg.templates.exceptions.NotFoundException;
 import ru.nabokovsg.templates.mappers.SubsectionTemplateMapper;
 import ru.nabokovsg.templates.models.SubsectionTemplate;
@@ -12,6 +15,7 @@ import ru.nabokovsg.templates.models.TableTemplate;
 import ru.nabokovsg.templates.repository.SubsectionTemplateRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +31,10 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
     public SubsectionTemplateDto saveFromSectionTemplate(Long sectionId, NewSubsectionTemplateDto subsectionDto) {
         SubsectionTemplate subsection = sectionService.existsBySubsectionTemplate(sectionId, subsectionDto.getSubsectionName());
         if (subsection == null) {
-            subsection = repository.save(set(mapper.mapToNewSubsectionTemplate(subsectionDto), subsectionDto));
+            subsection = repository.save(set(mapper.mapToNewSubsectionTemplate(subsectionDto)
+                    , subsectionDto.getDivision()
+                    , subsectionDto.getDocumentation()
+                    , subsectionDto.getMeasuringTools()));
             sectionService.saveWithSubsection(sectionId, subsection);
         }
         return mapper.mapToSubsectionTemplateDto(subsection);
@@ -38,7 +45,10 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
         SubsectionTemplate subsection = repository.findBySubsectionNameAndProtocolId(subsectionDto.getSubsectionName()
                                                                                    , protocolId);
         if (subsection == null) {
-            subsection = repository.save(set(mapper.mapToNewSubsectionTemplate(subsectionDto), subsectionDto));
+            subsection = repository.save(set(mapper.mapToNewSubsectionTemplate(subsectionDto)
+                    , subsectionDto.getDivision()
+                    , subsectionDto.getDocumentation()
+                    , subsectionDto.getMeasuringTools()));
             protocolService.saveWithSubsection(protocolId, subsection);
             return mapper.mapToSubsectionTemplateDto(subsection);
         }
@@ -46,16 +56,16 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
     }
 
     @Override
-    public SubsectionTemplateDto update(UpdateSubsectionTemplateDto subsectionsDto) {
-        if (repository.existsById(subsectionsDto.getId())) {
-            SubsectionTemplate subsection = mapper.mapToUpdateSubsectionTemplate(subsectionsDto);
-            if (!subsectionsDto.getSubsectionDataIds().isEmpty()) {
-                subsection.setSubsectionData(subsectionDataService.getAllById(subsectionsDto.getSubsectionDataIds()));
-            }
+    public SubsectionTemplateDto update(UpdateSubsectionTemplateDto subsectionDto) {
+        if (repository.existsById(subsectionDto.getId())) {
+            SubsectionTemplate subsection = repository.save(set(mapper.mapToUpdateSubsectionTemplate(subsectionDto)
+                    , subsectionDto.getDivision()
+                    , subsectionDto.getDocumentation()
+                    , subsectionDto.getMeasuringTools()));
             return mapper.mapToSubsectionTemplateDto(repository.save(subsection));
         }
         throw new NotFoundException(
-                String.format("Subsection template with id=%s not found for update", subsectionsDto.getId())
+                String.format("Subsection template with id=%s not found for update", subsectionDto.getId())
         );
     }
 
@@ -85,22 +95,18 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
         repository.save(template);
     }
 
-    private SubsectionTemplate set(SubsectionTemplate subsection, NewSubsectionTemplateDto subsectionDto) {
+    private SubsectionTemplate set(SubsectionTemplate subsection, DivisionDataDto division, DocumentationDataDto documentation, List<MeasuringToolDataDto> measuringTools) {
         if (subsection.getSubsectionData() == null) {
             subsection.setSubsectionData(new ArrayList<>());
         }
-        if (subsectionDto.getDivision() != null) {
-            subsection.getSubsectionData().add(subsectionDataService.saveDivisionData((subsectionDto.getDivision())));
+        if (division != null) {
+            subsection.getSubsectionData().add(subsectionDataService.saveDivisionData((division)));
         }
-        if (subsectionDto.getDocumentation() != null) {
-            subsection.getSubsectionData().addAll(
-                    subsectionDataService.saveDocumentationData((subsectionDto.getDocumentation()))
-            );
+        if (documentation != null) {
+            subsection.getSubsectionData().addAll(subsectionDataService.saveDocumentationData((documentation)));
         }
-        if (subsectionDto.getMeasuringTools() != null) {
-            subsection.getSubsectionData().addAll(
-                    subsectionDataService.saveMeasuringToolData((subsectionDto.getMeasuringTools()))
-            );
+        if (measuringTools != null) {
+            subsection.getSubsectionData().addAll(subsectionDataService.saveMeasuringToolData((measuringTools)));
         }
         return subsection;
     }

@@ -76,7 +76,10 @@ public class SectionTemplateServiceImpl implements SectionTemplateService {
 
     @Override
     public SubsectionTemplate existsBySubsectionTemplate(Long id, String subsectionName) {
-        return repository.findSubsection(id, subsectionName);
+        return repository.findSubsection(id)
+                         .stream()
+                         .collect(Collectors.toMap(SubsectionTemplate::getSubsectionName, s -> s))
+                         .get(subsectionName);
     }
 
     private SectionTemplate getById(Long id) {

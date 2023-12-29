@@ -2,9 +2,9 @@ package ru.nabokovsg.templates.dto.subsection;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import ru.nabokovsg.templates.dto.subsectionDada.NewDivisionDataDto;
-import ru.nabokovsg.templates.dto.subsectionDada.NewDocumentationDataDto;
-import ru.nabokovsg.templates.dto.subsectionDada.NewMeasuringToolDataDto;
+import ru.nabokovsg.templates.dto.subsectionDada.DivisionDataDto;
+import ru.nabokovsg.templates.dto.subsectionDada.DocumentationDataDto;
+import ru.nabokovsg.templates.dto.subsectionDada.MeasuringToolDataDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -31,9 +31,9 @@ public class NewSubsectionTemplateDto {
     @NotNull(message = "subsection number should not be null")
     private boolean subsectionNumber;
     @Schema(description = "Данные структурного подразделения")
-    private NewDivisionDataDto division;
+    private DivisionDataDto division;
     @Schema(description = "Данные нормативно-технической документации")
-    private NewDocumentationDataDto documentation;
+    private DocumentationDataDto documentation;
     @Schema(description = "Данные средст контроля и измерений")
-    private List<NewMeasuringToolDataDto> measuringTools;
+    private List<MeasuringToolDataDto> measuringTools;
 }

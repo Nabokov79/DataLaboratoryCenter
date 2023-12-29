@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface SubsectionDataTemplateService {
 
-    SubsectionDataTemplate saveDivisionData(@Valid NewDivisionDataDto divisionDataDto);
+    SubsectionDataTemplate saveDivisionData(@Valid DivisionDataDto divisionDataDto);
 
-    List<SubsectionDataTemplate> saveDocumentationData(@Valid NewDocumentationDataDto documentationDataDto);
+    List<SubsectionDataTemplate> saveDocumentationData(@Valid DocumentationDataDto documentationDataDto);
 
-    List<SubsectionDataTemplate> saveMeasuringToolData(@Valid List<NewMeasuringToolDataDto> measuringToolDataDto);
+    List<SubsectionDataTemplate> saveMeasuringToolData(@Valid List<MeasuringToolDataDto> measuringToolDataDto);
 
     List<SubsectionDataTemplate> getAllById(List<Long> ids);
 }

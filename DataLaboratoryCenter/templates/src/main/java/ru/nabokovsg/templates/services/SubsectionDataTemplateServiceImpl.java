@@ -26,7 +26,7 @@ public class SubsectionDataTemplateServiceImpl implements SubsectionDataTemplate
     private final ConverterStringToEnumService converter;
 
     @Override
-    public SubsectionDataTemplate saveDivisionData(NewDivisionDataDto divisionDataDto) {
+    public SubsectionDataTemplate saveDivisionData(DivisionDataDto divisionDataDto) {
         DivisionType type = converter.convertToDivisionType(divisionDataDto.getDivisionType());
         String division = "";
         DivisionDataParam param = mapper.mapToDivisionDataParam(divisionDataDto);
@@ -48,7 +48,7 @@ public class SubsectionDataTemplateServiceImpl implements SubsectionDataTemplate
     }
 
     @Override
-    public List<SubsectionDataTemplate> saveDocumentationData(NewDocumentationDataDto documentationDataDto) {
+    public List<SubsectionDataTemplate> saveDocumentationData(DocumentationDataDto documentationDataDto) {
         List<DocumentationDto> documentations = client.getObjectsType(documentationDataDto.getObjectTypeId())
                 .getDocumentations();
         if (documentationDataDto.getMethodologicalDocument()) {
@@ -69,9 +69,9 @@ public class SubsectionDataTemplateServiceImpl implements SubsectionDataTemplate
     }
 
     @Override
-    public List<SubsectionDataTemplate> saveMeasuringToolData(List<NewMeasuringToolDataDto> measuringToolDataDto) {
+    public List<SubsectionDataTemplate> saveMeasuringToolData(List<MeasuringToolDataDto> measuringToolDataDto) {
         return repository.saveAll(measuringToolDataDto.stream()
-                                                      .map(NewMeasuringToolDataDto::getToll)
+                                                      .map(MeasuringToolDataDto::getToll)
                                                       .map(mapper::mapToSubsectionDataTemplate)
                                                       .toList());
     }

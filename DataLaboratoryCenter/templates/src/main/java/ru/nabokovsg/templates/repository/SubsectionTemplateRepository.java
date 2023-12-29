@@ -6,6 +6,6 @@ import ru.nabokovsg.templates.models.SubsectionTemplate;
 
 public interface SubsectionTemplateRepository extends JpaRepository<SubsectionTemplate, Long> {
 
-    @Query("select s from SubsectionTemplate s where s.subsectionName = ?1 and ProtocolTemplate.id = ?2")
+    @Query("select s from SubsectionTemplate s inner join ProtocolTemplate p where s.subsectionName = ?1 and p.id = ?2")
     SubsectionTemplate findBySubsectionNameAndProtocolId(String subsectionName, Long protocolId);
 }
