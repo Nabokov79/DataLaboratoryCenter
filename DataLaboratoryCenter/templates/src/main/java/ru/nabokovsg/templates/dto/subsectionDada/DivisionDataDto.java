@@ -15,7 +15,7 @@ import javax.validation.constraints.Positive;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "Данные нового подраздела")
-public class NewDivisionDataDto {
+public class DivisionDataDto {
 
     @Schema(description = "Тип структурного подразделения")
     @NotBlank(message = "division type should not be blank")

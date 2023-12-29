@@ -14,7 +14,7 @@ import javax.validation.constraints.Positive;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "Данные для получения нормативно-технической документации")
-public class NewDocumentationDataDto {
+public class DocumentationDataDto {
 
     @Schema(description = "Идентификатор типа объекта")
     @NotNull(message = "object type id should not be null")

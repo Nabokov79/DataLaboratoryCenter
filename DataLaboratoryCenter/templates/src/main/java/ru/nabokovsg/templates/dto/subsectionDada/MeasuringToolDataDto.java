@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "Данные для изменения информации в подразделе")
-public class NewMeasuringToolDataDto {
+public class MeasuringToolDataDto {
 
     @Schema(description = "Название")
     @NotBlank(message = "toll should not be blank")
