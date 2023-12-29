@@ -20,7 +20,7 @@ public interface ProtocolTemplateService {
 
     void saveWithTable(Long protocolId, TableTemplate table);
 
-    void saveWithSubsection(Long protocolId,SubsectionTemplate subsection);
+    void saveWithSubsection(Long protocolId, SubsectionTemplate subsection);
 
     ProtocolTemplateDto addConclusion(Long id);
 

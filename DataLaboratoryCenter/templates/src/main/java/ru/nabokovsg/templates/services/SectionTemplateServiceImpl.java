@@ -68,15 +68,15 @@ public class SectionTemplateServiceImpl implements SectionTemplateService {
     }
 
     @Override
-    public void saveWithSubsectionTemplate(Long sectionId, SubsectionTemplate subsection) {
+    public void saveWithSubsection(Long sectionId, SubsectionTemplate subsection) {
         SectionTemplate section = getById(sectionId);
         section.getSubsections().add(subsection);
         repository.save(section);
     }
 
     @Override
-    public Set<SubsectionTemplate> existsBySubsectionTemplate(Long id) {
-        return repository.findAllSubsection(id);
+    public SubsectionTemplate existsBySubsectionTemplate(Long id, String subsectionName) {
+        return repository.findSubsection(id, subsectionName);
     }
 
     private SectionTemplate getById(Long id) {

@@ -11,4 +11,7 @@ public interface SectionTemplateRepository extends JpaRepository<SectionTemplate
 
     @Query("select s.subsections from SectionTemplate s where s.id = ?1")
     Set<SubsectionTemplate> findAllSubsection(Long id);
+
+    @Query("select s.subsections as sub from SectionTemplate s where s.id = ?1 and sub.subsectionName = ?2")
+    SubsectionTemplate findSubsection(Long id,  String subsectionName);
 }

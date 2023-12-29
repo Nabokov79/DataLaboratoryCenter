@@ -11,7 +11,7 @@ import ru.nabokovsg.templates.models.SubsectionTemplate;
 import ru.nabokovsg.templates.models.TableTemplate;
 import ru.nabokovsg.templates.repository.SubsectionTemplateRepository;
 
-import java.util.List;
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -25,20 +25,21 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
 
     @Override
     public SubsectionTemplateDto saveFromSectionTemplate(Long sectionId, NewSubsectionTemplateDto subsectionDto) {
-        SubsectionTemplate subsection = repository.findBySubsectionNameAndSectionId(subsectionDto.getSubsectionName(), sectionId);
+        SubsectionTemplate subsection = sectionService.existsBySubsectionTemplate(sectionId, subsectionDto.getSubsectionName());
         if (subsection == null) {
-             subsection = repository.save(set(mapper.mapToNewSubsectionTemplate(subsectionDto), subsectionDto));
-            sectionService.saveWithSubsectionTemplate(sectionId, subsection);
+            subsection = repository.save(set(mapper.mapToNewSubsectionTemplate(subsectionDto), subsectionDto));
+            sectionService.saveWithSubsection(sectionId, subsection);
         }
         return mapper.mapToSubsectionTemplateDto(subsection);
     }
 
     @Override
     public SubsectionTemplateDto saveFromProtocolTemplate(Long protocolId, NewSubsectionTemplateDto subsectionDto) {
-        SubsectionTemplate subsection = repository.findBySubsectionNameAndProtocolId(subsectionDto.getSubsectionName(), protocolId);
+        SubsectionTemplate subsection = repository.findBySubsectionNameAndProtocolId(subsectionDto.getSubsectionName()
+                                                                                   , protocolId);
         if (subsection == null) {
             subsection = repository.save(set(mapper.mapToNewSubsectionTemplate(subsectionDto), subsectionDto));
-            sectionService.saveWithSubsectionTemplate(protocolId, subsection);
+            protocolService.saveWithSubsection(protocolId, subsection);
             return mapper.mapToSubsectionTemplateDto(subsection);
         }
         return mapper.mapToSubsectionTemplateDto(subsection);
@@ -85,14 +86,21 @@ public class SubsectionTemplateServiceImpl implements SubsectionTemplateService 
     }
 
     private SubsectionTemplate set(SubsectionTemplate subsection, NewSubsectionTemplateDto subsectionDto) {
+        if (subsection.getSubsectionData() == null) {
+            subsection.setSubsectionData(new ArrayList<>());
+        }
         if (subsectionDto.getDivision() != null) {
-            subsection.setSubsectionData(List.of(subsectionDataService.saveDivisionData((subsectionDto.getDivision()))));
+            subsection.getSubsectionData().add(subsectionDataService.saveDivisionData((subsectionDto.getDivision())));
         }
         if (subsectionDto.getDocumentation() != null) {
-            subsection.setSubsectionData(subsectionDataService.saveDocumentationData((subsectionDto.getDocumentation())));
+            subsection.getSubsectionData().addAll(
+                    subsectionDataService.saveDocumentationData((subsectionDto.getDocumentation()))
+            );
         }
         if (subsectionDto.getMeasuringTools() != null) {
-            subsection.setSubsectionData(subsectionDataService.saveMeasuringToolData((subsectionDto.getMeasuringTools())));
+            subsection.getSubsectionData().addAll(
+                    subsectionDataService.saveMeasuringToolData((subsectionDto.getMeasuringTools()))
+            );
         }
         return subsection;
     }
