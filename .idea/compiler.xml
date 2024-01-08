@@ -7,16 +7,22 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="data" />
-        <module name="templates" />
+        <module name="data-service" />
+        <module name="templates-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="data" target="17" />
+      <module name="templates" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="DataLaboratoryCenter" options="-parameters" />
       <module name="data" options="-parameters" />
+      <module name="data-service" options="-parameters" />
       <module name="templates" options="-parameters" />
+      <module name="templates-service" options="-parameters" />
     </option>
   </component>
 </project>

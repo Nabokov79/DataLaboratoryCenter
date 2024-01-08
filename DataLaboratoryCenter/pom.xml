@@ -23,8 +23,8 @@
 	</properties>
 
 	<modules>
-		<module>data</module>
-		<module>templates</module>
+		<module>data-service</module>
+		<module>templates-service</module>
 	</modules>
 
 	<name>DataLaboratoryCenter</name>

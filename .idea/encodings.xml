@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/DataLaboratoryCenter/data/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/DataLaboratoryCenter/data/target/generated-sources/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/DataLaboratoryCenter/data-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/DataLaboratoryCenter/data-service/target/generated-sources/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/DataLaboratoryCenter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/DataLaboratoryCenter/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/DataLaboratoryCenter/templates/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/DataLaboratoryCenter/templates/target/generated-sources/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/DataLaboratoryCenter/templates-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/DataLaboratoryCenter/templates-service/target/generated-sources/java" charset="UTF-8" />
   </component>
 </project>
