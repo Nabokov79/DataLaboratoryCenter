@@ -14,9 +14,9 @@ import ru.nabokovsg.data.dto.defect.UpdateDefectDto;
 import ru.nabokovsg.data.dto.objectsType.ObjectsTypeDefectDto;
 import ru.nabokovsg.data.services.DefectsService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController

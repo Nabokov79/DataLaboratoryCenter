@@ -9,15 +9,15 @@ import ru.nabokovsg.data.dto.ObjectsIds;
 import ru.nabokovsg.data.dto.certificate.CertificateDto;
 import ru.nabokovsg.data.dto.certificate.NewCertificateDto;
 import ru.nabokovsg.data.dto.certificate.UpdateCertificateDto;
-import ru.nabokovsg.data.models.enums.BuilderType;
 import ru.nabokovsg.data.exceptions.NotFoundException;
 import ru.nabokovsg.data.mappers.CertificateMapper;
-import ru.nabokovsg.data.models.*;
+import ru.nabokovsg.data.models.Certificate;
 import ru.nabokovsg.data.models.DataBuilder;
+import ru.nabokovsg.data.models.enums.BuilderType;
 import ru.nabokovsg.data.repository.CertificateRepository;
 import ru.nabokovsg.data.services.builder.DataFactory;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

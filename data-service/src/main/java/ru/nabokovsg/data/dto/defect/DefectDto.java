@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.nabokovsg.data.dto.sizeParameters.SizeParametersDto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Setter
@@ -20,10 +17,7 @@ public class DefectDto {
     @Schema(description = "Индентификатор")
     private Long id;
     @Schema(description = "Название дефекта")
-    @NotBlank(message = "defect name should not be blank")
     private String defectName;
     @Schema(description = "Параметры дефекта")
-    @NotNull(message = "parameters list should not be null")
-    @NotEmpty(message = "parameters list can only be empty")
     private List<SizeParametersDto> parameters;
 }

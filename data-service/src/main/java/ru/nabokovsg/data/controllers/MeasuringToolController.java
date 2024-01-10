@@ -14,9 +14,9 @@ import ru.nabokovsg.data.dto.measuringTool.RequestParameters;
 import ru.nabokovsg.data.dto.measuringTool.UpdateMeasuringToolDto;
 import ru.nabokovsg.data.services.MeasuringToolService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.List;
 

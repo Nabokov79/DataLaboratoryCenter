@@ -11,8 +11,6 @@ import ru.nabokovsg.data.dto.department.UltraShortDepartmentDto;
 import ru.nabokovsg.data.dto.measuringTool.MeasuringToolEmployeeDto;
 import ru.nabokovsg.data.dto.organization.UltraShortOrganizationDto;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Setter
@@ -34,16 +32,10 @@ public class EmployeeDto {
     @Schema(description = "Контакты сотрудника")
     private ContactDto contact;
     @Schema(description = "Организация")
-    @NotNull(message = "organization id user should not be blank")
-    @Positive(message = "organization id user must be positive")
     private UltraShortOrganizationDto organization;
     @Schema(description = "Филиал организации")
-    @NotNull(message = "branch id user should not be blank")
-    @Positive(message = "branch id user must be positive")
     private UltraShortBranchDto branch;
     @Schema(description = "Подразделение филиала организации")
-    @NotNull(message = "department id user should not be blank")
-    @Positive(message = "department id user must be positive")
     private UltraShortDepartmentDto department;
     @Schema(description = "Список сертификатов сотрудника")
     private List<CertificateDto> certificate;

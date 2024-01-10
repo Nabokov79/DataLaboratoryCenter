@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import ru.nabokovsg.data.models.Certificate;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 public interface CertificateRepository extends JpaRepository<Certificate, Long> {
 

@@ -7,6 +7,7 @@ import lombok.Setter;
 import ru.nabokovsg.templates.dto.autoData.AutoDataCollectionDto;
 import ru.nabokovsg.templates.dto.subsectionDada.SubsectionDataTemplateDto;
 import ru.nabokovsg.templates.dto.table.TableTemplateDto;
+
 import java.util.List;
 
 @Setter

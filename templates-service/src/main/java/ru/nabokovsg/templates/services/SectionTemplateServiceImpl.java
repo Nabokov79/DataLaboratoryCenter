@@ -13,7 +13,10 @@ import ru.nabokovsg.templates.mappers.SectionTemplateMapper;
 import ru.nabokovsg.templates.models.*;
 import ru.nabokovsg.templates.repository.SectionTemplateRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

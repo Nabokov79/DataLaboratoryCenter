@@ -3,7 +3,7 @@ package ru.nabokovsg.data.models;
 import lombok.*;
 import ru.nabokovsg.data.models.enums.Status;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 

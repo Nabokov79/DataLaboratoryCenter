@@ -14,7 +14,7 @@ import ru.nabokovsg.data.models.Employee;
 import ru.nabokovsg.data.models.QDocumentRemark;
 import ru.nabokovsg.data.repository.DocumentRemarkRepository;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 @Service

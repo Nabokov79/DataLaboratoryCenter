@@ -7,6 +7,7 @@ import lombok.Setter;
 import ru.nabokovsg.templates.models.AppendicesTemplate;
 import ru.nabokovsg.templates.models.PageTitleTemplate;
 import ru.nabokovsg.templates.models.SectionTemplate;
+
 import java.util.List;
 
 @Setter

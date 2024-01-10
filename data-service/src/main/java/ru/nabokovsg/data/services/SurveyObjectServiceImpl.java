@@ -7,10 +7,13 @@ import ru.nabokovsg.data.dto.surveyObject.NewSurveyObjectDto;
 import ru.nabokovsg.data.dto.surveyObject.ShortSurveyObjectDto;
 import ru.nabokovsg.data.dto.surveyObject.SurveyObjectDto;
 import ru.nabokovsg.data.dto.surveyObject.UpdateSurveyObjectDto;
-import ru.nabokovsg.data.models.enums.BuilderType;
 import ru.nabokovsg.data.exceptions.NotFoundException;
 import ru.nabokovsg.data.mappers.SurveyObjectMapper;
-import ru.nabokovsg.data.models.*;
+import ru.nabokovsg.data.models.Building;
+import ru.nabokovsg.data.models.DataBuilder;
+import ru.nabokovsg.data.models.ObjectsType;
+import ru.nabokovsg.data.models.SurveyObject;
+import ru.nabokovsg.data.models.enums.BuilderType;
 import ru.nabokovsg.data.repository.SurveyObjectRepository;
 import ru.nabokovsg.data.services.builder.DataFactory;
 

@@ -5,7 +5,7 @@ import ru.nabokovsg.data.dto.sizeParameters.NewSizeParametersDto;
 import ru.nabokovsg.data.dto.sizeParameters.UpdateSizeParametersDto;
 import ru.nabokovsg.data.models.SizeParameters;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @Validated

@@ -1,8 +1,8 @@
 package ru.nabokovsg.templates.client.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.NoArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter

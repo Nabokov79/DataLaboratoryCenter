@@ -14,9 +14,9 @@ import ru.nabokovsg.data.dto.objectsType.ShortObjectsTypeDto;
 import ru.nabokovsg.data.dto.objectsType.UpdateObjectsTypeDto;
 import ru.nabokovsg.data.services.ObjectsTypeService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 @RestController

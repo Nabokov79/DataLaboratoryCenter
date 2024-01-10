@@ -4,7 +4,9 @@ import ru.nabokovsg.templates.dto.protocolReport.NewProtocolReportTemplateDto;
 import ru.nabokovsg.templates.dto.protocolReport.ProtocolReportTemplateDto;
 import ru.nabokovsg.templates.dto.protocolReport.ShortProtocolReportTemplateDto;
 import ru.nabokovsg.templates.dto.protocolReport.UpdateProtocolReportTemplateDto;
-import ru.nabokovsg.templates.models.*;
+import ru.nabokovsg.templates.models.ConclusionTemplate;
+import ru.nabokovsg.templates.models.SubsectionTemplate;
+import ru.nabokovsg.templates.models.TableTemplate;
 
 import java.util.List;
 

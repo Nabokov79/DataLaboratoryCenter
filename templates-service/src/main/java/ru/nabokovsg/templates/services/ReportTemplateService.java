@@ -1,6 +1,5 @@
 package ru.nabokovsg.templates.services;
 
-import ru.nabokovsg.templates.dto.pageTitle.PageTitleTemplateDto;
 import ru.nabokovsg.templates.dto.pageTitle.ShortPageTitleTemplateDto;
 import ru.nabokovsg.templates.dto.report.ReportTemplateDto;
 import ru.nabokovsg.templates.dto.section.ShortSectionTemplateDto;

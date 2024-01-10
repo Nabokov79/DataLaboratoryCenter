@@ -11,7 +11,10 @@ import ru.nabokovsg.templates.dto.protocolReport.ShortProtocolReportTemplateDto;
 import ru.nabokovsg.templates.dto.protocolReport.UpdateProtocolReportTemplateDto;
 import ru.nabokovsg.templates.exceptions.NotFoundException;
 import ru.nabokovsg.templates.mappers.ProtocolReportTemplateMapper;
-import ru.nabokovsg.templates.models.*;
+import ru.nabokovsg.templates.models.ConclusionTemplate;
+import ru.nabokovsg.templates.models.ProtocolReportTemplate;
+import ru.nabokovsg.templates.models.SubsectionTemplate;
+import ru.nabokovsg.templates.models.TableTemplate;
 import ru.nabokovsg.templates.repository.ProtocolReportTemplateRepository;
 
 import java.util.List;

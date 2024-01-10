@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.nabokovsg.data.dto.reportingDocumentData.*;
 import ru.nabokovsg.data.services.ReportingDocumentDataService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 

@@ -1,6 +1,7 @@
 package ru.nabokovsg.templates.models;
 
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.List;
 

@@ -13,9 +13,9 @@ import ru.nabokovsg.data.dto.objectsSurveyElementData.ObjectsSurveyElementDataDt
 import ru.nabokovsg.data.dto.objectsSurveyElementData.UpdateObjectsSurveyElementDataDto;
 import ru.nabokovsg.data.services.ObjectsSurveyElementDataService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 @RestController

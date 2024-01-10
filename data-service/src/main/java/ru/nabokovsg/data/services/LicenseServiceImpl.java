@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 import ru.nabokovsg.data.dto.license.LicenseDto;
 import ru.nabokovsg.data.dto.license.NewLicenseDto;
 import ru.nabokovsg.data.dto.license.UpdateLicenseDto;
-import ru.nabokovsg.data.models.enums.DivisionType;
 import ru.nabokovsg.data.exceptions.BadRequestException;
 import ru.nabokovsg.data.exceptions.NotFoundException;
 import ru.nabokovsg.data.mappers.LicenseMapper;
 import ru.nabokovsg.data.models.Licenses;
+import ru.nabokovsg.data.models.enums.DivisionType;
 import ru.nabokovsg.data.repository.LicenseRepository;
 
 import java.util.List;

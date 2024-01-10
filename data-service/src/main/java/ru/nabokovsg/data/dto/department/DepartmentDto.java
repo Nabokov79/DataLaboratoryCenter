@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.nabokovsg.data.dto.address.AddressDto;
 import ru.nabokovsg.data.dto.building.BuildingDto;
-import ru.nabokovsg.data.dto.license.LicenseDto;
 import ru.nabokovsg.data.dto.contact.ContactDto;
+import ru.nabokovsg.data.dto.license.LicenseDto;
 
 import java.util.List;
 

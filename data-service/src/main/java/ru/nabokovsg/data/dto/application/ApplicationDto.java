@@ -12,7 +12,6 @@ import ru.nabokovsg.data.dto.organization.ShortOrganizationDto;
 import ru.nabokovsg.data.dto.reportingDocument.ReportingDocumentDto;
 import ru.nabokovsg.data.dto.surveyObject.ShortSurveyObjectDto;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -45,7 +44,6 @@ public class ApplicationDto {
     @Schema(description = "Основание для проведения работы по обследованию")
     private String taskSource;
     @Schema(description = "Необходимость выполнения чертежа")
-    @NotNull(message = "task source should not be blank")
     private Boolean needDrawing;
     @Schema(description = "Комментари")
     private String comment;

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.nabokovsg.data.dto.subElement.NewSubElementDto;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
 @Setter

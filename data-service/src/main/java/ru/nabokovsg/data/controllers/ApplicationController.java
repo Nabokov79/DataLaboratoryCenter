@@ -8,12 +8,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.nabokovsg.data.dto.application.*;
+import ru.nabokovsg.data.dto.application.ApplicationDto;
+import ru.nabokovsg.data.dto.application.ApplicationSearchParametersDto;
+import ru.nabokovsg.data.dto.application.NewApplicationDto;
+import ru.nabokovsg.data.dto.application.UpdateApplicationDto;
 import ru.nabokovsg.data.services.ApplicationService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.List;
 

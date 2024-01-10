@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.nabokovsg.data.models.enums.DocumentType;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Setter
 @Getter

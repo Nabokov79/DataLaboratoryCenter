@@ -10,7 +10,8 @@ import ru.nabokovsg.data.dto.subElement.NewSubElementDto;
 import ru.nabokovsg.data.exceptions.NotFoundException;
 import ru.nabokovsg.data.mappers.ElementMapper;
 import ru.nabokovsg.data.mappers.ObjectsTypeMapper;
-import ru.nabokovsg.data.models.*;
+import ru.nabokovsg.data.models.Element;
+import ru.nabokovsg.data.models.SubElement;
 import ru.nabokovsg.data.repository.ElementRepository;
 
 import java.util.*;

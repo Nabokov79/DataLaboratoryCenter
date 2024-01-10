@@ -5,7 +5,7 @@ import ru.nabokovsg.data.dto.subElement.NewSubElementDto;
 import ru.nabokovsg.data.dto.subElement.UpdateSubElementDto;
 import ru.nabokovsg.data.models.SubElement;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @Validated

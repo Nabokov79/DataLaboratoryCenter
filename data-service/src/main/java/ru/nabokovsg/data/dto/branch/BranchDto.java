@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import ru.nabokovsg.data.dto.address.AddressDto;
+import ru.nabokovsg.data.dto.contact.ContactDto;
 import ru.nabokovsg.data.dto.department.DepartmentDto;
 import ru.nabokovsg.data.dto.license.LicenseDto;
-import ru.nabokovsg.data.dto.contact.ContactDto;
 
 import java.util.List;
 

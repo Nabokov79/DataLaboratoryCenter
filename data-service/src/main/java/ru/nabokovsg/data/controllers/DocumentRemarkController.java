@@ -13,9 +13,9 @@ import ru.nabokovsg.data.dto.documentRemark.NewDocumentRemarkDto;
 import ru.nabokovsg.data.dto.documentRemark.UpdateDocumentRemarkDto;
 import ru.nabokovsg.data.services.DocumentRemarkService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 @RestController

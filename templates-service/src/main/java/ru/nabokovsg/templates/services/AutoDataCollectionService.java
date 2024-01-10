@@ -2,6 +2,7 @@ package ru.nabokovsg.templates.services;
 
 import ru.nabokovsg.templates.dto.autoData.AutoDataCollectionDto;
 import ru.nabokovsg.templates.models.AutoDataCollection;
+
 import javax.validation.Valid;
 
 public interface AutoDataCollectionService {

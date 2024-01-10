@@ -1,6 +1,9 @@
 package ru.nabokovsg.data.services;
 
-import ru.nabokovsg.data.dto.application.*;
+import ru.nabokovsg.data.dto.application.ApplicationDto;
+import ru.nabokovsg.data.dto.application.ApplicationSearchParametersDto;
+import ru.nabokovsg.data.dto.application.NewApplicationDto;
+import ru.nabokovsg.data.dto.application.UpdateApplicationDto;
 
 import java.util.List;
 

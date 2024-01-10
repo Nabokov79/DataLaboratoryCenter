@@ -5,7 +5,7 @@ import ru.nabokovsg.data.dto.contact.NewContactDto;
 import ru.nabokovsg.data.dto.contact.UpdateContactDto;
 import ru.nabokovsg.data.models.Contact;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Validated
 public interface ContactService {
