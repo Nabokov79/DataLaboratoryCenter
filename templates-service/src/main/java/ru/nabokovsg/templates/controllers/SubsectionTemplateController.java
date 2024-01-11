@@ -14,9 +14,9 @@ import ru.nabokovsg.templates.dto.subsection.UpdateSubsectionTemplateDto;
 import ru.nabokovsg.templates.models.enums.DataType;
 import ru.nabokovsg.templates.services.SubsectionTemplateService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @RestController
 @RequestMapping(

@@ -3,6 +3,7 @@ package ru.nabokovsg.data.services;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.nabokovsg.data.dto.ObjectsIds;
@@ -19,7 +20,6 @@ import ru.nabokovsg.data.models.enums.BuilderType;
 import ru.nabokovsg.data.repository.MeasuringToolRepository;
 import ru.nabokovsg.data.services.builder.DataFactory;
 
-import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

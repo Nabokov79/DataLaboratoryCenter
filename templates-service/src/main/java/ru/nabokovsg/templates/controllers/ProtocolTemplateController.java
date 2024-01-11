@@ -13,9 +13,9 @@ import ru.nabokovsg.templates.dto.protocol.ShortProtocolTemplateDto;
 import ru.nabokovsg.templates.dto.protocol.UpdateProtocolTemplateDto;
 import ru.nabokovsg.templates.services.ProtocolTemplateService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 @RestController

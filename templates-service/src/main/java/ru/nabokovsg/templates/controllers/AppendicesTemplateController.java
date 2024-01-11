@@ -14,9 +14,9 @@ import ru.nabokovsg.templates.dto.appendices.UpdateAppendicesTemplateDto;
 import ru.nabokovsg.templates.models.enums.DataType;
 import ru.nabokovsg.templates.services.AppendicesTemplateService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @RestController
 @RequestMapping(

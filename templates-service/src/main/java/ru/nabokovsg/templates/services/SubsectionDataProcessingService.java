@@ -6,9 +6,9 @@ import ru.nabokovsg.templates.dto.subsectionDada.MeasuringToolDataDto;
 import ru.nabokovsg.templates.models.DocumentationTemplate;
 import ru.nabokovsg.templates.models.MeasuringToolTemplate;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 public interface SubsectionDataProcessingService {

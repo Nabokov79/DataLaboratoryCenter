@@ -13,8 +13,8 @@ import ru.nabokovsg.templates.dto.report.ReportTemplateDto;
 import ru.nabokovsg.templates.dto.section.ShortSectionTemplateDto;
 import ru.nabokovsg.templates.services.ReportTemplateService;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 @RestController

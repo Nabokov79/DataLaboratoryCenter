@@ -12,7 +12,7 @@ import ru.nabokovsg.templates.dto.pageTitle.PageTitleTemplateDto;
 import ru.nabokovsg.templates.dto.pageTitle.UpdatePageTitleTemplateDto;
 import ru.nabokovsg.templates.services.PageTitleTemplateService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 @RestController
 @RequestMapping(
         value = "/template/title/page",
